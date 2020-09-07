@@ -1,0 +1,70 @@
+name: drops
+description: >
+  Little Drops app concept has been born out of a series of design workshops with the participation of these industry partners as well as a few
+  parents of young children. The app aims to facilitate the creative process of oral storytelling at home by providing a ‘story template’ and visual
+  ‘prompts’ as supportive structure. Parents, children and their extended family can collect photographs from their everyday lives. Collated in a
+  gallery accessible to the parent and child, these photographs can provide later inspiration by serving as ‘prompts’ to crafting a new story. Prompts
+  are in turn utilized to populate ‘story templates’, which are based on spines of different story genres. Each spine is made out of blocks that
+  support the story sequence allowing the parent and child to keep a cohesive narrative in their story. They also have the facility to record each
+  story as it is told, allowing the parent to build a rich repository of the moments they shared with their children supporting reminiscence.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.6.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^0.1.2
+  google_fonts: 1.1.0
+  url_launcher: 5.0.3
+  http: 0.12.2
+  provider: 4.3.2+1
+  html: 0.14.0+3
+
+  flutter_statusbarcolor: 0.2.3
+  lipsum: 1.0.1
+  image_picker_gallery_camera: 0.1.6
+  charts_flutter: ^0.9.0
+  cached_network_image: ^2.3.1
+
+  flutter_localizations:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - images/
+    - lang/en.json
+
+
+  fonts:
+    - family: Andina
+      fonts:
+        - asset: fonts/andina.ttf
+
+    - family: Regular
+      fonts:
+        - asset: fonts/googlesansregular.ttf
+
+    - family: Medium
+      fonts:
+        - asset: fonts/googlesansmedium.ttf
+
+    - family: Semibold
+      fonts:
+        - asset: fonts/googlesansmedium.ttf
+
+    - family: Bold
+      fonts:
+        - asset: fonts/googlesansebold.ttf
+
