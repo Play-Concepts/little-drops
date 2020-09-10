@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 import 'package:drops/views/LDLoginView.dart';
 
 class LDWalkThroughView extends StatefulWidget {

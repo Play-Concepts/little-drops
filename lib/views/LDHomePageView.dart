@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 import 'package:drops/views/LDStoriesView.dart';
 import 'package:drops/views/LDEditStoriesView.dart';
 import 'package:drops/views/LDStatisticsView.dart';

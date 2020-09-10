@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:drops/entities/ScoreboardAvailableModel.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 
 class LDStatisticsDetailsView extends StatefulWidget {
   @override

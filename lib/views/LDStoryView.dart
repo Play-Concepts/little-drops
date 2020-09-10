@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/StoryChapter.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 import 'package:drops/views/LDStoryChapterView.dart';
 
 class LDStoryView extends StatefulWidget {

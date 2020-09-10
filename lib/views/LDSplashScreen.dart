@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDStyle.dart';
 import 'package:drops/views//LDWalkThroughView.dart';
 
 class LDSplashScreen extends StatefulWidget {

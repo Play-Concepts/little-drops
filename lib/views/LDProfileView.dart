@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:drops/views/LDEditProfileView.dart';
 import 'package:drops/views/LDProfileSettingsView.dart';

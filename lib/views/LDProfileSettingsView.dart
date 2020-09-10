@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
 
 class LDProfileSettingsView extends StatefulWidget {
   @override

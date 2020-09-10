@@ -1,15 +1,15 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/services/LDColors.dart';
-import 'package:drops/services/LDStyle.dart';
-import 'package:drops/views/LDHomePageView.dart';
+import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/LDStyle.dart';
+import 'package:get/get.dart';
+import 'package:drops/controllers/HattersController.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class LDLoginView extends StatefulWidget {
-  @override
-  _LDLoginViewState createState() => _LDLoginViewState();
-}
+class LDLoginView extends GetWidget<HattersController> {
+  final TextEditingController emailTextController = TextEditingController();
 
-class _LDLoginViewState extends State<LDLoginView> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -39,25 +39,26 @@ class _LDLoginViewState extends State<LDLoginView> {
                     ),
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          cursorColor: ldTextSecondaryColor.withOpacity(0.2),
-                          cursorWidth: 1,
-                          autocorrect: true,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                            hintText: 'Email Address',
-                            hintStyle: secondaryTextStyle(
-                                textColor:
-                                    ldTextSecondaryColor.withOpacity(0.6)),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsets.only(
-                                left: 16, bottom: 16, top: 16, right: 16),
-                          ),
-                        ),
+                        TextFormField(
+                            controller: emailTextController,
+                            cursorColor: ldTextSecondaryColor.withOpacity(0.2),
+                            cursorWidth: 1,
+                            autocorrect: true,
+                            autofocus: false,
+                            decoration: InputDecoration(
+                              hintText: 'Email Address',
+                              hintStyle: secondaryTextStyle(
+                                  textColor:
+                                      ldTextSecondaryColor.withOpacity(0.6)),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                              contentPadding: EdgeInsets.only(
+                                  left: 16, bottom: 16, top: 16, right: 16),
+                            ),
+                            keyboardType: TextInputType.emailAddress),
                       ],
                     ),
                   ),
@@ -66,14 +67,8 @@ class _LDLoginViewState extends State<LDLoginView> {
                   ),
                   SDButton(
                     textContent: "SIGN IN",
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LDHomePageView(),
-                        ),
-                      );
-                    },
+                    onPressed: () =>
+                        this.loginOrSignup(emailTextController.text),
                   ),
                   SizedBox(
                     height: 35,
@@ -90,5 +85,40 @@ class _LDLoginViewState extends State<LDLoginView> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    emailTextController.dispose();
+  }
+
+  void loginOrSignup(String email) {
+    controller.isRegistered('email', email).then((value) async {
+      final hatName = '${value.hatName}.${value.hatCluster}';
+      final loginUrl = controller.loginUrl(hatName);
+      if (await canLaunch(loginUrl)) {
+        launch(loginUrl);
+      } else {
+        Get.snackbar('Unknown Login Error', 'Unable to redirect to your PDA.',
+            backgroundColor: ldSecondaryColorRed,
+            colorText: ldTextTertiaryColor);
+      }
+    }).catchError((e) async {
+      if (controller.isEmailValid(email)) {
+        final signupUrl = controller.signupUrl(email);
+        if (await canLaunch(signupUrl)) {
+          launch(signupUrl);
+        } else {
+          Get.snackbar('Unknown Login Error', 'Unable to redirect to your PDA.',
+              backgroundColor: ldSecondaryColorRed,
+              colorText: ldTextTertiaryColor);
+        }
+      } else {
+        Get.snackbar('Invalid Email', 'That doesn\'t appear to be an email.',
+            backgroundColor: ldSecondaryColorRed,
+            colorText: ldTextTertiaryColor);
+      }
+    });
   }
 }
