@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:drops/views/LDSplashScreen.dart';
 import 'package:drops/views/LDHomePageView.dart';
+import 'package:drops/utils/LDColors.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' show Client;
@@ -66,9 +67,14 @@ class _MyAppState extends State<MyApp> {
             Uri _latestUri = Uri.parse(link);
             if (_latestUri.queryParameters.containsKey('token')) {
               final token = _latestUri.queryParameters['token'];
+              final pda = Get.find<HattersService>().extractPda(token);
               GetStorage().write('token', token);
-              print(token);
-              Get.to(LDHomePageView());
+              GetStorage().write('pda', pda);
+              Get.off(LDHomePageView());
+            } else if (_latestUri.queryParameters.containsKey('error')) {
+              Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason'],
+                  backgroundColor: ldSecondaryColorRed,
+                  colorText: ldTextTertiaryColor);
             }
           }
         } on FormatException {}

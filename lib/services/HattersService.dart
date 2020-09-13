@@ -4,13 +4,13 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:drops/utils/PdaServiceConfig.dart';
 import 'package:drops/entities/Pda.dart';
+import 'package:jose/jose.dart';
 
 class HattersService {
   Client client = Get.find<Client>();
 
   Future<Pda> isRegistered(String type, String typeValue) async {
-    final response = await client.get('$hattersUrl$type=$typeValue');
-    print(response.statusCode);
+    final response = await client.get('$hattersUrl$type=${Uri.encodeComponent(typeValue)}');
     if (response.statusCode == 200)
       return Pda.fromJson(json.decode(response.body));
     else
@@ -23,5 +23,10 @@ class HattersService {
 
   String signupUrl(String email) {
     return '$daasUrl?email=$email&application_id=$applicationId&redirect_uri=$callbackUrl';
+  }
+
+  String extractPda(String token) {
+    var signature = JsonWebSignature.fromCompactSerialization(token);
+    return signature.unverifiedPayload.jsonContent['iss'];
   }
 }
