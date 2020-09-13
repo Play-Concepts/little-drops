@@ -2,10 +2,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/StoryChapter.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views/LDStoryChapterView.dart';
+import 'package:drops/entities/story_chapter.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_story_chapter_view.dart';
 
 class LDStoryView extends StatefulWidget {
   String name;

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/Child.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
+import 'package:drops/entities/child.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
 
-import 'LDStatisticsDetailsView.dart';
+import 'ld_statistics_details_view.dart';
 
 List<Child> students = [
   Child(

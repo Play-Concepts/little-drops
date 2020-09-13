@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:drops/views/LDSplashScreen.dart';
-import 'package:drops/views/LDHomePageView.dart';
-import 'package:drops/utils/LDColors.dart';
+import 'package:drops/views/ld_splash_screen.dart';
+import 'package:drops/views/ld_home_page_view.dart';
+import 'package:drops/utils/ld_colors.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' show Client;
 
-import 'package:drops/services/HattersService.dart';
+import 'package:drops/services/hatters_service.dart';
 
-import 'controllers/HattersController.dart';
+import 'controllers/hatters_controller.dart';
 import 'package:uni_links/uni_links.dart';
 
 void main() async {

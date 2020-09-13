@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:drops/entities/ScoreboardAvailableModel.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views/LDEditStoryView.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_edit_story_view.dart';
 
 class LDEditStoriesView extends StatefulWidget {
   @override

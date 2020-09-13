@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
 import 'package:get/get.dart';
-import 'package:drops/controllers/HattersController.dart';
+import 'package:drops/controllers/hatters_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LDLoginView extends GetWidget<HattersController> {

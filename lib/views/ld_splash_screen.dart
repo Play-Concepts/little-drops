@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views//LDWalkThroughView.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_walk_through_view.dart';
 
 class LDSplashScreen extends StatefulWidget {
   static String tag = '/LDSplashScreen';

@@ -2,8 +2,8 @@ import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import 'dart:async';
 import 'package:get/get.dart';
-import 'package:drops/utils/PdaServiceConfig.dart';
-import 'package:drops/entities/Pda.dart';
+import 'package:drops/utils/service_config.dart';
+import 'package:drops/entities/pda.dart';
 import 'package:jose/jose.dart';
 
 class HattersService {

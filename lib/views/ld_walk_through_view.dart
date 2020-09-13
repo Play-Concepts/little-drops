@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views/LDLoginView.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_login_view.dart';
 
 class LDWalkThroughView extends StatefulWidget {
   @override

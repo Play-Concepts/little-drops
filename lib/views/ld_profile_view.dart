@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:drops/views/LDEditProfileView.dart';
-import 'package:drops/views/LDProfileSettingsView.dart';
+import 'package:drops/views/ld_edit_profile_view.dart';
+import 'package:drops/views/ld_profile_settings_view.dart';
 
 class LDProfileView extends StatefulWidget {
   @override

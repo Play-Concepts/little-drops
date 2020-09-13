@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/Story.dart';
+import 'package:drops/entities/story.dart';
 import 'package:drops/entities/SDExamCardModel.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views/LDStoryView.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_story_view.dart';
 
 List<Story> stories = [
   Story(

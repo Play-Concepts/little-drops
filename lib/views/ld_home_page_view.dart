@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDColors.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/views/LDStoriesView.dart';
-import 'package:drops/views/LDEditStoriesView.dart';
-import 'package:drops/views/LDStatisticsView.dart';
-import 'package:drops/views/LDProfileView.dart';
+import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/views/ld_stories_view.dart';
+import 'package:drops/views/ld_edit_stories_view.dart';
+import 'package:drops/views/ld_statistics_view.dart';
+import 'package:drops/views/ld_profile_view.dart';
 
 class LDHomePageView extends StatefulWidget {
   @override

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:drops/utils/LDStyle.dart';
-import 'package:drops/utils/LDColors.dart';
+import 'package:drops/utils/ld_style.dart';
+import 'package:drops/utils/ld_colors.dart';
 
 import 'package:lipsum/lipsum.dart' as lipsum;
 
-class LDEditStoryChapterView extends StatefulWidget {
+class LDStoryChapterView extends StatefulWidget {
   @override
-  _LDEditStoryChapterViewState createState() => _LDEditStoryChapterViewState();
+  _LDStoryChapterViewState createState() => _LDStoryChapterViewState();
 }
 
-class _LDEditStoryChapterViewState extends State<LDEditStoryChapterView> {
+class _LDStoryChapterViewState extends State<LDStoryChapterView> {
   var text;
 
   @override
@@ -30,7 +30,7 @@ class _LDEditStoryChapterViewState extends State<LDEditStoryChapterView> {
 //            child: CloseButton(
 //              color: Colors.black,
 //            ),
-              ),
+          ),
           actions: <Widget>[
             Container(
               padding: EdgeInsets.only(right: 20),
