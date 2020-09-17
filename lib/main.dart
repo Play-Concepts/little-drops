@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/repositories/stories_repository.dart';
+import 'package:drops/services/stories_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:drops/views/ld_splash_screen.dart';
@@ -16,10 +19,15 @@ import 'package:uni_links/uni_links.dart';
 
 void main() async {
   //FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  await GetStorage.init();
+  await GetStorage.init('global');
   Get.lazyPut<Client>(() => Client());
   Get.lazyPut<HattersService>(() => HattersService());
+  Get.lazyPut<StoriesService>(() => StoriesService());
+
+  Get.lazyPut<StoriesRepository>(() => StoriesRepository());
+
   Get.lazyPut<HattersController>(() => HattersController());
+  Get.lazyPut<StoriesController>(() => StoriesController());
 
   runApp(MyApp());
 }
@@ -68,8 +76,8 @@ class _MyAppState extends State<MyApp> {
             if (_latestUri.queryParameters.containsKey('token')) {
               final token = _latestUri.queryParameters['token'];
               final pda = Get.find<HattersService>().extractPda(token);
-              GetStorage().write('token', token);
-              GetStorage().write('pda', pda);
+              GetStorage('global').write('token', token);
+              GetStorage('global').write('pda', pda);
               Get.off(LDHomePageView());
             } else if (_latestUri.queryParameters.containsKey('error')) {
               Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason'],
@@ -88,7 +96,7 @@ class _MyAppState extends State<MyApp> {
   @override
   dispose() {
     if (_sub != null) _sub.cancel();
-    GetStorage().erase();
+    GetStorage('global').erase();
     super.dispose();
   }
 }
