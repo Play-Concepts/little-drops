@@ -17,7 +17,7 @@ class StoriesService {
     String pda = box.read<String>('pda');
     String token = box.read<String>('token');
     token.split(".").forEach((element) {print(element);});
-    final response = await client.get('https://$pda/$storiesEndpoint', headers: { 'Content-Type': 'application/json', 'x-auth-token': '$token'});
+    final response = await client.get('https://$pda/$storiesEndpointUrl', headers: { 'Content-Type': 'application/json', 'x-auth-token': '$token'});
     if (response.statusCode == 200) {
       Iterable jsonStories = json.decode(response.body);
       return jsonStories.map((e) => Story.fromJson(e)).toList();
