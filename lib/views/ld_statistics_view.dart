@@ -8,19 +8,21 @@ import 'ld_statistics_details_view.dart';
 
 List<Child> students = [
   Child(
+      data: ChildData(
     image:
         'https://cdn.fastly.picmonkey.com/contentful/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24E953B920A9CD0FF2E1D587742A2472/1-intro-photo-final.jpg?w=800&q=70',
     name: 'Karnia Oktavia',
     message: 'Excellent work',
     score: 100,
-  ),
+  )),
   Child(
+      data: ChildData(
     image:
         'https://i.insider.com/5de6dd81fd9db241b00c04d3?width=1100&format=jpeg&auto=webp',
     name: 'Kamaludin Abdul',
     message: 'Good work',
     score: 97,
-  ),
+  ))
 ];
 
 Widget LDStatisticsView([BuildContext context, Size size]) {
@@ -59,7 +61,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -69,7 +71,8 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
               },
               child: Container(
                 margin: EdgeInsets.only(left: 16, right: 16, top: 16),
-                padding: EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+                padding:
+                    EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
                 width: size.width,
                 decoration: boxDecorations(),
                 child: Row(
@@ -90,7 +93,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                             'Loading',
                           ),
                           image: Image.network(
-                            students[index].image,
+                            students[index].data.image,
                             height: 35,
                             width: 10,
                           ).image,
@@ -106,13 +109,13 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            students[index].name,
+                            students[index].data.name,
                             style: boldTextStyle(size: 16),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 5),
                             child: Text(
-                              students[index].message,
+                              students[index].data.message,
                               style: secondaryTextStyle(size: 12),
                             ),
                           ),
@@ -120,7 +123,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                       ),
                     ),
                     Text(
-                      students[index].score.toString(),
+                      students[index].data.score.toString(),
                       style: boldTextStyle(),
                     )
                   ],
