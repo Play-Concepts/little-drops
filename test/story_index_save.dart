@@ -2,7 +2,7 @@ import 'package:http/http.dart' show Client;
 import 'dart:io';
 import 'dart:convert';
 import 'package:drops/utils/data_endpoints_config.dart';
-import 'package:drops/entities/child.dart';
+import 'package:drops/entities/story.dart';
 import 'package:http/src/response.dart';
 
 void main(List<String> args) {
@@ -10,22 +10,25 @@ void main(List<String> args) {
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
 
-  String input = args.isNotEmpty ? args[0] : 'John Doe';
+  if (args.length!=3) throw Exception('dart story_index_save.dart <recordId> <title> <description>');
+  String recordId = args[0];
+  String title = args[1];
+  String description = args[2];
 
   new File('token.txt').readAsString().then((token) async {
     dynamic body ={
-      'name': input,
-      'relationship': 'child'
+      'title': title,
+      'description': description
     };
-    response = await client.post('https://$pda/$childrenEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.post('https://$pda/$storiesEndpointUrl/$recordId', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 201) {
       dynamic body = json.decode(response.body);
-      Child child = Child.fromJson(body);
-      print(child);
+      Story story = Story.fromJson(body);
+      print(story);
     } else {
-      throw Exception("Failed to save Child.");
+      throw Exception("Failed to save Story.");
     }
   }).catchError((error) => print(error));
 }

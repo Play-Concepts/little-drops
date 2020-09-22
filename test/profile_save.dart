@@ -5,12 +5,12 @@ import 'package:drops/utils/data_endpoints_config.dart';
 import 'package:drops/entities/profile.dart';
 import 'package:http/src/response.dart';
 
-void main() {
+void main(List<String> args) {
   final client = Client();
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
 
-  String input = stdin.readLineSync();
+  String input = args.isNotEmpty ? args[0] : 'John Doe';
 
   new File('token.txt').readAsString().then((token) async {
     dynamic body ={

@@ -5,13 +5,14 @@ import 'package:drops/utils/data_endpoints_config.dart';
 import 'package:drops/entities/profile.dart';
 import 'package:http/src/response.dart';
 
-void main() {
+void main(List<String> args) {
   final client = Client();
   final pda = 'terryleehcfdev.hubat.net';
-  final recordId = 'fa41daf0-c4d7-446c-a764-bf86c9b0a078';
   Response response;
 
-  String input = stdin.readLineSync();
+  if (args.length!=2) throw Exception('dart child_update.dart <recordId> <name>');
+  String recordId = args[0];
+  String input = args[1];
 
   new File('token.txt').readAsString().then((token) async {
     dynamic body =[{

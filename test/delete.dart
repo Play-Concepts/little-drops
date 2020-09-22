@@ -10,22 +10,17 @@ void main(List<String> args) {
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
 
-  String input = args.isNotEmpty ? args[0] : 'John Doe';
+  if (args.length!=1) throw Exception('dart delete.dart <recordId>');
+  String recordId = args[0];
 
   new File('token.txt').readAsString().then((token) async {
-    dynamic body ={
-      'name': input,
-      'relationship': 'child'
-    };
-    response = await client.post('https://$pda/$childrenEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.delete('https://$pda/$dataEndpointUrl?records=$recordId', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
-    if (response.statusCode == 201) {
-      dynamic body = json.decode(response.body);
-      Child child = Child.fromJson(body);
-      print(child);
+    if (response.statusCode == 200) {
+      print(json.decode(response.body)['message']);
     } else {
-      throw Exception("Failed to save Child.");
+      throw Exception("Failed to delete Child.");
     }
   }).catchError((error) => print(error));
 }

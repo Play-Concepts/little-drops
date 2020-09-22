@@ -5,13 +5,14 @@ import 'package:drops/utils/data_endpoints_config.dart';
 import 'package:drops/entities/child.dart';
 import 'package:http/src/response.dart';
 
-void main() {
+void main(List<String> args) {
   final client = Client();
   final pda = 'terryleehcfdev.hubat.net';
-  final recordId = 'd8c67138-b455-40cc-8966-0e5434571ffe';
   Response response;
 
-  String input = stdin.readLineSync();
+  if (args.length!=2) throw Exception('dart child_update.dart <recordId> <name>');
+  String recordId = args[0];
+  String input = args[1];
 
   new File('token.txt').readAsString().then((token) async {
     dynamic body =[{
@@ -25,11 +26,11 @@ void main() {
     response = await client.put('https://$pda/$dataEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       Iterable body = json.decode(response.body);
-      if (body.length==0) throw Exception("Child Not Saved.");
+      if (body.length==0) throw Exception("Child Not Updated.");
       Child profile = Child.fromJson(body.first);
       print(profile);
     } else {
-      throw Exception("Failed to save Child.");
+      throw Exception("Failed to update Child.");
     }
   }).catchError((error) => print(error));
 }

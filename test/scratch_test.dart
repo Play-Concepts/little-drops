@@ -6,4 +6,5 @@ const profileEndpoint = '/api/$apiVersion/data/$namespace/profile';
 void main() {
   print(profileEndpoint);
   print(storiesEndpoint);
+  print(DateTime.now().millisecondsSinceEpoch);
 }

@@ -12,6 +12,9 @@ class Story extends PdaRecord {
     this.recordId = jsonObject['recordId'];
     this.data = StoryData.fromJson(jsonObject['data']);
   }
+
+  @override
+  String toString() => '${this.recordId}: ${this.data.title} ${this.data.description}';
 }
 
 class StoryData {
