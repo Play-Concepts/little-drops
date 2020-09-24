@@ -22,7 +22,7 @@ void main(List<String> args) {
     dynamic body = [
       {
         'recordId': recordId,
-        'endpoint': '$childrenEndpoint/$childRecordId',
+        'endpoint': '$storiesEndpoint/$childRecordId',
         'data': {'title': title, 'description': description}
       }
     ];

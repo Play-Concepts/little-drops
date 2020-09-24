@@ -27,13 +27,17 @@ class ChildData {
   String message;
   int score;
   String relationship;
+  String gender;
+  String ageGroup;
 
   ChildData({
     this.image,
     this.name,
     this.message,
     this.score,
-    this.relationship
+    this.relationship,
+    this.gender,
+    this.ageGroup
   });
 
   ChildData.fromJson(jsonObject) {
@@ -42,5 +46,7 @@ class ChildData {
     this.message = jsonObject['message'];
     this.score = jsonObject['score'];
     this.relationship = jsonObject['relationship'];
+    this.gender = jsonObject['gender'];
+    this.ageGroup = jsonObject['ageGroup'];
   }
 }

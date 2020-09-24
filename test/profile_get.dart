@@ -1,9 +1,8 @@
-import 'package:http/http.dart' show Client;
+import 'package:http/http.dart' show Client, Response;
 import 'dart:io';
 import 'dart:convert';
 import 'package:drops/utils/data_endpoints_config.dart';
 import 'package:drops/entities/profile.dart';
-import 'package:http/src/response.dart';
 
 void main() {
   final client = Client();

@@ -15,6 +15,6 @@ class StoriesController extends GetxController {
 
   void getStories() async{
     print("Getting stories");
-    stories.value = await repo.getStories();
+    stories.value = await repo.getStoriesList('9b81918f-10e0-4064-bb02-cb9243ba3e6f');
   }
 }

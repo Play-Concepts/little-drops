@@ -1,13 +1,16 @@
 import 'dart:async';
 
 import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/repositories/profile_repository.dart';
 import 'package:drops/repositories/stories_repository.dart';
+import 'package:drops/services/profile_service.dart';
 import 'package:drops/services/stories_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:drops/views/ld_splash_screen.dart';
 import 'package:drops/views/ld_home_page_view.dart';
 import 'package:drops/utils/ld_colors.dart';
+import 'package:drops/utils/data_keys.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' show Client;
@@ -19,18 +22,41 @@ import 'package:uni_links/uni_links.dart';
 
 void main() async {
   //FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  await GetStorage.init('global');
+  await GetStorage.init(dkStore);
+  clearCache();
+
   Get.lazyPut<Client>(() => Client());
   Get.lazyPut<HattersService>(() => HattersService());
-  Get.lazyPut<StoriesService>(() => StoriesService());
 
+  Get.lazyPut<StoriesService>(() => StoriesService());
   Get.lazyPut<StoriesRepository>(() => StoriesRepository());
+
+  Get.lazyPut<ProfileService>(() => ProfileService());
+  Get.lazyPut<ProfileRepository>(() => ProfileRepository());
 
   Get.lazyPut<HattersController>(() => HattersController());
   Get.lazyPut<StoriesController>(() => StoriesController());
 
   runApp(MyApp());
 }
+
+void clearCache() {
+  print('clearing cache');
+  GetStorage box = GetStorage(dkStore);
+  print(box.read(dkToken));
+  box.listenKey(dkToken, (token) => print(token));
+  if (box.hasData(dkPda)) {
+    String pda = box.read<String>(dkPda);
+    String token = box.read<String>(dkToken);
+    box.erase();
+    box.write(dkPda, pda);
+    box.write(dkToken, token);
+    print(box.read(dkPda));
+    print(box.read(dkToken));
+  }
+}
+
+
 
 class MyApp extends StatefulWidget {
   @override
@@ -76,8 +102,8 @@ class _MyAppState extends State<MyApp> {
             if (_latestUri.queryParameters.containsKey('token')) {
               final token = _latestUri.queryParameters['token'];
               final pda = Get.find<HattersService>().extractPda(token);
-              GetStorage('global').write('token', token);
-              GetStorage('global').write('pda', pda);
+              GetStorage(dkStore).write(dkToken, token);
+              GetStorage(dkStore).write(dkPda, pda);
               Get.off(LDHomePageView());
             } else if (_latestUri.queryParameters.containsKey('error')) {
               Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason'],
@@ -96,7 +122,6 @@ class _MyAppState extends State<MyApp> {
   @override
   dispose() {
     if (_sub != null) _sub.cancel();
-    GetStorage('global').erase();
     super.dispose();
   }
 }

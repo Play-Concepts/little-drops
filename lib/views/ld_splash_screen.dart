@@ -1,8 +1,12 @@
 import 'dart:async';
 
+import 'package:drops/views/ld_home_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_style.dart';
+import 'package:drops/utils/data_keys.dart';
 import 'package:drops/views/ld_walk_through_view.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 class LDSplashScreen extends StatefulWidget {
   static String tag = '/LDSplashScreen';
@@ -13,6 +17,8 @@ class LDSplashScreen extends StatefulWidget {
 
 class _LDSplashScreenState extends State<LDSplashScreen>
     with SingleTickerProviderStateMixin {
+  final GetStorage box = GetStorage(dkStore);
+
   startTime() async {
     var _duration = Duration(seconds: 3);
     return Timer(_duration, navigationPage);
@@ -25,13 +31,17 @@ class _LDSplashScreenState extends State<LDSplashScreen>
   }
 
   void navigationPage() {
-    Navigator.pop(context);
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LDWalkThroughView(),
-      ),
-    );
+    if (box.hasData(dkToken)) {
+      Get.off(LDHomePageView());
+    } else {
+      Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LDWalkThroughView(),
+        ),
+      );
+    }
   }
 
   @override
