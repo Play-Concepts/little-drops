@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/repositories/profile_repository.dart';
 import 'package:drops/repositories/stories_repository.dart';
@@ -27,15 +28,15 @@ void main() async {
 
   Get.lazyPut<Client>(() => Client());
   Get.lazyPut<HattersService>(() => HattersService());
+  Get.lazyPut<HattersController>(() => HattersController());
 
   Get.lazyPut<StoriesService>(() => StoriesService());
   Get.lazyPut<StoriesRepository>(() => StoriesRepository());
+  Get.lazyPut<StoriesController>(() => StoriesController());
 
   Get.lazyPut<ProfileService>(() => ProfileService());
   Get.lazyPut<ProfileRepository>(() => ProfileRepository());
-
-  Get.lazyPut<HattersController>(() => HattersController());
-  Get.lazyPut<StoriesController>(() => StoriesController());
+  Get.lazyPut<ProfileController>(() => ProfileController());
 
   runApp(MyApp());
 }

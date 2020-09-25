@@ -10,9 +10,10 @@ void main(List<String> args) {
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
 
-  if (args.length!=2) throw Exception('dart child_update.dart <recordId> <name>');
+  if (args.length!=3) throw Exception('dart child_update.dart <recordId> <name> <relationship>');
   String recordId = args[0];
   String input = args[1];
+  String relationship = args[2] ?? 'child';
 
   new File('token.txt').readAsString().then((token) async {
     dynamic body =[{
@@ -20,7 +21,7 @@ void main(List<String> args) {
       'endpoint': childrenEndpoint,
       'data': {
         'name': input,
-        'relationship': 'child'
+        'relationship': relationship
       }
     }];
     response = await client.put('https://$pda/$dataEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});

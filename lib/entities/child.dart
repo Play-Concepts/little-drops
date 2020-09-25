@@ -24,29 +24,26 @@ class Child extends PdaRecord {
 class ChildData {
   String image;
   String name;
-  String message;
-  int score;
   String relationship;
-  String gender;
   String ageGroup;
+  int score;
+  String message;
 
   ChildData({
     this.image,
     this.name,
-    this.message,
-    this.score,
     this.relationship,
-    this.gender,
-    this.ageGroup
+    this.ageGroup,
+    this.score,
+    this.message
   });
 
   ChildData.fromJson(jsonObject) {
     this.image = jsonObject['image'];
     this.name = jsonObject['name'];
-    this.message = jsonObject['message'];
-    this.score = jsonObject['score'];
     this.relationship = jsonObject['relationship'];
-    this.gender = jsonObject['gender'];
     this.ageGroup = jsonObject['ageGroup'];
+    this.score = jsonObject['score'];
+    this.message = jsonObject['message'];
   }
 }

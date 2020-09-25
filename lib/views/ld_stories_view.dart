@@ -1,3 +1,4 @@
+import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,24 +8,32 @@ import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
 
-SDExamCardModel card =
-  SDExamCardModel(
-    image: 'images/sdbiology.png',
-    examName: 'Uriel Lee',
-    time: 'Elder daughter',
-    icon: Icon(
-      Icons.notifications_active,
-      color: Colors.white54,
-    ),
-    startColor: Color(0xFF2889EB),
-    endColor: Color(0xFF0B56CB),
-  );
+SDExamCardModel card = SDExamCardModel(
+  image: randomImage(),
+  examName: 'Uriel Lee',
+  time: 'Elder daughter',
+  icon: Icon(
+    Icons.notifications_active,
+    color: Colors.white54,
+  ),
+  startColor: Color(0xFF2889EB),
+  endColor: Color(0xFF0B56CB),
+);
 
 final StoriesController storiesController = Get.find<StoriesController>();
+final ProfileController profileController = Get.find<ProfileController>();
 
 ImageProvider _storiesImageAsset(String location) {
-  if (location==null) location = randomImage();
-  return Image.asset(location,height: 35, width: 20,).image;
+  if (location == null) location = randomImage();
+  return Image.asset(
+    location,
+    height: 35,
+    width: 20,
+  ).image;
+}
+
+void getStoriesList(String childId) {
+  storiesController.getStories(childId);
 }
 
 Widget LDStoriesView(BuildContext context) {
@@ -47,63 +56,67 @@ Widget LDStoriesView(BuildContext context) {
               height: 15,
             ),
             Container(
-              height: 250,
-              alignment: Alignment.center,
-              child: Container(
-                width: 180.0,
-                margin: EdgeInsets.only(
-                  left: 16,
-                ),
-                padding: EdgeInsets.all(10),
-                decoration: boxDecoration(
-                  radius: 8,
-                  spreadRadius: 1,
-                  blurRadius: 4,
-                  gradient: LinearGradient(
-                    colors: [
-                      card.startColor,
-                      card.endColor
-                    ],
-                  ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundColor: Colors.white30,
-                      child: Image.asset(
-                        card.image,
-                        height: 60,
-                        width: 60,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      card.examName,
-                      style: secondaryTextStyle(
-                          textColor: Colors.white, size: 20),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          card.time,
-                          style: secondaryTextStyle(
-                              textColor: Colors.white54, size: 18),
+                height: 250,
+                child: Obx(() => ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: profileController.children == null ? 0 : profileController.children.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => getStoriesList(profileController.children[index].recordId),
+                        child: Container(
+                          width: 180.0,
+                          margin: EdgeInsets.only(
+                            left: 16,
+                          ),
+                          padding: EdgeInsets.all(10),
+                          decoration: boxDecoration(
+                            radius: 8,
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            gradient: LinearGradient(
+                              colors: [card.startColor, card.endColor],
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundColor: Colors.white30,
+                                child: Image.asset(
+                                  randomImage(),
+                                  height: 60,
+                                  width: 60,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                profileController.children[index].data.name,
+                                style: secondaryTextStyle(
+                                    textColor: Colors.white, size: 20),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    profileController.children[index].data.relationship,
+                                    style: secondaryTextStyle(
+                                        textColor: Colors.white54, size: 18),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
+                      );
+                    }))),
             SizedBox(
               height: 35,
             ),
@@ -166,7 +179,8 @@ Widget LDStoriesView(BuildContext context) {
                             placeholder: AssetImage(
                               'Loading',
                             ),
-                            image: _storiesImageAsset(storiesController.stories[index].data.image),
+                            image: _storiesImageAsset(
+                                storiesController.stories[index].data.image),
                           ),
                         ),
                       ),

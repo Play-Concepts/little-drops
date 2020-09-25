@@ -12,6 +12,7 @@ void main() {
   new File('token.txt').readAsString().then((token) async {
     response = await client.get('https://$pda/$childrenEndpointUrl', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 200) {
+      print(response.body);
       Iterable body = json.decode(response.body);
       if (body.length==0) throw Exception("Children Not Found");
       body.map((jsonObject) => Child.fromJson(jsonObject)).toList().forEach((child) { print(child);});
