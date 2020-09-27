@@ -1,5 +1,6 @@
 import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/entities/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/SDExamCardModel.dart';
@@ -36,8 +37,12 @@ void getStoriesList(String childId) {
   storiesController.getStories(childId);
 }
 
+String profileName(Profile profile) {
+  if (profile==null || profile.data==null) return '';
+  return profile.data.name;
+}
+
 Widget LDStoriesView(BuildContext context) {
-  var name = 'Terry';
   return Container(
     child: SingleChildScrollView(
       padding: EdgeInsets.only(top: 20, bottom: 16),
@@ -47,10 +52,10 @@ Widget LDStoriesView(BuildContext context) {
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
-              child: Text(
-                'Hi, $name',
+              child: Obx(() => Text(
+                'Hi, ${profileName(profileController.profile.value)}',
                 style: boldTextStyle(size: 20),
-              ),
+              )),
             ),
             SizedBox(
               height: 15,

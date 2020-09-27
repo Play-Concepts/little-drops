@@ -17,6 +17,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' show Client;
 
 import 'package:drops/services/hatters_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/hatters_controller.dart';
 import 'package:uni_links/uni_links.dart';
@@ -24,7 +25,6 @@ import 'package:uni_links/uni_links.dart';
 void main() async {
   //FlutterError.onError = Crashlytics.instance.recordFlutterError;
   await GetStorage.init(dkStore);
-  clearCache();
 
   Get.lazyPut<Client>(() => Client());
   Get.lazyPut<HattersService>(() => HattersService());
@@ -41,20 +41,12 @@ void main() async {
   runApp(MyApp());
 }
 
-void clearCache() {
-  print('clearing cache');
+void retrievePreferences() async {
+  final SharedPreferences preferences = await SharedPreferences.getInstance();
   GetStorage box = GetStorage(dkStore);
-  print(box.read(dkToken));
-  box.listenKey(dkToken, (token) => print(token));
-  if (box.hasData(dkPda)) {
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
-    box.erase();
-    box.write(dkPda, pda);
-    box.write(dkToken, token);
-    print(box.read(dkPda));
-    print(box.read(dkToken));
-  }
+  box.erase();
+  if (preferences.getString(dkPda) != null) box.write(dkPda, preferences.getString(dkPda));
+  if (preferences.getString(dkToken) != null) box.write(dkToken, preferences.getString(dkToken));
 }
 
 

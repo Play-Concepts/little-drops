@@ -19,6 +19,7 @@ dependencies:
 
   get: ^3.8.0
   get_storage: ^1.3.0
+  shared_preferences: ^0.5.12
   cupertino_icons: ^0.1.2
   google_fonts: 1.1.0
   url_launcher: 5.5.3

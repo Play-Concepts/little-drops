@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:drops/views/ld_home_page_view.dart';
+import 'package:drops/views/ld_login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:drops/utils/data_keys.dart';
 import 'package:drops/views/ld_walk_through_view.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LDSplashScreen extends StatefulWidget {
   static String tag = '/LDSplashScreen';
@@ -18,7 +19,6 @@ class LDSplashScreen extends StatefulWidget {
 class _LDSplashScreenState extends State<LDSplashScreen>
     with SingleTickerProviderStateMixin {
   final GetStorage box = GetStorage(dkStore);
-
   startTime() async {
     var _duration = Duration(seconds: 3);
     return Timer(_duration, navigationPage);
@@ -30,10 +30,12 @@ class _LDSplashScreenState extends State<LDSplashScreen>
     startTime();
   }
 
-  void navigationPage() {
-    if (box.hasData(dkToken)) {
-      Get.off(LDHomePageView());
+  void navigationPage() async {
+    final SharedPreferences preferences = await SharedPreferences.getInstance();
+    if (preferences.getBool(dkSplash) ?? false) {
+      Get.off(LDLoginView());
     } else {
+      preferences.setBool(dkSplash, true);
       Navigator.pop(context);
       Navigator.push(
         context,

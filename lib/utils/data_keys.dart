@@ -5,3 +5,6 @@ const dkStories = 'STORIES';
 const dkStory = 'STORY';
 const dkChildren = 'CHILDREN';
 const dkProfile = 'PROFILE';
+
+
+const dkSplash = 'splashed';

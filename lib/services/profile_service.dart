@@ -20,6 +20,7 @@ class ProfileService {
     String token = box.read<String>(dkToken);
 
     final Response response = await client.get('https://$pda/$profileEndpointUrl', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    print(response.body);
     if (response.statusCode == 200) {
       box.write(dkToken, response.headers['x-auth-token']);
       Iterable body = json.decode(response.body);

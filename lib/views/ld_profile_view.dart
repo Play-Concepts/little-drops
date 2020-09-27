@@ -1,10 +1,11 @@
+import 'package:drops/controllers/profile_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:drops/views/ld_edit_profile_view.dart';
 import 'package:drops/views/ld_profile_settings_view.dart';
+import 'package:get/get.dart';
 
 class LDProfileView extends StatefulWidget {
   @override
@@ -12,30 +13,11 @@ class LDProfileView extends StatefulWidget {
 }
 
 class _LDProfileViewState extends State<LDProfileView> {
-  List<charts.Series<Task, String>> _taskPieData;
-
-  _generateData() {
-    var taskData = [
-      Task(task: 'Completed', value: 82.0, color: Colors.blue),
-      Task(task: 'On going', value: 22.0, color: Colors.deepOrangeAccent),
-    ];
-
-    _taskPieData.add(
-      charts.Series(
-        data: taskData,
-        domainFn: (Task task, _) => task.task,
-        measureFn: (Task task, _) => task.value,
-        colorFn: (Task task, _) => charts.ColorUtil.fromDartColor(task.color),
-        id: 'Montlhy',
-      ),
-    );
-  }
+  final ProfileController profileController = Get.find<ProfileController>();
 
   @override
   void initState() {
     super.initState();
-    _taskPieData = List<charts.Series<Task, String>>();
-    _generateData();
   }
 
   @override
@@ -97,20 +79,10 @@ class _LDProfileViewState extends State<LDProfileView> {
                   ),
                   Container(
                     margin: EdgeInsets.only(top: 20),
-                    child: Text(
-                      'Mark Paul',
-                      style: boldTextStyle(textColor: Colors.white),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 10),
-                    child: Text(
-                      'Senior High School - 12th Grade',
-                      style: secondaryTextStyle(
-                        size: 12,
-                        textColor: Colors.white.withOpacity(0.7),
-                      ),
-                    ),
+                    child: Obx(() => Text(
+                          profileController.profile.value.data.name,
+                          style: boldTextStyle(textColor: Colors.white),
+                        )),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -165,7 +137,7 @@ class _LDProfileViewState extends State<LDProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Highest Score',
+                            'Number of Children',
                             style: boldTextStyle(
                                 textColor: Colors.black, size: 14),
                           ),
@@ -173,20 +145,11 @@ class _LDProfileViewState extends State<LDProfileView> {
                             height: 10,
                           ),
                           Text(
-                            '98',
+                            '2',
                             style: boldTextStyle(
                               textColor: Colors.green.withOpacity(0.8),
                               size: 26,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Chemist',
-                            style: secondaryTextStyle(
-                                textColor: Colors.grey.withOpacity(0.7),
-                                size: 14),
                           ),
                         ],
                       ),
@@ -213,7 +176,7 @@ class _LDProfileViewState extends State<LDProfileView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Lowest Score',
+                            'Stories Created',
                             style: boldTextStyle(
                                 textColor: Colors.black, size: 14),
                           ),
@@ -227,15 +190,6 @@ class _LDProfileViewState extends State<LDProfileView> {
                                   ldSecondaryColorYellow.withOpacity(0.7),
                               size: 26,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Maths',
-                            style: secondaryTextStyle(
-                                textColor: Colors.grey.withOpacity(0.7),
-                                size: 14),
                           ),
                         ],
                       ),
@@ -288,48 +242,6 @@ class _LDProfileViewState extends State<LDProfileView> {
                         )
                       ],
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            height: 150,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: charts.PieChart(
-                              _taskPieData,
-                              animate: true,
-                              animationDuration: Duration(seconds: 1),
-                              behaviors: [
-                                charts.DatumLegend(
-                                  position: charts.BehaviorPosition.end,
-                                  outsideJustification: charts
-                                      .OutsideJustification.middleDrawArea,
-                                  horizontalFirst: false,
-                                  showMeasures: true,
-                                  cellPadding:
-                                      new EdgeInsets.only(right: 4.0, top: 25),
-                                  legendDefaultMeasure:
-                                      charts.LegendDefaultMeasure.lastValue,
-                                  measureFormatter: (num value) {
-                                    return value == null ? '-' : '$value%';
-                                  },
-                                  entryTextStyle: charts.TextStyleSpec(
-                                    color: charts.MaterialPalette.black,
-                                    fontSize: 16,
-                                  ),
-                                )
-                              ],
-                              defaultRenderer: charts.ArcRendererConfig(
-                                arcWidth: 30,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
@@ -339,12 +251,4 @@ class _LDProfileViewState extends State<LDProfileView> {
       ),
     );
   }
-}
-
-class Task {
-  String task;
-  double value;
-  Color color;
-
-  Task({this.task, this.value, this.color});
 }
