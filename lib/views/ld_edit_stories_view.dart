@@ -152,7 +152,7 @@ class _LDEditStoriesViewState
                         child: FadeInImage(
                           fit: BoxFit.cover,
                           placeholder: AssetImage(
-                            'Loading',
+                            'images/loading.png',
                           ),
                           image: Image.asset(
                             scoreboardAvailable[index].image,

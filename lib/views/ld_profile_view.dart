@@ -1,23 +1,26 @@
 import 'package:drops/controllers/profile_controller.dart';
+import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/entities/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:drops/views/ld_edit_profile_view.dart';
-import 'package:drops/views/ld_profile_settings_view.dart';
 import 'package:get/get.dart';
 
-class LDProfileView extends StatefulWidget {
-  @override
-  _LDProfileViewState createState() => _LDProfileViewState();
-}
-
-class _LDProfileViewState extends State<LDProfileView> {
+class LDProfileView extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
+  final StoriesController storiesController = Get.find<StoriesController>();
 
-  @override
-  void initState() {
-    super.initState();
+  String profileName(Profile profile) {
+    if (profile==null || profile.data==null) return '';
+    return profile.data.name;
+  }
+
+  String numberOfChildren(Iterable children) {
+    if (children==null) return '0';
+    storiesController.getTotalStoriesCount(children.toList());
+    return children.length.toString();
   }
 
   @override
@@ -39,39 +42,22 @@ class _LDProfileViewState extends State<LDProfileView> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(right: 10),
-                    alignment: Alignment.topRight,
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LDProfileSettingsView(),
-                          ),
-                        );
-                      },
-                      child: Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                     ),
-                    height: 80,
-                    width: 80,
+                    margin: EdgeInsets.only(top: 20),
+                    height: 120,
+                    width: 120,
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
+                      borderRadius: BorderRadius.circular(60),
                       child: FadeInImage(
                         fit: BoxFit.cover,
                         placeholder: AssetImage(
-                          'Loading',
+                          'images/loading.png',
                         ),
                         image: Image.network(
                           'https://i.insider.com/5de6dd81fd9db241b00c04d3?width=1100&format=jpeg&auto=webp',
-                          height: 35,
+                          height: 15,
                           width: 10,
                         ).image,
                       ),
@@ -80,7 +66,7 @@ class _LDProfileViewState extends State<LDProfileView> {
                   Container(
                     margin: EdgeInsets.only(top: 20),
                     child: Obx(() => Text(
-                          profileController.profile.value.data.name,
+                          profileName(profileController.profile.value),
                           style: boldTextStyle(textColor: Colors.white),
                         )),
                   ),
@@ -144,13 +130,13 @@ class _LDProfileViewState extends State<LDProfileView> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            '2',
+                          Obx(() => Text(
+                            numberOfChildren(profileController.children),
                             style: boldTextStyle(
                               textColor: Colors.green.withOpacity(0.8),
                               size: 26,
                             ),
-                          ),
+                          )),
                         ],
                       ),
                     ),
@@ -183,14 +169,13 @@ class _LDProfileViewState extends State<LDProfileView> {
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            '67',
+                          Obx(() => Text(
+                            storiesController.totalStoriesCount.toString(),
                             style: boldTextStyle(
-                              textColor:
-                                  ldSecondaryColorYellow.withOpacity(0.7),
+                              textColor: ldSecondaryColorYellow.withOpacity(0.8),
                               size: 26,
                             ),
-                          ),
+                          )),
                         ],
                       ),
                     ),

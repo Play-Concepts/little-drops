@@ -1,34 +1,30 @@
+import 'package:drops/controllers/profile_controller.dart';
+import 'package:drops/entities/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:drops/utils/ld_colors.dart';
+import 'package:get/get.dart';
 
-class LDEditProfileView extends StatefulWidget {
-  @override
-  _LDEditProfileViewState createState() => _LDEditProfileViewState();
-}
+class LDEditProfileView extends GetWidget<ProfileController> {
+  RxString updatedProfileName = ''.obs;
 
-class _LDEditProfileViewState extends State<LDEditProfileView> {
+  String _profileName(Profile profile) =>
+      (profile == null || profile.data == null) ? '' : profile.data.name;
+
+  void _updateProfile() {
+    if (updatedProfileName.value == '') return Get.back();
+    controller.updateProfile(
+        controller.profile.value.recordId, updatedProfileName.value,
+        onSuccess: () => Get.back());
+  }
+
   @override
   Widget build(BuildContext context) {
-    String _selectedLocation = 'Female';
-    String _selectedValue = '12th Grade';
-
-    Widget mInput(var mLabel) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 16, 10, 16),
-        child: TextField(
-          decoration: InputDecoration(contentPadding: EdgeInsets.all(0.0), isDense: true, hintText: mLabel, border: InputBorder.none),
-        ),
-      );
-    }
-
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
+            onTap: () => Get.back(),
             child: Icon(Icons.arrow_back, color: Colors.black),
           ),
           title: Text('Edit Profile', style: boldTextStyle(size: 20)),
@@ -40,14 +36,20 @@ class _LDEditProfileViewState extends State<LDEditProfileView> {
           child: Column(
             children: <Widget>[
               SizedBox(height: 20),
-              CircleAvatar(radius: 45, backgroundImage: NetworkImage('https://i.insider.com/5de6dd81fd9db241b00c04d3?width=1100&format=jpeg&auto=webp')),
+              CircleAvatar(
+                  radius: 45,
+                  backgroundImage: NetworkImage(
+                      'https://i.insider.com/5de6dd81fd9db241b00c04d3?width=1100&format=jpeg&auto=webp')),
               FittedBox(
                 child: Container(
                   margin: EdgeInsets.only(top: 20),
                   padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
-                  decoration: boxDecorations(radius: 4, bgColor: ldPrimaryColor),
+                  decoration:
+                      boxDecorations(radius: 4, bgColor: ldPrimaryColor),
                   child: Center(
-                    child: Text('Change Profile Photo', style: boldTextStyle(size: 12, textColor: Colors.white)),
+                    child: Text('Change Profile Photo',
+                        style:
+                            boldTextStyle(size: 12, textColor: Colors.white)),
                   ),
                 ),
               ),
@@ -56,52 +58,33 @@ class _LDEditProfileViewState extends State<LDEditProfileView> {
                 decoration: boxDecorations(showShadow: true),
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    mInput("Mark"),
-                    Divider(height: 1, thickness: 1),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: _selectedLocation,
-                        items: <String>['Female', 'Male', 'Other'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: primaryTextStyle(size: 16, textColor: ldTextPrimaryColor)),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedLocation = newValue;
-                          });
-                        },
-                      ),
-                    ),
-                    Divider(height: 1, thickness: 1),
-                    mInput("mark@gmail.com"),
-                    Divider(height: 1, thickness: 1),
-                    mInput("New York"),
-                    Divider(height: 1, thickness: 1),
-                    DropdownButtonHideUnderline(
-                      child: DropdownButton<String>(
-                        isExpanded: true,
-                        value: _selectedValue,
-                        items: <String>['12th Grade', 'B.Tech', '10th Grade'].map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value, style: primaryTextStyle(size: 16, textColor: ldTextPrimaryColor)),
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            _selectedValue = newValue;
-                          });
-                        },
-                      ),
-                    ),
-                  ],
-                ),
+                child: Obx(() => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextFormField(
+                          initialValue: _profileName(controller.profile.value),
+                          onChanged: (newText) =>
+                              updatedProfileName.value = newText,
+                          cursorColor: ldTextSecondaryColor.withOpacity(0.2),
+                          cursorWidth: 1,
+                          autocorrect: true,
+                          autofocus: false,
+                          decoration: InputDecoration(
+                            hintText: 'Name',
+                            hintStyle: secondaryTextStyle(
+                                textColor:
+                                    ldTextSecondaryColor.withOpacity(0.6)),
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                            enabledBorder: InputBorder.none,
+                            errorBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            contentPadding: EdgeInsets.only(
+                                left: 16, bottom: 16, top: 16, right: 16),
+                          ),
+                        ),
+                      ],
+                    )),
               )
             ],
           ),
@@ -116,21 +99,20 @@ class _LDEditProfileViewState extends State<LDEditProfileView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
+                  onTap: () => Get.back(),
                   child: Text('Cancel', style: secondaryTextStyle()),
                 ),
                 FittedBox(
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                    onTap: () => _updateProfile(),
                     child: Container(
                       padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                      decoration: boxDecorations(radius: 4, bgColor: ldPrimaryColor),
+                      decoration:
+                          boxDecorations(radius: 4, bgColor: ldPrimaryColor),
                       child: Center(
-                        child: Text('Save', style: boldTextStyle(size: 12, textColor: Colors.white)),
+                        child: Text('Save',
+                            style: boldTextStyle(
+                                size: 12, textColor: Colors.white)),
                       ),
                     ),
                   ),

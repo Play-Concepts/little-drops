@@ -182,7 +182,7 @@ Widget LDStoriesView(BuildContext context) {
                           child: FadeInImage(
                             fit: BoxFit.cover,
                             placeholder: AssetImage(
-                              'Loading',
+                              'images/loading.png',
                             ),
                             image: _storiesImageAsset(
                                 storiesController.stories[index].data.image),

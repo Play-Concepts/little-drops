@@ -90,7 +90,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                         child: FadeInImage(
                           fit: BoxFit.cover,
                           placeholder: AssetImage(
-                            'Loading',
+                            'images/loading.png',
                           ),
                           image: Image.network(
                             students[index].data.image,

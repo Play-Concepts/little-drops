@@ -86,7 +86,6 @@ class LDLoginView extends GetWidget<HattersController> {
     );
   }
 
-  @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     emailTextController.dispose();
@@ -106,8 +105,6 @@ class LDLoginView extends GetWidget<HattersController> {
     }).catchError((e) async {
       if (controller.isEmailValid(email)) {
         final signupUrl = controller.signupUrl(email);
-        print('signupUrl = $signupUrl');
-
         if (await canLaunch(signupUrl)) {
           launch(signupUrl);
         } else {
