@@ -99,7 +99,7 @@ Widget LDStoriesView(BuildContext context) {
                                 height: 15,
                               ),
                               Text(
-                                profileController.children[index].data.name,
+                                profileController.children[index].data==null ? '' : profileController.children[index].data.name,
                                 style: secondaryTextStyle(
                                     textColor: Colors.white, size: 20),
                               ),
@@ -111,7 +111,7 @@ Widget LDStoriesView(BuildContext context) {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    profileController.children[index].data.relationship,
+                                    profileController.children[index].data==null ? '' : profileController.children[index].data.relationship,
                                     style: secondaryTextStyle(
                                         textColor: Colors.white54, size: 18),
                                   ),

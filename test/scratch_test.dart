@@ -11,5 +11,9 @@ void main() {
   print(storiesEndpoint);
   print(DateTime.now().millisecondsSinceEpoch);
 
-  test(a: 'John');
+  int count = 0;
+  count++;
+  print(count);
+  count++;
+  print(count);
 }

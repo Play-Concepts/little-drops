@@ -1,5 +1,6 @@
 
 import 'package:drops/entities/pda_record.dart';
+import 'package:drops/utils/random_data.dart';
 
 class Child extends PdaRecord {
   Child({ String endpoint, String recordId, dynamic data}) {
@@ -38,12 +39,21 @@ class ChildData {
     this.message
   });
 
-  ChildData.fromJson(jsonObject) {
+  ChildData.fromJsonReal(jsonObject) {
     this.image = jsonObject['image'];
     this.name = jsonObject['name'];
     this.relationship = jsonObject['relationship'];
     this.ageGroup = jsonObject['ageGroup'];
     this.score = jsonObject['score'];
     this.message = jsonObject['message'];
+  }
+
+  ChildData.fromJson(jsonObject) {
+    this.image = randomChildImage();
+    this.name = jsonObject['name'];
+    this.relationship = jsonObject['relationship'];
+    this.ageGroup = jsonObject['ageGroup'];
+    this.score = randomScore();
+    this.message = randomMessage();
   }
 }
