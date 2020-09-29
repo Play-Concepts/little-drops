@@ -33,7 +33,7 @@ class LDStoryView extends GetView<StoriesController> {
                       image: DecorationImage(
                           image: this.backgroundImages == null
                               ? NetworkImage(
-                              "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
+                                  "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
                               : NetworkImage(this.backgroundImages),
                           fit: BoxFit.cover),
                     ),
@@ -77,66 +77,70 @@ class LDStoryView extends GetView<StoriesController> {
                 ],
               ),
               Obx(() => Container(
-                margin: EdgeInsets.only(top: 35, left: 15, right: 15),
-                width: size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListView.builder(
-                      itemCount: controller.storyChapters == null ? 0 : controller.storyChapters.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    LDStoryChapterView(),
+                    margin: EdgeInsets.only(top: 35, left: 15, right: 15),
+                    width: size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: controller.storyChapters == null
+                              ? 0
+                              : controller.storyChapters.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LDStoryChapterView(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            controller.storyChapters[index].data
+                                                .title,
+                                            style: boldTextStyle(size: 24),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                top: 8, bottom: 5),
+                                            child: Text(
+                                              controller.storyChapters[index]
+                                                  .data.story,
+                                              overflow: TextOverflow.visible,
+                                              softWrap: true,
+                                              style: primaryTextStyle(size: 18),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
-                          child: Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        controller.storyChapters[index].data.title,
-                                        style: boldTextStyle(size: 24),
-                                      ),
-                                      Container(
-                                        margin:
-                                        EdgeInsets.only(top: 8, bottom: 5),
-                                        child: Text(
-                                          controller.storyChapters[index].data.story,
-                                          overflow: TextOverflow.visible,
-                                          softWrap: true,
-                                          style: primaryTextStyle(size: 18),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              )),
+                        )
+                      ],
+                    ),
+                  )),
             ],
           ),
         ),
