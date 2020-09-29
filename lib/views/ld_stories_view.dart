@@ -9,6 +9,8 @@ import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
 
+RxString selectChildName = ''.obs;
+
 SDExamCardModel card = SDExamCardModel(
   image: randomImage(),
   examName: 'Uriel Lee',
@@ -33,12 +35,13 @@ ImageProvider _storiesImageAsset(String location) {
   ).image;
 }
 
-void getStoriesList(String childId) {
+void getStoriesList(String childId, String childName) {
   storiesController.getStories(childId);
+  selectChildName.value = childName;
 }
 
 String profileName(Profile profile) {
-  if (profile==null || profile.data==null) return '';
+  if (profile == null || profile.data == null) return '';
   return profile.data.name;
 }
 
@@ -53,9 +56,9 @@ Widget LDStoriesView(BuildContext context) {
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
               child: Obx(() => Text(
-                'Hi, ${profileName(profileController.profile.value)}',
-                style: boldTextStyle(size: 20),
-              )),
+                    'Hi, ${profileName(profileController.profile.value)}',
+                    style: boldTextStyle(size: 20),
+                  )),
             ),
             SizedBox(
               height: 15,
@@ -64,12 +67,16 @@ Widget LDStoriesView(BuildContext context) {
                 height: 250,
                 child: Obx(() => ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: profileController.children == null ? 0 : profileController.children.length,
+                    itemCount: profileController.children == null
+                        ? 0
+                        : profileController.children.length,
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
-                        onTap: () => getStoriesList(profileController.children[index].recordId),
+                        onTap: () => getStoriesList(
+                            profileController.children[index].recordId,
+                            profileController.children[index].data.name),
                         child: Container(
-                          width: 180.0,
+                          width: 170.0,
                           margin: EdgeInsets.only(
                             left: 16,
                           ),
@@ -99,7 +106,10 @@ Widget LDStoriesView(BuildContext context) {
                                 height: 15,
                               ),
                               Text(
-                                profileController.children[index].data==null ? '' : profileController.children[index].data.name,
+                                profileController.children[index].data == null
+                                    ? ''
+                                    : profileController
+                                        .children[index].data.name,
                                 style: secondaryTextStyle(
                                     textColor: Colors.white, size: 20),
                               ),
@@ -111,7 +121,11 @@ Widget LDStoriesView(BuildContext context) {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    profileController.children[index].data==null ? '' : profileController.children[index].data.relationship,
+                                    profileController.children[index].data ==
+                                            null
+                                        ? ''
+                                        : profileController
+                                            .children[index].data.relationship,
                                     style: secondaryTextStyle(
                                         textColor: Colors.white54, size: 18),
                                   ),
@@ -127,20 +141,24 @@ Widget LDStoriesView(BuildContext context) {
             ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
-              child: Text(
-                'Read Stories',
-                style: boldTextStyle(size: 16),
-              ),
+              child: Obx(() => Text(
+                    selectChildName.value == ''
+                        ? 'Select a Child.'
+                        : 'Read Stories for $selectChildName',
+                    style: boldTextStyle(size: 16),
+                  )),
             ),
             SizedBox(
               height: 5,
             ),
             Container(
               margin: EdgeInsets.only(left: 16, right: 16),
-              child: Text(
-                'Select a story to read.',
-                style: secondaryTextStyle(size: 14),
-              ),
+              child: Obx(() => Text(
+                    selectChildName.value == ''
+                        ? ''
+                        : 'Select a story to read.',
+                    style: secondaryTextStyle(size: 14),
+                  )),
             ),
             SizedBox(
               height: 5,
