@@ -1,3 +1,4 @@
+import 'package:drops/entities/story_chapter.dart';
 import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import 'dart:async';
@@ -31,6 +32,29 @@ class StoriesService {
       return result;
     } else {
       throw Exception("Failed to get Stories.");
+    }
+  }
+
+  Future<List<StoryChapter>> getStoryChapters(String childRecordId, String storyId) async {
+    if (!box.hasData(dkToken)) {
+      throw Exception("Token not found");
+    }
+    String pda = box.read<String>(dkPda);
+    String token = box.read<String>(dkToken);
+
+    final response = await client.get(
+        'https://$pda/$storiesEndpointUrl/$childRecordId/$storyId?orderBy=index',
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+    if (response.statusCode == 200) {
+      box.write(dkToken, response.headers['x-auth-token']);
+      box.write('$dkStories-$childRecordId-$storyId', response.body);
+      Iterable jsonStories = json.decode(response.body);
+      List<StoryChapter> result =
+      jsonStories.map((jsonObject) => StoryChapter.fromJson(jsonObject)).toList();
+
+      return result;
+    } else {
+      throw Exception("Failed to get Story Chapters.");
     }
   }
 

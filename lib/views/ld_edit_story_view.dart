@@ -1,28 +1,20 @@
 import 'dart:ui';
 
+import 'package:drops/controllers/stories_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/story_chapter.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
-import 'package:drops/views/ld_edit_story_chapter_view.dart';
+import 'package:drops/views/ld_story_chapter_view.dart';
+import 'package:get/get.dart';
 
-class LDEditStoryView extends StatefulWidget {
+class LDEditStoryView extends GetView<StoriesController> {
   String name;
-  String totalChapter;
+  String description;
   String backgroundImages;
 
-  LDEditStoryView({this.name, this.totalChapter, this.backgroundImages});
-
-  @override
-  _LDEditStoryViewState createState() => _LDEditStoryViewState();
-}
-
-class _LDEditStoryViewState extends State<LDEditStoryView> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  LDEditStoryView({this.name, this.description, this.backgroundImages});
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +31,10 @@ class _LDEditStoryViewState extends State<LDEditStoryView> {
                     height: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: widget.backgroundImages == null
+                          image: this.backgroundImages == null
                               ? NetworkImage(
-                                  "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
-                              : NetworkImage(widget.backgroundImages),
+                              "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
+                              : NetworkImage(this.backgroundImages),
                           fit: BoxFit.cover),
                     ),
                     child: ClipRRect(
@@ -64,120 +56,35 @@ class _LDEditStoryViewState extends State<LDEditStoryView> {
                               Container(
                                 margin: EdgeInsets.only(top: 100),
                                 child: Text(
-                                  widget.name == null ? 'Biology' : widget.name,
+                                  this.name ?? '',
                                   style: boldTextStyle(textColor: Colors.white),
                                 ),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
-                                  widget.totalChapter == null
-                                      ? '7 chapter'
-                                      : widget.totalChapter,
+                                  this.description ?? '',
                                   style: secondaryTextStyle(
                                       textColor: Colors.white.withOpacity(0.8)),
                                 ),
                               ),
-                              Container(
-                                  margin: EdgeInsets.only(top: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Stack(
-                                        overflow: Overflow.visible,
-                                        children: <Widget>[
-                                          CircleAvatar(
-                                            radius: 20,
-                                            backgroundImage: NetworkImage(
-                                                'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80'),
-                                          ),
-                                          Positioned(
-                                            bottom: 0,
-                                            right: 0,
-                                            top: 25,
-                                            child: CircleAvatar(
-                                              radius: 5,
-                                              foregroundColor: Colors.white,
-                                              backgroundColor: Colors.green,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            margin: EdgeInsets.only(top: 0),
-                                            child: Text(
-                                              'Erwin Jose',
-                                              style: boldTextStyle(
-                                                  size: 16,
-                                                  textColor: Colors.white),
-                                            ),
-                                          ),
-                                          Container(
-                                            margin: EdgeInsets.only(top: 5),
-                                            child: Text(
-                                              'Teacher',
-                                              style: secondaryTextStyle(
-                                                  size: 10,
-                                                  textColor: Colors.white),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  )),
                             ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                  Positioned(
-                    right: 30,
-                    top: 150,
-                    bottom: -40,
-                    child: Container(
-//
-                      height: 170,
-                      width: 125,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        image: DecorationImage(
-                            image: NetworkImage(widget.backgroundImages == null
-                                ? "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg"
-                                : widget.backgroundImages),
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                  ),
                 ],
               ),
-              Container(
+              Obx(() => Container(
                 margin: EdgeInsets.only(top: 35, left: 15, right: 15),
                 width: size.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        'Select Chapter',
-                        style: secondaryTextStyle(),
-                      ),
-                    ),
                     ListView.builder(
-                      itemCount: chapters == null ? 0 : chapters.length,
+                      itemCount: controller.storyChapters == null ? 0 : controller.storyChapters.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
@@ -187,7 +94,7 @@ class _LDEditStoryViewState extends State<LDEditStoryView> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    LDEditStoryChapterView(),
+                                    LDStoryChapterView(),
                               ),
                             );
                           },
@@ -195,38 +102,27 @@ class _LDEditStoryViewState extends State<LDEditStoryView> {
                             margin: EdgeInsets.only(top: 10, bottom: 10),
                             child: Row(
                               mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      chapters[index].chapterName,
+                                      controller.storyChapters[index].data.title,
                                       style: boldTextStyle(size: 16),
                                     ),
                                     Container(
                                       margin:
-                                          EdgeInsets.only(top: 8, bottom: 5),
+                                      EdgeInsets.only(top: 8, bottom: 5),
                                       child: Text(
-                                        chapters[index].chapterDetails,
+                                        controller.storyChapters[index].data.story,
                                         style: secondaryTextStyle(size: 12),
                                       ),
                                     ),
                                   ],
-                                ),
-                                CircleAvatar(
-                                  radius: 15,
-                                  backgroundColor:
-                                      ldSecondaryColorGreen.withOpacity(0.7),
-                                  child: Text(
-                                    chapters[index].score,
-                                    style: boldTextStyle(
-                                        textColor: CupertinoColors.white,
-                                        size: 16),
-                                  ),
                                 ),
                               ],
                             ),
@@ -236,7 +132,7 @@ class _LDEditStoryViewState extends State<LDEditStoryView> {
                     )
                   ],
                 ),
-              )
+              )),
             ],
           ),
         ),

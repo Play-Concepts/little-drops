@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:drops/controllers/hatters_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class LDLoginView extends GetWidget<HattersController> {
+class LDLoginView extends GetView<HattersController> {
   final TextEditingController emailTextController = TextEditingController();
 
   @override

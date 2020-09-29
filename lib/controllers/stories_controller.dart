@@ -7,6 +7,7 @@ import 'package:get/state_manager.dart';
 class StoriesController extends GetxController {
   final StoriesRepository repo = Get.find<StoriesRepository>();
   RxList<dynamic> stories = [].obs;
+  RxList<dynamic> storyChapters = [].obs;
   RxInt totalStoriesCount = 0.obs;
 
   @override
@@ -26,5 +27,10 @@ class StoriesController extends GetxController {
       total += stories.length;
     });
     totalStoriesCount.value = total;
+  }
+
+  void getStoryChapters(String childId, String storyId) async{
+    storyChapters.value = await repo.getStoryChapters(childId, storyId);
+    print(storyChapters.value);
   }
 }

@@ -1,42 +1,36 @@
-class StoryChapter {
-  String chapterName;
-  String chapterDetails;
-  String score;
+import 'package:drops/entities/pda_record.dart';
 
-  StoryChapter({
-    this.chapterName,
-    this.chapterDetails,
-    this.score,
-  });
+class StoryChapter extends PdaRecord {
+  StoryChapter({ String endpoint, String recordId, dynamic data}) {
+    super.endpoint = endpoint;
+    super.recordId = recordId;
+    super.data = data;
+  }
+
+  StoryChapter.fromJson(jsonObject) {
+    this.endpoint = jsonObject['endpoint'];
+    this.recordId = jsonObject['recordId'];
+    this.data = StoryChapterData.fromJson(jsonObject['data']);
+  }
+
+  @override
+  String toString() => '${this.recordId}: ${this.data.title}';
 }
 
-List<StoryChapter> chapters = [
-  StoryChapter(
-      chapterName: 'Introduction',
-      chapterDetails: 'Introduction to geography',
-      score: '81'),
-  StoryChapter(
-      chapterName: 'Maps type & Usages',
-      chapterDetails: 'Learn about maps type & how to use each...',
-      score: '79'),
-  StoryChapter(
-      chapterName: 'Population & Country',
-      chapterDetails: 'Learn the worldwide population & country...',
-      score: '80'),
-  StoryChapter(
-      chapterName: 'Climate ',
-      chapterDetails: 'Learn about climate...',
-      score: '60'),
-  StoryChapter(
-      chapterName: 'Earth-forming Process ',
-      chapterDetails: 'Learn how the earth-forming process be...',
-      score: '56'),
-  StoryChapter(
-      chapterName: 'Rocks',
-      chapterDetails: 'Learn the type of the rocks,and their spec...',
-      score: '90'),
-  StoryChapter(
-      chapterName: 'Earthquake',
-      chapterDetails: 'Learn about seismology...',
-      score: '90'),
-];
+class StoryChapterData {
+  String title;
+  String story;
+  int index;
+
+  StoryChapterData({
+    this.title,
+    this.story,
+    this.index
+  });
+
+  StoryChapterData.fromJson(jsonObject) {
+    this.title = jsonObject['title'];
+    this.story = jsonObject['story'];
+    this.index = jsonObject['index'];
+  }
+}

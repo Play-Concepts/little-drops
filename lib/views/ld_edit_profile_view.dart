@@ -5,7 +5,7 @@ import 'package:drops/utils/ld_style.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:get/get.dart';
 
-class LDEditProfileView extends GetWidget<ProfileController> {
+class LDEditProfileView extends GetView<ProfileController> {
   RxString updatedProfileName = ''.obs;
 
   String _profileName(Profile profile) =>

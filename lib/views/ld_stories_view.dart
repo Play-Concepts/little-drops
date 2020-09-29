@@ -9,6 +9,7 @@ import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
 
+RxString selectChildId = ''.obs;
 RxString selectChildName = ''.obs;
 
 SDExamCardModel card = SDExamCardModel(
@@ -37,6 +38,7 @@ ImageProvider _storiesImageAsset(String location) {
 
 void getStoriesList(String childId, String childName) {
   storiesController.getStories(childId);
+  selectChildId.value = childId;
   selectChildName.value = childName;
 }
 
@@ -178,16 +180,14 @@ Widget LDStoriesView(BuildContext context) {
                     ),
                     child: ListTile(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LDStoryView(
-                                name:
-                                    storiesController.stories[index].data.title,
-                                backgroundImages: storiesController
-                                    .stories[index].data.backgroundImages),
-                          ),
-                        );
+                        storiesController.getStoryChapters(selectChildId.value, storiesController.stories[index].recordId);
+                        Get.to(LDStoryView(
+                            name:
+                            storiesController.stories[index].data.title,
+                            description: storiesController
+                                .stories[index].data.description,
+                            backgroundImages: storiesController
+                                .stories[index].data.backgroundImages));
                       },
                       leading: Container(
                         decoration: BoxDecoration(
