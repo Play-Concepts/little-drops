@@ -25,7 +25,7 @@ import 'package:uni_links/uni_links.dart';
 void main() async {
   //FlutterError.onError = Crashlytics.instance.recordFlutterError;
   await GetStorage.init(dkStore);
-
+  retrievePreferences();
   Get.lazyPut<Client>(() => Client());
   Get.lazyPut<HattersService>(() => HattersService());
   Get.lazyPut<HattersController>(() => HattersController());

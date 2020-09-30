@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/SDExamCardModel.dart';
 import 'package:drops/utils/ld_style.dart';
+import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
@@ -48,8 +49,8 @@ String profileName(Profile profile) {
 }
 
 Widget LDStoriesView(BuildContext context) {
+  Size size = MediaQuery.of(context).size;
   return Container(
-    child: SingleChildScrollView(
       padding: EdgeInsets.only(top: 20, bottom: 16),
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -142,86 +143,96 @@ Widget LDStoriesView(BuildContext context) {
               height: 35,
             ),
             Container(
-              margin: EdgeInsets.only(left: 16, right: 16),
-              child: Obx(() => Text(
-                    selectChildName.value == ''
-                        ? 'Select a Child.'
-                        : 'Read Stories for $selectChildName',
-                    style: boldTextStyle(size: 16),
-                  )),
-            ),
+                padding: EdgeInsets.only(top:16, left: 16, bottom: 16),
+                width: size.width,
+                color: ldPrimaryColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Obx(() => Text(
+                          selectChildName.value == ''
+                              ? 'Select a Child.'
+                              : 'Read Stories for $selectChildName',
+                          style: boldTextStyle(
+                              size: 16,
+                              textColor: Colors.white,
+                              letterSpacing: 0.5),
+                        )),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Obx(() => Text(
+                            selectChildName.value == ''
+                                ? ''
+                                : 'Select a story to read.',
+                            style: secondaryTextStyle(
+                                size: 12,
+                                textColor: Colors.white.withOpacity(0.7)),
+                          )),
+                    )
+                  ],
+                )),
             SizedBox(
               height: 5,
             ),
-            Container(
-              margin: EdgeInsets.only(left: 16, right: 16),
-              child: Obx(() => Text(
-                    selectChildName.value == ''
-                        ? ''
-                        : 'Select a story to read.',
-                    style: secondaryTextStyle(size: 14),
-                  )),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Obx(() => ListView.builder(
-                primary: false,
-                padding: EdgeInsets.only(bottom: 16),
-                itemCount: storiesController.stories.length,
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.only(left: 16, right: 16, top: 16),
-                    width: double.infinity,
-                    decoration: boxDecorations(
-                      showShadow: true,
-                    ),
-                    child: ListTile(
-                      onTap: () {
-                        storiesController.getStoryChapters(selectChildId.value, storiesController.stories[index].recordId);
-                        Get.to(LDStoryView(
-                            name:
-                            storiesController.stories[index].data.title,
-                            description: storiesController
-                                .stories[index].data.description,
-                            backgroundImages: storiesController
-                                .stories[index].data.backgroundImages));
-                      },
-                      leading: Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                        ),
-                        height: 45,
-                        width: 45,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: FadeInImage(
-                            fit: BoxFit.cover,
-                            placeholder: AssetImage(
-                              'images/loading.png',
+            Expanded(
+              child: Obx(() => ListView.builder(
+                  primary: false,
+                  padding: EdgeInsets.only(bottom: 16),
+                  itemCount: storiesController.stories.length,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+                      width: double.infinity,
+                      decoration: boxDecorations(
+                        showShadow: true,
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          storiesController.getStoryChapters(selectChildId.value,
+                              storiesController.stories[index].recordId);
+                          Get.to(LDStoryView(
+                              name: storiesController.stories[index].data.title,
+                              description: storiesController
+                                  .stories[index].data.description,
+                              backgroundImages: storiesController
+                                  .stories[index].data.backgroundImages));
+                        },
+                        leading: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          height: 45,
+                          width: 45,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: FadeInImage(
+                              fit: BoxFit.cover,
+                              placeholder: AssetImage(
+                                'images/loading.png',
+                              ),
+                              image: _storiesImageAsset(
+                                  storiesController.stories[index].data.image),
                             ),
-                            image: _storiesImageAsset(
-                                storiesController.stories[index].data.image),
+                          ),
+                        ),
+                        title: Text(
+                          storiesController.stories[index].data.title,
+                          style: boldTextStyle(size: 16),
+                        ),
+                        subtitle: Container(
+                          margin: EdgeInsets.only(top: 5),
+                          child: Text(
+                            storiesController.stories[index].data.description,
+                            style: secondaryTextStyle(size: 10),
                           ),
                         ),
                       ),
-                      title: Text(
-                        storiesController.stories[index].data.title,
-                        style: boldTextStyle(size: 16),
-                      ),
-                      subtitle: Container(
-                        margin: EdgeInsets.only(top: 5),
-                        child: Text(
-                          storiesController.stories[index].data.description,
-                          style: secondaryTextStyle(size: 10),
-                        ),
-                      ),
-                    ),
-                  );
-                })),
+                    );
+                  })),
+            ),
           ]),
-    ),
-  );
+    );
 }

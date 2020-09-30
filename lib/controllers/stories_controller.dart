@@ -16,7 +16,6 @@ class StoriesController extends GetxController {
   }
 
   void getStories(String childId) async{
-    print("Getting stories");
     stories.value = await repo.getStoriesList(childId);
   }
 
@@ -31,6 +30,5 @@ class StoriesController extends GetxController {
 
   void getStoryChapters(String childId, String storyId) async{
     storyChapters.value = await repo.getStoryChapters(childId, storyId);
-    print(storyChapters.value);
   }
 }
