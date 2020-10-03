@@ -19,7 +19,7 @@ class LDHomePageView extends StatelessWidget {
     changeStatusColor(ldAppBackground);
     final tab = [
       LDStoriesView(context),
-      LDEditStoriesView(),
+      LDEditStoriesView(context),
       LDStatisticsView(context, size),
       LDProfileView(),
     ];

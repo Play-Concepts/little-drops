@@ -84,7 +84,9 @@ class LDEditStoryView extends GetView<StoriesController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ListView.builder(
-                      itemCount: controller.storyChapters == null ? 0 : controller.storyChapters.length,
+                      itemCount: controller.storyChapters == null
+                          ? 0
+                          : controller.storyChapters.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
@@ -93,8 +95,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    LDStoryChapterView(),
+                                builder: (context) => LDStoryChapterView(),
                               ),
                             );
                           },
@@ -105,24 +106,31 @@ class LDEditStoryView extends GetView<StoriesController> {
                               MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      controller.storyChapters[index].data.title,
-                                      style: boldTextStyle(size: 16),
-                                    ),
-                                    Container(
-                                      margin:
-                                      EdgeInsets.only(top: 8, bottom: 5),
-                                      child: Text(
-                                        controller.storyChapters[index].data.story,
-                                        style: secondaryTextStyle(size: 12),
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        controller.storyChapters[index].data
+                                            .title,
+                                        style: boldTextStyle(size: 24),
                                       ),
-                                    ),
-                                  ],
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                            top: 8, bottom: 5),
+                                        child: Text(
+                                          controller.storyChapters[index]
+                                              .data.story,
+                                          overflow: TextOverflow.visible,
+                                          softWrap: true,
+                                          style: primaryTextStyle(size: 18),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
