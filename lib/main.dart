@@ -4,6 +4,7 @@ import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/repositories/profile_repository.dart';
 import 'package:drops/repositories/stories_repository.dart';
+import 'package:drops/services/delete_service.dart';
 import 'package:drops/services/profile_service.dart';
 import 'package:drops/services/stories_service.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,8 @@ void main() async {
   await GetStorage.init(dkStore);
   retrievePreferences();
   Get.lazyPut<Client>(() => Client());
+  Get.lazyPut<DeleteService>(() => DeleteService());
+
   Get.lazyPut<HattersService>(() => HattersService());
   Get.lazyPut<HattersController>(() => HattersController());
 

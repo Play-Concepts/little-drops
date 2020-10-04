@@ -1,4 +1,5 @@
 import 'package:drops/entities/story_chapter.dart';
+import 'package:drops/services/delete_service.dart';
 import 'package:drops/services/stories_service.dart';
 import 'package:drops/utils/data_keys.dart';
 import 'package:get/get.dart';
@@ -8,25 +9,36 @@ import 'dart:convert';
 
 class StoriesRepository {
   final StoriesService storiesService = Get.find<StoriesService>();
+  final DeleteService deleteService = Get.find<DeleteService>();
   final GetStorage box = GetStorage(dkStore);
 
-  Future<List<Story>> getStoriesList(String childRecordId) {
-    if (box.hasData('$dkStories-$childRecordId')) {
-      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childRecordId'));
+  Future<List<Story>> getStoriesList(String childId) {
+    if (box.hasData('$dkStories-$childId')) {
+      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId'));
       List<Story> storiesList = jsonStories.map((jsonObject) => Story.fromJson(jsonObject)).toList();
       return Future.value(storiesList);
     }
-    return storiesService.getStoriesList(childRecordId);
+    return storiesService.getStoriesList(childId);
   }
 
-  Future<Story> saveStoryIndex(String childRecordId, String title, String description) => storiesService.saveStoryIndex(childRecordId, title, description);
+  Future<Story> saveStoryIndex(String childId, String title, String description) => storiesService.saveStoryIndex(childId, title, description);
 
-  Future<List<StoryChapter>> getStoryChapters(String childRecordId, String storyId) {
-    if (box.hasData('$dkStories-$childRecordId-$storyId')) {
-      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childRecordId-$storyId'));
+  Future<List<StoryChapter>> getStoryChapters(String childId, String storyId) {
+    if (box.hasData('$dkStories-$childId-$storyId')) {
+      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId-$storyId'));
       List<StoryChapter> storyChapters = jsonStories.map((jsonObject) => StoryChapter.fromJson(jsonObject)).toList();
       return Future.value(storyChapters);
     }
-    return storiesService.getStoryChapters(childRecordId, storyId);
+    return storiesService.getStoryChapters(childId, storyId);
+  }
+
+  Future<void> deleteStory(String childId, String storyId) async {
+    List<StoryChapter> chapters = await getStoryChapters(childId, storyId);
+    List<String> recordIds = chapters.map((e) => e.recordId).toList();
+    recordIds.add(storyId);
+    deleteService.deleteAll(recordIds).then((value) {
+      box.remove('$dkStories-$childId-$storyId');
+      box.remove('$dkStories-$childId');
+    });
   }
 }

@@ -19,6 +19,15 @@ TextStyle secondaryTextStyle(
   );
 }
 
+TextStyle warningTextStyle(
+    {int size = 14, Color textColor = ldSecondaryColorRed}) {
+  return TextStyle(
+    fontSize: size.toDouble(),
+    fontWeight: FontWeight.bold,
+    color: textColor,
+  );
+}
+
 TextStyle boldTextStyle(
     {int size = 18,
       Color textColor = ldTextPrimaryColor,

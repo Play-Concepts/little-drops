@@ -1,6 +1,5 @@
 import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
-import 'package:drops/entities/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/SDExamCardModel.dart';
@@ -37,16 +36,13 @@ ImageProvider _storiesImageAsset(String location) {
   ).image;
 }
 
-void getStoriesList(String childId, String childName) {
+void _getStoriesList(String childId, String childName) {
   storiesController.getStories(childId, editMode: true);
   selectChildId.value = childId;
   selectChildName.value = childName;
 }
 
-String profileName(Profile profile) {
-  if (profile == null || profile.data == null) return '';
-  return profile.data.name;
-}
+void _newStory() => Get.snackbar('title', 'message');
 
 Widget LDEditStoriesView(BuildContext context) {
   Size size = MediaQuery.of(context).size;
@@ -57,32 +53,29 @@ Widget LDEditStoriesView(BuildContext context) {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(top: 25, left: 16, bottom: 16),
-            width: size.width,
-            color: ldSecondaryColor,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Write Stories',
-                  style: boldTextStyle(
-                      size: 16,
-                      textColor: Colors.white,
-                      letterSpacing: 0.5),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5),
-                  child: Text(
-                    'Select a child.',
-                    style: secondaryTextStyle(
-                        size: 12,
-                        textColor: Colors.white.withOpacity(0.7)),
+          Container(
+              padding: EdgeInsets.only(top: 25, left: 16, bottom: 16),
+              width: size.width,
+              color: ldSecondaryColor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Write Stories',
+                    style: boldTextStyle(
+                        size: 16, textColor: Colors.white, letterSpacing: 0.5),
                   ),
-                )
-              ],
-            )),
+                  Container(
+                    margin: EdgeInsets.only(top: 5),
+                    child: Text(
+                      'Select a child.',
+                      style: secondaryTextStyle(
+                          size: 12, textColor: Colors.white.withOpacity(0.7)),
+                    ),
+                  )
+                ],
+              )),
           SizedBox(
             height: 15,
           ),
@@ -95,7 +88,7 @@ Widget LDEditStoriesView(BuildContext context) {
                       : profileController.children.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () => getStoriesList(
+                      onTap: () => _getStoriesList(
                           profileController.children[index].recordId,
                           profileController.children[index].data.name),
                       child: Container(
@@ -131,8 +124,7 @@ Widget LDEditStoriesView(BuildContext context) {
                             Text(
                               profileController.children[index].data == null
                                   ? ''
-                                  : profileController
-                                  .children[index].data.name,
+                                  : profileController.children[index].data.name,
                               style: secondaryTextStyle(
                                   textColor: Colors.white, size: 20),
                             ),
@@ -140,15 +132,13 @@ Widget LDEditStoriesView(BuildContext context) {
                               height: 15,
                             ),
                             Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  profileController.children[index].data ==
-                                      null
+                                  profileController.children[index].data == null
                                       ? ''
                                       : profileController
-                                      .children[index].data.relationship,
+                                          .children[index].data.relationship,
                                   style: secondaryTextStyle(
                                       textColor: Colors.white54, size: 18),
                                 ),
@@ -163,35 +153,51 @@ Widget LDEditStoriesView(BuildContext context) {
             height: 35,
           ),
           Container(
-              padding: EdgeInsets.only(top:16, left: 16, bottom: 16),
-              width: size.width,
-              color: ldSecondaryColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Obx(() => Text(
-                    selectChildName.value == ''
-                        ? 'Select a Child.'
-                        : 'Write for $selectChildName',
-                    style: boldTextStyle(
-                        size: 16,
-                        textColor: Colors.white,
-                        letterSpacing: 0.5),
-                  )),
-                  Container(
-                    margin: EdgeInsets.only(top: 5),
-                    child: Obx(() => Text(
-                      selectChildName.value == ''
-                          ? ''
-                          : 'Select a story to edit.',
-                      style: secondaryTextStyle(
-                          size: 12,
-                          textColor: Colors.white.withOpacity(0.7)),
-                    )),
-                  )
-                ],
-              )),
+            padding: EdgeInsets.only(top: 16, left: 16, bottom: 16, right: 16),
+            width: size.width,
+            color: ldSecondaryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Obx(() => Text(
+                          selectChildName.value == ''
+                              ? 'Select a Child.'
+                              : 'Write for $selectChildName',
+                          style: boldTextStyle(
+                              size: 16,
+                              textColor: Colors.white,
+                              letterSpacing: 0.5),
+                        )),
+                    Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Obx(() => Text(
+                            selectChildName.value == ''
+                                ? ''
+                                : 'Select a story to edit.',
+                            style: secondaryTextStyle(
+                                size: 12,
+                                textColor: Colors.white.withOpacity(0.7)),
+                          )),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                GestureDetector(
+                  onTap: () => _newStory(),
+                  child: Icon(
+                    Icons.add_circle,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             height: 5,
           ),
@@ -212,9 +218,14 @@ Widget LDEditStoriesView(BuildContext context) {
                     child: ListTile(
                       onTap: () {
                         storiesController.getStoryChapters(selectChildId.value,
-                            storiesController.storiesEdit[index].recordId, editMode: true);
+                            storiesController.storiesEdit[index].recordId,
+                            editMode: true);
                         Get.to(LDEditStoryView(
-                            name: storiesController.storiesEdit[index].data.title,
+                            childId: selectChildId.value,
+                            storyId:
+                                storiesController.storiesEdit[index].recordId,
+                            name:
+                                storiesController.storiesEdit[index].data.title,
                             description: storiesController
                                 .storiesEdit[index].data.description,
                             backgroundImages: storiesController
@@ -233,8 +244,8 @@ Widget LDEditStoriesView(BuildContext context) {
                             placeholder: AssetImage(
                               'images/loading.png',
                             ),
-                            image: _storiesImageAsset(
-                                storiesController.storiesEdit[index].data.image),
+                            image: _storiesImageAsset(storiesController
+                                .storiesEdit[index].data.image),
                           ),
                         ),
                       ),

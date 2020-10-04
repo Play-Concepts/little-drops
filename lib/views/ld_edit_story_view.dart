@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/views/ld_edit_stories_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/story_chapter.dart';
@@ -10,11 +11,39 @@ import 'package:drops/views/ld_story_chapter_view.dart';
 import 'package:get/get.dart';
 
 class LDEditStoryView extends GetView<StoriesController> {
+  String childId;
+  String storyId;
   String name;
   String description;
   String backgroundImages;
 
-  LDEditStoryView({this.name, this.description, this.backgroundImages});
+  LDEditStoryView(
+      {this.childId,
+      this.storyId,
+      this.name,
+      this.description,
+      this.backgroundImages});
+
+  void _updateStory() => Get.snackbar('updating', 'story');
+  void _deleteStory() {
+    Get.defaultDialog(
+        title: 'Are you sure?',
+        middleText: 'This story will be deleted permanently.',
+        onConfirm: _doDeleteStory,
+        textConfirm: 'Yes',
+        confirmTextColor: ldTextTertiaryColor,
+        onCancel: () => Get.back(),
+        textCancel: 'No',
+        cancelTextColor: ldSecondaryColorYellow,
+        buttonColor: ldSecondaryColorYellow);
+  }
+
+  void _doDeleteStory() {
+    controller.deleteStory(this.childId, this.storyId);
+    Get.back(closeOverlays: true);
+    Get.snackbar('Success!', 'Story Deleted.',
+        backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +62,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                       image: DecorationImage(
                           image: this.backgroundImages == null
                               ? NetworkImage(
-                              "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
+                                  "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
                               : NetworkImage(this.backgroundImages),
                           fit: BoxFit.cover),
                     ),
@@ -77,73 +106,111 @@ class LDEditStoryView extends GetView<StoriesController> {
                 ],
               ),
               Obx(() => Container(
-                margin: EdgeInsets.only(top: 35, left: 15, right: 15),
-                width: size.width,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    ListView.builder(
-                      itemCount: controller.storyChaptersEdit == null
-                          ? 0
-                          : controller.storyChaptersEdit.length,
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        return InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LDStoryChapterView(),
+                    margin: EdgeInsets.only(top: 35, left: 15, right: 15),
+                    width: size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        ListView.builder(
+                          itemCount: controller.storyChaptersEdit == null
+                              ? 0
+                              : controller.storyChaptersEdit.length,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LDStoryChapterView(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(top: 10, bottom: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            controller.storyChaptersEdit[index]
+                                                .data.title,
+                                            style: boldTextStyle(size: 24),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                                top: 8, bottom: 5),
+                                            child: Text(
+                                              controller
+                                                  .storyChaptersEdit[index]
+                                                  .data
+                                                  .story,
+                                              overflow: TextOverflow.visible,
+                                              softWrap: true,
+                                              style: primaryTextStyle(size: 18),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             );
                           },
-                          child: Container(
-                            margin: EdgeInsets.only(top: 10, bottom: 10),
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        controller.storyChaptersEdit[index].data
-                                            .title,
-                                        style: boldTextStyle(size: 24),
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(
-                                            top: 8, bottom: 5),
-                                        child: Text(
-                                          controller.storyChaptersEdit[index]
-                                              .data.story,
-                                          overflow: TextOverflow.visible,
-                                          softWrap: true,
-                                          style: primaryTextStyle(size: 18),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              )),
+                        )
+                      ],
+                    ),
+                  )),
             ],
           ),
         ),
+        persistentFooterButtons: <Widget>[
+          Container(
+            height: 50,
+            padding: EdgeInsets.only(left: 15, right: 15),
+            width: MediaQuery.of(context).copyWith().size.width,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => Get.back(),
+                  child: Text('Cancel', style: secondaryTextStyle()),
+                ),
+                GestureDetector(
+                  onTap: () => _deleteStory(),
+                  child: Text('Delete Story', style: warningTextStyle()),
+                ),
+                FittedBox(
+                  child: GestureDetector(
+                    onTap: () => _updateStory(),
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                      decoration:
+                          boxDecorations(radius: 4, bgColor: ldSecondaryColor),
+                      child: Center(
+                        child: Text('Save',
+                            style: boldTextStyle(
+                                size: 12, textColor: Colors.white)),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

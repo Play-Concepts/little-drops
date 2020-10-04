@@ -8,3 +8,5 @@ const dkProfile = 'PROFILE';
 
 
 const dkSplash = 'splashed';
+
+const dkLastSelectedChild = 'lastSelectedChild';

@@ -10,7 +10,7 @@ void main(List<String> args) {
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
 
-  if (args.length!=1) throw Exception('dart story_indices_get.dart <childRecordId>');
+  if (args.length!=1) throw Exception('dart story_indices_get.dart <childId>');
   String recordId = args[0];
 
   new File('token.txt').readAsString().then((token) async {

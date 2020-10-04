@@ -12,9 +12,9 @@ void main(List<String> args) {
 
   if (args.length != 4)
     throw Exception(
-        'dart story_index_save.dart <recordId> <childRecordId> <title> <description>');
+        'dart story_index_save.dart <recordId> <childId> <title> <description>');
   String recordId = args[0];
-  String childRecordId = args[1];
+  String childId = args[1];
   String title = args[2];
   String description = args[3];
 
@@ -22,7 +22,7 @@ void main(List<String> args) {
     dynamic body = [
       {
         'recordId': recordId,
-        'endpoint': '$storiesEndpoint/$childRecordId',
+        'endpoint': '$storiesEndpoint/$childId',
         'data': {'title': title, 'description': description}
       }
     ];
