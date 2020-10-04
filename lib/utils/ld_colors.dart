@@ -5,6 +5,7 @@ const ldTextSecondaryColor = Color(0xFF757575);
 const ldTextTertiaryColor = Color(0xFFf8f8f8);
 
 const ldPrimaryColor = Color(0xFF3281FF);
+const ldSecondaryColor = Color(0xFFEB8900);
 const ldSecondaryColorRed = Color(0xFFFF5C5C);
 const ldSecondaryColorYellow = Color(0xFFFFA635);
 const ldSecondaryColorGreen = Color(0xFF5DE094);

@@ -8,6 +8,8 @@ class StoriesController extends GetxController {
   final StoriesRepository repo = Get.find<StoriesRepository>();
   RxList<dynamic> stories = [].obs;
   RxList<dynamic> storyChapters = [].obs;
+  RxList<dynamic> storiesEdit = [].obs;
+  RxList<dynamic> storyChaptersEdit = [].obs;
   RxInt totalStoriesCount = 0.obs;
 
   @override
@@ -15,8 +17,11 @@ class StoriesController extends GetxController {
     super.onInit();
   }
 
-  void getStories(String childId) async{
-    stories.value = await repo.getStoriesList(childId);
+  void getStories(String childId, {editMode: false}) async {
+    if (editMode)
+      storiesEdit.value = await repo.getStoriesList(childId);
+    else
+      stories.value = await repo.getStoriesList(childId);
   }
 
   Future<void> getTotalStoriesCount(List<Child> children) async {
@@ -28,7 +33,10 @@ class StoriesController extends GetxController {
     totalStoriesCount.value = total;
   }
 
-  void getStoryChapters(String childId, String storyId) async{
-    storyChapters.value = await repo.getStoryChapters(childId, storyId);
+  void getStoryChapters(String childId, String storyId, {editMode: false}) async {
+    if (editMode)
+      storyChaptersEdit.value = await repo.getStoryChapters(childId, storyId);
+    else
+      storyChapters.value = await repo.getStoryChapters(childId, storyId);
   }
 }

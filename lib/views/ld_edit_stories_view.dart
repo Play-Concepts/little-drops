@@ -21,8 +21,8 @@ SDExamCardModel card = SDExamCardModel(
     Icons.notifications_active,
     color: Colors.white54,
   ),
-  startColor: Color(0xFFEBAA0F),
-  endColor: Color(0xFFEB8900),
+  startColor: Color(0xFFEB550F),
+  endColor: Color(0xFFFFA635),
 );
 
 final StoriesController storiesController = Get.find<StoriesController>();
@@ -38,7 +38,7 @@ ImageProvider _storiesImageAsset(String location) {
 }
 
 void getStoriesList(String childId, String childName) {
-  storiesController.getStories(childId);
+  storiesController.getStories(childId, editMode: true);
   selectChildId.value = childId;
   selectChildName.value = childName;
 }
@@ -60,7 +60,7 @@ Widget LDEditStoriesView(BuildContext context) {
         Container(
             padding: EdgeInsets.only(top: 25, left: 16, bottom: 16),
             width: size.width,
-            color: ldPrimaryColor,
+            color: ldSecondaryColor,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -165,7 +165,7 @@ Widget LDEditStoriesView(BuildContext context) {
           Container(
               padding: EdgeInsets.only(top:16, left: 16, bottom: 16),
               width: size.width,
-              color: ldPrimaryColor,
+              color: ldSecondaryColor,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -199,7 +199,7 @@ Widget LDEditStoriesView(BuildContext context) {
             child: Obx(() => ListView.builder(
                 primary: false,
                 padding: EdgeInsets.only(bottom: 16),
-                itemCount: storiesController.stories.length,
+                itemCount: storiesController.storiesEdit.length,
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (BuildContext context, int index) {
@@ -212,13 +212,13 @@ Widget LDEditStoriesView(BuildContext context) {
                     child: ListTile(
                       onTap: () {
                         storiesController.getStoryChapters(selectChildId.value,
-                            storiesController.stories[index].recordId);
+                            storiesController.storiesEdit[index].recordId, editMode: true);
                         Get.to(LDEditStoryView(
-                            name: storiesController.stories[index].data.title,
+                            name: storiesController.storiesEdit[index].data.title,
                             description: storiesController
-                                .stories[index].data.description,
+                                .storiesEdit[index].data.description,
                             backgroundImages: storiesController
-                                .stories[index].data.backgroundImages));
+                                .storiesEdit[index].data.backgroundImages));
                       },
                       leading: Container(
                         decoration: BoxDecoration(
@@ -234,18 +234,18 @@ Widget LDEditStoriesView(BuildContext context) {
                               'images/loading.png',
                             ),
                             image: _storiesImageAsset(
-                                storiesController.stories[index].data.image),
+                                storiesController.storiesEdit[index].data.image),
                           ),
                         ),
                       ),
                       title: Text(
-                        storiesController.stories[index].data.title,
+                        storiesController.storiesEdit[index].data.title,
                         style: boldTextStyle(size: 16),
                       ),
                       subtitle: Container(
                         margin: EdgeInsets.only(top: 5),
                         child: Text(
-                          storiesController.stories[index].data.description,
+                          storiesController.storiesEdit[index].data.description,
                           style: secondaryTextStyle(size: 10),
                         ),
                       ),

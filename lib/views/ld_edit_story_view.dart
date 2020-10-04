@@ -84,9 +84,9 @@ class LDEditStoryView extends GetView<StoriesController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     ListView.builder(
-                      itemCount: controller.storyChapters == null
+                      itemCount: controller.storyChaptersEdit == null
                           ? 0
-                          : controller.storyChapters.length,
+                          : controller.storyChaptersEdit.length,
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
@@ -114,7 +114,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                                     CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        controller.storyChapters[index].data
+                                        controller.storyChaptersEdit[index].data
                                             .title,
                                         style: boldTextStyle(size: 24),
                                       ),
@@ -122,7 +122,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                                         margin: EdgeInsets.only(
                                             top: 8, bottom: 5),
                                         child: Text(
-                                          controller.storyChapters[index]
+                                          controller.storyChaptersEdit[index]
                                               .data.story,
                                           overflow: TextOverflow.visible,
                                           softWrap: true,
