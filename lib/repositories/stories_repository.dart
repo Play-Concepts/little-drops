@@ -36,9 +36,9 @@ class StoriesRepository {
     List<StoryChapter> chapters = await getStoryChapters(childId, storyId);
     List<String> recordIds = chapters.map((e) => e.recordId).toList();
     recordIds.add(storyId);
-    deleteService.deleteAll(recordIds).then((value) {
-      box.remove('$dkStories-$childId-$storyId');
-      box.remove('$dkStories-$childId');
+    await deleteService.deleteAll(recordIds).then((value) async {
+      await box.remove('$dkStories-$childId-$storyId');
+      await box.remove('$dkStories-$childId');
     });
   }
 }
