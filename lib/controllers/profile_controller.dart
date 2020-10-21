@@ -1,11 +1,13 @@
 import 'package:drops/entities/profile.dart';
 import 'package:drops/repositories/profile_repository.dart';
+import 'package:drops/repositories/stories_repository.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
 
 class ProfileController extends GetxController {
   final ProfileRepository repo = Get.find<ProfileRepository>();
+  final StoriesRepository storiesRepository = Get.find<StoriesRepository>();
   RxList<dynamic> children = [].obs;
   Rx<Profile> profile = Profile().obs;
 
@@ -46,5 +48,15 @@ class ProfileController extends GetxController {
 
   void getChildren() async {
     children.value = await repo.getChildren();
+  }
+
+  void deleteChild(String recordId) async {
+    storiesRepository.getStoriesList(recordId).then((stories) {
+      stories.forEach((story) {
+        storiesRepository.deleteStory(recordId, story.recordId);
+      });
+    });
+    await repo.deleteChild(recordId);
+    getChildren();
   }
 }

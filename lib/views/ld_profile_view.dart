@@ -1,6 +1,6 @@
 import 'package:drops/controllers/profile_controller.dart';
-import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/entities/profile.dart';
+import 'package:drops/views/ld_edit_child_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 
 class LDProfileView extends StatelessWidget {
   final ProfileController profileController = Get.find<ProfileController>();
-  final StoriesController storiesController = Get.find<StoriesController>();
 
   String profileName(Profile profile) {
     if (profile == null || profile.data == null) return '';
@@ -19,7 +18,6 @@ class LDProfileView extends StatelessWidget {
 
   String numberOfChildren(Iterable children) {
     if (children == null) return '0';
-    storiesController.getTotalStoriesCount(children.toList());
     return children.length.toString();
   }
 
@@ -71,14 +69,7 @@ class LDProfileView extends StatelessWidget {
                         )),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LDEditProfileView(),
-                        ),
-                      );
-                    },
+                    onTap: () => Get.to(LDEditProfileView()),
                     child: FittedBox(
                       child: Container(
                         margin: EdgeInsets.only(top: 20),
@@ -117,38 +108,20 @@ class LDProfileView extends StatelessWidget {
                         spreadRadius: 2,
                         blurRadius: 10,
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             'Children',
                             style: boldTextStyle(
                                 textColor: Colors.black, size: 14),
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Obx(() => Text(
-                                    numberOfChildren(
-                                        profileController.children),
-                                    style: boldTextStyle(
-                                      textColor: Colors.green.withOpacity(0.8),
-                                      size: 26,
-                                    ),
-                                  )),
-                              Container(
-                                child: GestureDetector(
-                                    child: Icon(
+                          Container(
+                            child: GestureDetector(
+                                child: Icon(
                                   Icons.add_circle,
                                   color: ldSecondaryColorGreen,
                                 )),
-                              ),
-                            ],
                           ),
                         ],
                       ),
@@ -158,9 +131,9 @@ class LDProfileView extends StatelessWidget {
               ),
             ),
             Container(
-              height: size.height - 320 - 80 - 100,
+              height: size.height - 320 - 40 - 90,
               margin: EdgeInsets.only(
-                  top: 320.00 + 80, bottom: 25, left: 16, right: 16),
+                  top: 320.00 + 35, bottom: 25, left: 16, right: 16),
               padding: EdgeInsets.only(
                 top: 5,
                 left: 15,
@@ -236,6 +209,7 @@ class LDProfileView extends StatelessWidget {
                                         ),
                                         Container(
                                           child: GestureDetector(
+                                            onTap: () => Get.to(LDEditChildView(), arguments: profileController.children[index], preventDuplicates: true),
                                               child: Icon(
                                             Icons.edit,
                                             color: ldSecondaryColorGreen,
