@@ -123,60 +123,33 @@ class LDProfileView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Number of Children',
+                            'Children',
                             style: boldTextStyle(
                                 textColor: Colors.black, size: 14),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Obx(() => Text(
-                                numberOfChildren(profileController.children),
-                                style: boldTextStyle(
-                                  textColor: Colors.green.withOpacity(0.8),
-                                  size: 26,
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: 320.00 - 50,
-                      ),
-                      padding: EdgeInsets.all(20),
-                      decoration: boxDecoration(
-                          radius: 8,
-                          backGroundColor: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 10),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Stories Created',
-                            style: boldTextStyle(
-                                textColor: Colors.black, size: 14),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Obx(() => Text(
+                                    numberOfChildren(
+                                        profileController.children),
+                                    style: boldTextStyle(
+                                      textColor: Colors.green.withOpacity(0.8),
+                                      size: 26,
+                                    ),
+                                  )),
+                              Container(
+                                child: GestureDetector(
+                                    child: Icon(
+                                  Icons.add_circle,
+                                  color: ldSecondaryColorGreen,
+                                )),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Obx(() => Text(
-                                storiesController.totalStoriesCount.toString(),
-                                style: boldTextStyle(
-                                  textColor:
-                                      ldSecondaryColorYellow.withOpacity(0.8),
-                                  size: 26,
-                                ),
-                              )),
                         ],
                       ),
                     ),
@@ -197,61 +170,60 @@ class LDProfileView extends StatelessWidget {
                 showShadow: true,
               ),
               child: Obx(() => ListView.builder(
-                        padding: EdgeInsets.only(bottom: 16),
-                        scrollDirection: Axis.vertical,
-                        itemCount: profileController.children == null
-                            ? 0
-                            : profileController.children.length,
-                        shrinkWrap: true,
-                        itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
-                            onTap: () {},
-                            child: Container(
-                              margin:
-                                  EdgeInsets.only(left: 16, right: 16, top: 16),
-                              padding: EdgeInsets.only(
-                                  left: 8, right: 8, top: 16, bottom: 16),
-                              width: size.width,
-                              decoration: boxDecorations(),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
+                    padding: EdgeInsets.only(bottom: 16),
+                    scrollDirection: Axis.vertical,
+                    itemCount: profileController.children == null
+                        ? 0
+                        : profileController.children.length,
+                    shrinkWrap: true,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+                          padding: EdgeInsets.only(top: 16, bottom: 16),
+                          width: size.width,
+                          decoration: boxDecorations(),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                ),
+                                height: 45,
+                                width: 45,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: FadeInImage(
+                                    fit: BoxFit.cover,
+                                    placeholder: AssetImage(
+                                      'images/loading.png',
                                     ),
-                                    height: 45,
-                                    width: 45,
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(40),
-                                      child: FadeInImage(
-                                        fit: BoxFit.cover,
-                                        placeholder: AssetImage(
-                                          'images/loading.png',
-                                        ),
-                                        image: Image.network(
-                                          profileController
-                                                      .children[index].data ==
-                                                  null
-                                              ? ''
-                                              : profileController
-                                                  .children[index].data.image,
-                                          height: 35,
-                                          width: 10,
-                                        ).image,
-                                      ),
-                                    ),
+                                    image: Image.network(
+                                      profileController.children[index].data ==
+                                              null
+                                          ? ''
+                                          : profileController
+                                              .children[index].data.image,
+                                      height: 35,
+                                      width: 10,
+                                    ).image,
                                   ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: Column(
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         Text(
                                           profileController
@@ -263,32 +235,39 @@ class LDProfileView extends StatelessWidget {
                                           style: boldTextStyle(size: 16),
                                         ),
                                         Container(
-                                          margin: EdgeInsets.only(top: 5),
-                                          child: Text(
-                                            profileController
-                                                        .children[index].data ==
-                                                    null
-                                                ? ''
-                                                : profileController
-                                                    .children[index]
-                                                    .data
-                                                    .relationship,
-                                            style: secondaryTextStyle(size: 12),
-                                          ),
+                                          child: GestureDetector(
+                                              child: Icon(
+                                            Icons.edit,
+                                            color: ldSecondaryColorGreen,
+                                          )),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  Text(
-                                    '',
-                                    style: boldTextStyle(),
-                                  )
-                                ],
+                                    Container(
+                                      margin: EdgeInsets.only(top: 5),
+                                      child: Text(
+                                        profileController
+                                                    .children[index].data ==
+                                                null
+                                            ? ''
+                                            : profileController.children[index]
+                                                .data.relationship,
+                                        style: secondaryTextStyle(size: 12),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                      )),
+                              Text(
+                                '',
+                                style: boldTextStyle(),
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )),
             ),
           ],
         ),

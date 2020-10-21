@@ -77,10 +77,8 @@ class LDEditStoryView extends GetView<StoriesController> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              CircleAvatar(
-                                radius: 20,
-                                backgroundColor: Colors.black12,
-                                child: CloseButton(),
+                              SizedBox(
+                                height: 25,
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 100),
@@ -96,6 +94,19 @@ class LDEditStoryView extends GetView<StoriesController> {
                                   style: secondaryTextStyle(
                                       textColor: Colors.white.withOpacity(0.8)),
                                 ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Container(
+                                    margin: EdgeInsets.only(right: 15),
+                                    child: GestureDetector(
+                                        child: Icon(
+                                      Icons.edit,
+                                      color: ldSecondaryColorYellow,
+                                    )),
+                                  )
+                                ],
                               ),
                             ],
                           ),
@@ -142,10 +153,19 @@ class LDEditStoryView extends GetView<StoriesController> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
-                                          Text(
-                                            controller.storyChaptersEdit[index]
-                                                .data.title,
-                                            style: boldTextStyle(size: 24),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Text(
+                                                controller.storyChaptersEdit[index]
+                                                    .data.title,
+                                                style: boldTextStyle(size: 24),
+                                              ),
+                                              Icon(
+                                                    Icons.edit,
+                                                    color: ldSecondaryColor,
+                                                  ),
+                                            ],
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(
@@ -168,7 +188,30 @@ class LDEditStoryView extends GetView<StoriesController> {
                               ),
                             );
                           },
-                        )
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            FittedBox(
+                              child: GestureDetector(
+                                onTap: () => _updateStory(),
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                                  decoration:
+                                  boxDecorations(radius: 4, bgColor: ldSecondaryColor),
+                                  child: Center(
+                                    child: Text('Add Section',
+                                        style: boldTextStyle(
+                                            size: 12, textColor: Colors.white)),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
                       ],
                     ),
                   )),
