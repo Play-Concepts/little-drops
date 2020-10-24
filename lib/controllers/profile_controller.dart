@@ -23,31 +23,53 @@ class ProfileController extends GetxController {
   }
 
   void saveProfile(String name, {Function onSuccess}) async {
-    await repo.saveProfile(name)
-        .then((savedProfile) {
+    await repo.saveProfile(name).then((savedProfile) {
       profile.value = savedProfile;
       onSuccess.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
-          backgroundColor: ldSecondaryColorRed,
-          colorText: ldTextTertiaryColor);
+          backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
     });
   }
 
   void updateProfile(String recordId, String name, {Function onSuccess}) async {
-    await repo.updateProfile(recordId, name)
-        .then((updatedToken) {
-      profile.value = updatedToken;
-      onSuccess.call();
+    await repo.updateProfile(recordId, name).then((updatedProfile) {
+      profile.value = updatedProfile;
+      if (onSuccess != null) onSuccess.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
-          backgroundColor: ldSecondaryColorRed,
-          colorText: ldTextTertiaryColor);
+          backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
     });
   }
 
   void getChildren() async {
     children.value = await repo.getChildren();
+  }
+
+  void saveChild(String name,
+      {String relationship, Function onSuccess}) async {
+    await repo
+        .saveChild(name, relationship: relationship)
+        .then((savedChild) {
+      getChildren();
+      if (onSuccess != null) onSuccess.call();
+    }).catchError((error) {
+      Get.snackbar('Error', error.toString(),
+          backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
+    });
+  }
+
+  void updateChild(String recordId, String name,
+      {String relationship, Function onSuccess}) async {
+    await repo
+        .updateChild(recordId, name, relationship: relationship)
+        .then((updatedChild) {
+      getChildren();
+      if (onSuccess != null) onSuccess.call();
+    }).catchError((error) {
+      Get.snackbar('Error', error.toString(),
+          backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
+    });
   }
 
   void deleteChild(String recordId) async {

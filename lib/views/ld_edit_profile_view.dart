@@ -15,10 +15,16 @@ class LDEditProfileView extends GetView<ProfileController> {
     if (updatedProfileName.value == '') return Get.back();
     controller.updateProfile(
         controller.profile.value.recordId, updatedProfileName.value,
-        onSuccess: () => Get.back());
+        onSuccess: () => displaySuccessMessage('Profile Updated.'));
   }
 
-  @override
+  void displaySuccessMessage(String message, {String title: "Success!"}) {
+    Get.back(closeOverlays: true);
+    Get.snackbar(title, message,
+        backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
+  }
+
+    @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(

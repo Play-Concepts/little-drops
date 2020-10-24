@@ -7,9 +7,6 @@ import 'package:drops/utils/ld_colors.dart';
 import 'package:get/get.dart';
 
 class LDEditChildView extends GetView<ProfileController> {
-  RxString updatedChildName = ''.obs;
-  RxString updatedChildRelationship = ''.obs;
-
   Rx<Child> updatedChild = (new Child()).obs;
   String _childName(Child child) =>
       (child == null || child.data == null) ? '' : child.data.name;
@@ -18,7 +15,23 @@ class LDEditChildView extends GetView<ProfileController> {
       (child == null || child.data == null) ? '' : child.data.relationship;
 
   void _updateChild() {
-    print(updatedChild);
+    Child child = updatedChild.value;
+    if (child.isDirty) {
+      if (child.recordId==null) {
+        controller.saveChild(child.data.name,
+            relationship: child.data.relationship,
+            onSuccess: () => displaySuccessMessage('Child Added.')
+        );
+      } else {
+        controller.updateChild(child.recordId,
+            child.data.name,
+            relationship: child.data.relationship,
+            onSuccess: () => displaySuccessMessage('Child Updated.')
+        );
+      }
+    } else {
+      return Get.back();
+    }
     //if (updatedChildName.value == '') return Get.back();
    /* controller.updateProfile(
         controller.profile.value.recordId, updatedChildName.value,
@@ -42,8 +55,12 @@ class LDEditChildView extends GetView<ProfileController> {
   void _doDeleteChild(String recordId) {
     controller.deleteChild(recordId);
     Get.find<StoriesController>().reset();
+    displaySuccessMessage('Child Deleted.');
+  }
+
+  void displaySuccessMessage(String message, {String title: "Success!"}) {
     Get.back(closeOverlays: true);
-    Get.snackbar('Success!', 'Story Deleted.',
+    Get.snackbar(title, message,
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
   }
 
@@ -115,8 +132,16 @@ class LDEditChildView extends GetView<ProfileController> {
                 child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        EditField(updatedChild.value, 'Name', _childName, (newValue) => updatedChild.value.data.name = newValue),
-                        EditField(updatedChild.value, 'Relationship', _childRelationship, (newValue) => updatedChild.value.data.relationship = newValue),
+                        EditField(updatedChild.value, 'Name', _childName, (newValue)
+                        {
+                          updatedChild.value.data.name = newValue;
+                          updatedChild.value.isDirty = true;
+                        }),
+                        EditField(updatedChild.value, 'Relationship', _childRelationship, (newValue)
+                        {
+                          updatedChild.value.data.relationship = newValue;
+                          updatedChild.value.isDirty = true;
+                        }),
                       ],
                     ),
               )

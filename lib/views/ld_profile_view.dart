@@ -1,4 +1,5 @@
 import 'package:drops/controllers/profile_controller.dart';
+import 'package:drops/entities/child.dart';
 import 'package:drops/entities/profile.dart';
 import 'package:drops/views/ld_edit_child_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -118,10 +119,11 @@ class LDProfileView extends StatelessWidget {
                           ),
                           Container(
                             child: GestureDetector(
-                                child: Icon(
-                                  Icons.add_circle,
-                                  color: ldSecondaryColorGreen,
-                                )),
+                              onTap: () => Get.to(LDEditChildView(), arguments: new Child(data: new ChildData(name: '', relationship: '')), preventDuplicates: true),
+                              child: Icon(
+                                Icons.add_circle,
+                                color: ldSecondaryColorGreen,
+                              )),
                           ),
                         ],
                       ),
@@ -210,10 +212,11 @@ class LDProfileView extends StatelessWidget {
                                         Container(
                                           child: GestureDetector(
                                             onTap: () => Get.to(LDEditChildView(), arguments: profileController.children[index], preventDuplicates: true),
-                                              child: Icon(
-                                            Icons.edit,
-                                            color: ldSecondaryColorGreen,
-                                          )),
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: ldSecondaryColorGreen,
+                                            )
+                                          ),
                                         ),
                                       ],
                                     ),
