@@ -21,8 +21,7 @@ class DeleteService {
     final response = await client.delete(
         'https://$pda/$dataEndpointUrl?$queryParams',
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
-    print(response.body);
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       box.write(dkToken, response.headers['x-auth-token']);
       return Future.value(true);

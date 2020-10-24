@@ -35,7 +35,9 @@ class StoriesRepository {
   Future<void> deleteStory(String childId, String storyId) async {
     List<StoryChapter> chapters = await getStoryChapters(childId, storyId);
     List<String> recordIds = chapters.map((e) => e.recordId).toList();
+
     recordIds.add(storyId);
+
     await deleteService.deleteAll(recordIds).then((value) async {
       await box.remove('$dkStories-$childId-$storyId');
       await box.remove('$dkStories-$childId');

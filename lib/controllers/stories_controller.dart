@@ -17,6 +17,12 @@ class StoriesController extends GetxController {
   RxList<dynamic> storyChaptersEdit = [].obs;
   RxInt totalStoriesCount = 0.obs;
 
+  RxString selectChildId = ''.obs;
+  RxString selectChildName = ''.obs;
+
+  RxString selectChildIdEdit = ''.obs;
+  RxString selectChildNameEdit = ''.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -52,5 +58,17 @@ class StoriesController extends GetxController {
     storiesEdit.value = await repo.getStoriesList(childId);
     if (childId==box.read<String>(dkLastSelectedChild))
       stories.value = await repo.getStoriesList(childId);
+  }
+
+  void reset() {
+    stories.value = [];
+    storyChapters.value = [];
+    storiesEdit.value = [];
+    storyChaptersEdit.value = [];
+
+    selectChildId.value = '';
+    selectChildName.value = '';
+    selectChildIdEdit.value = '';
+    selectChildNameEdit.value = '';
   }
 }

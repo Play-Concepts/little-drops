@@ -1,4 +1,5 @@
 import 'package:drops/controllers/profile_controller.dart';
+import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/entities/child.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_style.dart';
@@ -7,16 +8,23 @@ import 'package:get/get.dart';
 
 class LDEditChildView extends GetView<ProfileController> {
   RxString updatedChildName = ''.obs;
+  RxString updatedChildRelationship = ''.obs;
 
+  Rx<Child> updatedChild = (new Child()).obs;
   String _childName(Child child) =>
       (child == null || child.data == null) ? '' : child.data.name;
 
+  String _childRelationship(Child child) =>
+      (child == null || child.data == null) ? '' : child.data.relationship;
+
   void _updateChild() {
-    if (updatedChildName.value == '') return Get.back();
-    controller.updateProfile(
+    print(updatedChild);
+    //if (updatedChildName.value == '') return Get.back();
+   /* controller.updateProfile(
         controller.profile.value.recordId, updatedChildName.value,
-        onSuccess: () => Get.back());
+        onSuccess: () => Get.back());*/
   }
+  
   void _deleteChild() {
     Child child = Get.arguments as Child;
     Get.defaultDialog(
@@ -33,13 +41,39 @@ class LDEditChildView extends GetView<ProfileController> {
 
   void _doDeleteChild(String recordId) {
     controller.deleteChild(recordId);
+    Get.find<StoriesController>().reset();
     Get.back(closeOverlays: true);
     Get.snackbar('Success!', 'Story Deleted.',
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
   }
 
+  Widget EditField(Child child, String placeholder, Function initialValueFunction, Function valueChangeFunction) {
+    return TextFormField(
+      initialValue: initialValueFunction(child),
+      onChanged: valueChangeFunction,
+      cursorColor: ldTextSecondaryColor.withOpacity(0.2),
+      cursorWidth: 1,
+      autocorrect: true,
+      autofocus: false,
+      decoration: InputDecoration(
+        hintText: placeholder,
+        hintStyle: secondaryTextStyle(
+            textColor:
+            ldTextSecondaryColor.withOpacity(0.6)),
+        border: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        errorBorder: InputBorder.none,
+        disabledBorder: InputBorder.none,
+        contentPadding: EdgeInsets.only(
+            left: 16, bottom: 16, top: 16, right: 16),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    updatedChild.value = Get.arguments as Child;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -81,28 +115,8 @@ class LDEditChildView extends GetView<ProfileController> {
                 child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        TextFormField(
-                          initialValue: _childName(Get.arguments as Child),
-                          onChanged: (newText) =>
-                              updatedChildName.value = newText,
-                          cursorColor: ldTextSecondaryColor.withOpacity(0.2),
-                          cursorWidth: 1,
-                          autocorrect: true,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                            hintText: 'Name',
-                            hintStyle: secondaryTextStyle(
-                                textColor:
-                                    ldTextSecondaryColor.withOpacity(0.6)),
-                            border: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            enabledBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            disabledBorder: InputBorder.none,
-                            contentPadding: EdgeInsets.only(
-                                left: 16, bottom: 16, top: 16, right: 16),
-                          ),
-                        ),
+                        EditField(updatedChild.value, 'Name', _childName, (newValue) => updatedChild.value.data.name = newValue),
+                        EditField(updatedChild.value, 'Relationship', _childRelationship, (newValue) => updatedChild.value.data.relationship = newValue),
                       ],
                     ),
               )

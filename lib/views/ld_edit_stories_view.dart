@@ -9,9 +9,6 @@ import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_edit_story_view.dart';
 import 'package:get/get.dart';
 
-RxString selectChildId = ''.obs;
-RxString selectChildName = ''.obs;
-
 SDExamCardModel card = SDExamCardModel(
   image: randomImage(),
   examName: 'Uriel Lee',
@@ -38,8 +35,8 @@ ImageProvider _storiesImageAsset(String location) {
 
 void _getStoriesList(String childId, String childName) {
   storiesController.getStories(childId, editMode: true);
-  selectChildId.value = childId;
-  selectChildName.value = childName;
+  storiesController.selectChildIdEdit.value = childId;
+  storiesController.selectChildNameEdit.value = childName;
 }
 
 void _newStory() => Get.snackbar('title', 'message');
@@ -164,9 +161,9 @@ Widget LDEditStoriesView(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Obx(() => Text(
-                          selectChildName.value == ''
+                          storiesController.selectChildNameEdit.value == ''
                               ? 'Select a Child.'
-                              : 'Write for $selectChildName',
+                              : 'Write for ${storiesController.selectChildNameEdit}',
                           style: boldTextStyle(
                               size: 16,
                               textColor: Colors.white,
@@ -175,7 +172,7 @@ Widget LDEditStoriesView(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Obx(() => Text(
-                            selectChildName.value == ''
+                            storiesController.selectChildNameEdit.value == ''
                                 ? ''
                                 : 'Select a story to edit.',
                             style: secondaryTextStyle(
@@ -217,11 +214,11 @@ Widget LDEditStoriesView(BuildContext context) {
                     ),
                     child: ListTile(
                       onTap: () {
-                        storiesController.getStoryChapters(selectChildId.value,
+                        storiesController.getStoryChapters(storiesController.selectChildIdEdit.value,
                             storiesController.storiesEdit[index].recordId,
                             editMode: true);
                         Get.to(LDEditStoryView(
-                            childId: selectChildId.value,
+                            childId: storiesController.selectChildIdEdit.value,
                             storyId:
                                 storiesController.storiesEdit[index].recordId,
                             name:

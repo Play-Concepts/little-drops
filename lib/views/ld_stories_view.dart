@@ -10,9 +10,6 @@ import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
 
-RxString selectChildId = ''.obs;
-RxString selectChildName = ''.obs;
-
 SDExamCardModel card = SDExamCardModel(
   image: randomImage(),
   examName: 'Uriel Lee',
@@ -39,8 +36,8 @@ ImageProvider _storiesImageAsset(String location) {
 
 void getStoriesList(String childId, String childName) {
   storiesController.getStories(childId);
-  selectChildId.value = childId;
-  selectChildName.value = childName;
+  storiesController.selectChildId.value = childId;
+  storiesController.selectChildName.value = childName;
 }
 
 String profileName(Profile profile) {
@@ -151,9 +148,9 @@ Widget LDStoriesView(BuildContext context) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Obx(() => Text(
-                          selectChildName.value == ''
+                      storiesController.selectChildName.value == ''
                               ? 'Select a Child.'
-                              : 'Read Stories for $selectChildName',
+                              : 'Read Stories for ${storiesController.selectChildName}',
                           style: boldTextStyle(
                               size: 16,
                               textColor: Colors.white,
@@ -162,7 +159,7 @@ Widget LDStoriesView(BuildContext context) {
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Obx(() => Text(
-                            selectChildName.value == ''
+                        storiesController.selectChildName.value == ''
                                 ? ''
                                 : 'Select a story to read.',
                             style: secondaryTextStyle(
@@ -191,7 +188,7 @@ Widget LDStoriesView(BuildContext context) {
                       ),
                       child: ListTile(
                         onTap: () {
-                          storiesController.getStoryChapters(selectChildId.value,
+                          storiesController.getStoryChapters(storiesController.selectChildId.value,
                               storiesController.stories[index].recordId);
                           Get.to(LDStoryView(
                               name: storiesController.stories[index].data.title,
