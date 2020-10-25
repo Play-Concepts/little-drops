@@ -1,29 +1,25 @@
 import 'dart:ui';
 
 import 'package:drops/controllers/stories_controller.dart';
-import 'package:drops/views/ld_edit_stories_view.dart';
+import 'package:drops/entities/story.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/story_chapter.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
-import 'package:drops/views/ld_story_chapter_view.dart';
 import 'package:get/get.dart';
 
 class LDEditStoryView extends GetView<StoriesController> {
   String childId;
-  String storyId;
-  String name;
-  String description;
-  String backgroundImages;
+  Story story;
 
-  LDEditStoryView(
-      {this.childId,
-      this.storyId,
-      this.name,
-      this.description,
-      this.backgroundImages});
+  LDEditStoryView({
+    this.childId,
+    this.story,
+  });
 
+  void _editTitle() => Get.snackbar('editing', 'title');
+  void _addSection() => Get.snackbar('adding', 'section');
+  void _editSection() => Get.snackbar('editing', 'section');
   void _updateStory() => Get.snackbar('updating', 'story');
   void _deleteStory() {
     Get.defaultDialog(
@@ -39,7 +35,7 @@ class LDEditStoryView extends GetView<StoriesController> {
   }
 
   void _doDeleteStory() {
-    controller.deleteStory(this.childId, this.storyId);
+    controller.deleteStory(this.childId, this.story.recordId);
     Get.back(closeOverlays: true);
     Get.snackbar('Success!', 'Story Deleted.',
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
@@ -60,10 +56,10 @@ class LDEditStoryView extends GetView<StoriesController> {
                     height: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: this.backgroundImages == null
+                          image: this.story.data.backgroundImages == null
                               ? NetworkImage(
                                   "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
-                              : NetworkImage(this.backgroundImages),
+                              : NetworkImage(this.story.data.backgroundImages),
                           fit: BoxFit.cover),
                     ),
                     child: ClipRRect(
@@ -83,14 +79,14 @@ class LDEditStoryView extends GetView<StoriesController> {
                               Container(
                                 margin: EdgeInsets.only(top: 100),
                                 child: Text(
-                                  this.name ?? '',
+                                  this.story.data.title ?? '',
                                   style: boldTextStyle(textColor: Colors.white),
                                 ),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
-                                  this.description ?? '',
+                                  this.story.data.description ?? '',
                                   style: secondaryTextStyle(
                                       textColor: Colors.white.withOpacity(0.8)),
                                 ),
@@ -101,10 +97,11 @@ class LDEditStoryView extends GetView<StoriesController> {
                                   Container(
                                     margin: EdgeInsets.only(right: 15),
                                     child: GestureDetector(
+                                        onTap: () => _editTitle(),
                                         child: Icon(
-                                      Icons.edit,
-                                      color: ldSecondaryColorYellow,
-                                    )),
+                                          Icons.edit,
+                                          color: ldSecondaryColorYellow,
+                                        )),
                                   )
                                 ],
                               ),
@@ -131,14 +128,6 @@ class LDEditStoryView extends GetView<StoriesController> {
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LDStoryChapterView(),
-                                  ),
-                                );
-                              },
                               child: Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Row(
@@ -154,17 +143,23 @@ class LDEditStoryView extends GetView<StoriesController> {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: <Widget>[
                                               Text(
-                                                controller.storyChaptersEdit[index]
-                                                    .data.title,
+                                                controller
+                                                    .storyChaptersEdit[index]
+                                                    .data
+                                                    .title,
                                                 style: boldTextStyle(size: 24),
                                               ),
-                                              Icon(
-                                                    Icons.edit,
-                                                    color: ldSecondaryColor,
-                                                  ),
+                                              GestureDetector(
+                                                onTap: () => _editTitle(),
+                                                child: Icon(
+                                                  Icons.edit,
+                                                  color: ldSecondaryColor,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                           Container(
@@ -194,11 +189,11 @@ class LDEditStoryView extends GetView<StoriesController> {
                           children: <Widget>[
                             FittedBox(
                               child: GestureDetector(
-                                onTap: () => _updateStory(),
+                                onTap: () => _addSection(),
                                 child: Container(
                                   padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
-                                  decoration:
-                                  boxDecorations(radius: 4, bgColor: ldSecondaryColor),
+                                  decoration: boxDecorations(
+                                      radius: 4, bgColor: ldSecondaryColor),
                                   child: Center(
                                     child: Text('Add Section',
                                         style: boldTextStyle(

@@ -219,14 +219,7 @@ Widget LDEditStoriesView(BuildContext context) {
                             editMode: true);
                         Get.to(LDEditStoryView(
                             childId: storiesController.selectChildIdEdit.value,
-                            storyId:
-                                storiesController.storiesEdit[index].recordId,
-                            name:
-                                storiesController.storiesEdit[index].data.title,
-                            description: storiesController
-                                .storiesEdit[index].data.description,
-                            backgroundImages: storiesController
-                                .storiesEdit[index].data.backgroundImages));
+                            story: storiesController.storiesEdit[index]));
                       },
                       leading: Container(
                         decoration: BoxDecoration(

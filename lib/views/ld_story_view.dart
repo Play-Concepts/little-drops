@@ -3,10 +3,7 @@ import 'dart:ui';
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/story_chapter.dart';
-import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
-import 'package:drops/views/ld_story_chapter_view.dart';
 import 'package:get/get.dart';
 
 class LDStoryView extends GetView<StoriesController> {
@@ -90,16 +87,7 @@ class LDStoryView extends GetView<StoriesController> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemBuilder: (BuildContext context, int index) {
-                            return InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LDStoryChapterView(),
-                                  ),
-                                );
-                              },
-                              child: Container(
+                            return Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Row(
                                   mainAxisAlignment:
@@ -134,8 +122,7 @@ class LDStoryView extends GetView<StoriesController> {
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
+                              );
                           },
                         )
                       ],
