@@ -36,4 +36,13 @@ class StoryData {
     this.backgroundImages = jsonObject['backgroundImages'];
     this.description = jsonObject['description'];
   }
+
+  StoryData clone() {
+    return StoryData(
+      image: this.image,
+      title: this.title,
+      backgroundImages: this.backgroundImages,
+      description: this.description
+    );
+  }
 }

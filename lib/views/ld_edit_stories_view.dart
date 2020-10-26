@@ -1,5 +1,6 @@
 import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/entities/story.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/entities/SDExamCardModel.dart';
@@ -40,6 +41,11 @@ void _getStoriesList(String childId, String childName) {
 }
 
 void _newStory() => Get.snackbar('title', 'message');
+
+void _onEditComplete() {
+  _getStoriesList(storiesController.selectChildIdEdit.value,
+      storiesController.selectChildNameEdit.value);
+}
 
 Widget LDEditStoriesView(BuildContext context) {
   Size size = MediaQuery.of(context).size;
@@ -214,12 +220,19 @@ Widget LDEditStoriesView(BuildContext context) {
                     ),
                     child: ListTile(
                       onTap: () {
-                        storiesController.getStoryChapters(storiesController.selectChildIdEdit.value,
+                        storiesController.getStoryChapters(
+                            storiesController.selectChildIdEdit.value,
                             storiesController.storiesEdit[index].recordId,
                             editMode: true);
-                        Get.to(LDEditStoryView(
-                            childId: storiesController.selectChildIdEdit.value,
-                            story: storiesController.storiesEdit[index]));
+                        Get.to(
+                          LDEditStoryView(
+                              childId:
+                                  storiesController.selectChildIdEdit.value,
+                              story: (storiesController.storiesEdit[index]
+                                      as Story)
+                                  .obs,
+                              callback: _onEditComplete),
+                        );
                       },
                       leading: Container(
                         decoration: BoxDecoration(

@@ -8,16 +8,22 @@ import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:get/get.dart';
 
+import 'ld_edit_story_title_subview.dart';
+
 class LDEditStoryView extends GetView<StoriesController> {
   String childId;
-  Story story;
+  Rx<Story> story = (new Story()).obs;
+  Function callback;
 
-  LDEditStoryView({
-    this.childId,
-    this.story,
-  });
+  LDEditStoryView({String childId, Rx<Story> story, Function callback}) {
+    this.childId = childId;
+    this.story = story;
+    this.callback = callback;
+    StoryData originalData = this.story.value.data as StoryData;
+    this.story.value.originalData = originalData.clone();
+  }
 
-  void _editTitle() => Get.snackbar('editing', 'title');
+  void _editTitle() => Get.to(LDEditStoryTitleSubview(), arguments: this.story);
   void _addSection() => Get.snackbar('adding', 'section');
   void _editSection() => Get.snackbar('editing', 'section');
   void _updateStory() => Get.snackbar('updating', 'story');
@@ -35,10 +41,16 @@ class LDEditStoryView extends GetView<StoriesController> {
   }
 
   void _doDeleteStory() {
-    controller.deleteStory(this.childId, this.story.recordId);
+    controller.deleteStory(this.childId, this.story.value.recordId);
     Get.back(closeOverlays: true);
     Get.snackbar('Success!', 'Story Deleted.',
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
+  }
+
+  void _cancel() {
+    this.story.value.data = this.story.value.originalData;
+    if (this.callback!=null) this.callback();
+    Get.back();
   }
 
   @override
@@ -56,10 +68,11 @@ class LDEditStoryView extends GetView<StoriesController> {
                     height: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: this.story.data.backgroundImages == null
+                          image: this.story.value.data.backgroundImages == null
                               ? NetworkImage(
                                   "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
-                              : NetworkImage(this.story.data.backgroundImages),
+                              : NetworkImage(
+                                  this.story.value.data.backgroundImages),
                           fit: BoxFit.cover),
                     ),
                     child: ClipRRect(
@@ -69,44 +82,46 @@ class LDEditStoryView extends GetView<StoriesController> {
                           padding: EdgeInsets.only(top: 22, left: 20),
                           width: size.width,
                           color: Colors.grey.withOpacity(0.1),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                height: 25,
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 100),
-                                child: Text(
-                                  this.story.data.title ?? '',
-                                  style: boldTextStyle(textColor: Colors.white),
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(top: 5),
-                                child: Text(
-                                  this.story.data.description ?? '',
-                                  style: secondaryTextStyle(
-                                      textColor: Colors.white.withOpacity(0.8)),
-                                ),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                          child: Obx(() => Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
+                                  SizedBox(
+                                    height: 25,
+                                  ),
                                   Container(
-                                    margin: EdgeInsets.only(right: 15),
-                                    child: GestureDetector(
-                                        onTap: () => _editTitle(),
-                                        child: Icon(
-                                          Icons.edit,
-                                          color: ldSecondaryColorYellow,
-                                        )),
-                                  )
+                                    margin: EdgeInsets.only(top: 100),
+                                    child: Text(
+                                      this.story.value.data.title ?? '',
+                                      style: boldTextStyle(
+                                          textColor: Colors.white),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      this.story.value.data.description ?? '',
+                                      style: secondaryTextStyle(
+                                          textColor:
+                                              Colors.white.withOpacity(0.8)),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Container(
+                                        margin: EdgeInsets.only(right: 15),
+                                        child: GestureDetector(
+                                            onTap: () => _editTitle(),
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: ldSecondaryColorYellow,
+                                            )),
+                                      )
+                                    ],
+                                  ),
                                 ],
-                              ),
-                            ],
-                          ),
+                              )),
                         ),
                       ),
                     ),
@@ -154,7 +169,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                                                 style: boldTextStyle(size: 24),
                                               ),
                                               GestureDetector(
-                                                onTap: () => _editTitle(),
+                                                onTap: () => _editSection(),
                                                 child: Icon(
                                                   Icons.edit,
                                                   color: ldSecondaryColor,
@@ -223,7 +238,7 @@ class LDEditStoryView extends GetView<StoriesController> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  onTap: () => Get.back(),
+                  onTap: () => _cancel(),
                   child: Text('Cancel', style: secondaryTextStyle()),
                 ),
                 GestureDetector(
