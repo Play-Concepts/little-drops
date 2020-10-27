@@ -10,8 +10,15 @@ class LDEditStoryTitleSubview extends StatelessWidget {
   Rx<Story> story = (new Story()).obs;
 
   void _commit() {
-    if (updatedTitle.value!='') this.story.value.data.title = updatedTitle.value;
-    if (updatedDescription.value!='') this.story.value.data.description = updatedDescription.value;
+    if (updatedTitle.value!='') {
+      this.story.value.data.title = updatedTitle.value;
+      this.story.value.isDirty = true;
+    }
+    if (updatedDescription.value!='') {
+      this.story.value.data.description = updatedDescription.value;
+      this.story.value.isDirty = true;
+    }
+
     Get.back();
   }
 

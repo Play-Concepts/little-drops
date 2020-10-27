@@ -10,8 +10,14 @@ class LDEditStoryChapterSubview extends StatelessWidget {
   Rx<StoryChapter> storyChapter = (new StoryChapter()).obs;
 
   void _commit() {
-    if (updatedTitle.value!='') this.storyChapter.value.data.title = updatedTitle.value;
-    if (updatedStory.value!='') this.storyChapter.value.data.story = updatedStory.value;
+    if (updatedTitle.value!='') {
+      this.storyChapter.value.data.title = updatedTitle.value;
+      this.storyChapter.value.isDirty = true;
+    }
+    if (updatedStory.value!='') {
+      this.storyChapter.value.data.story = updatedStory.value;
+      this.storyChapter.value.isDirty = true;
+    }
     Get.back(result: this.storyChapter);
   }
 

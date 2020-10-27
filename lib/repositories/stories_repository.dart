@@ -22,6 +22,12 @@ class StoriesRepository {
   }
 
   Future<Story> saveStoryIndex(String childId, String title, String description) => storiesService.saveStoryIndex(childId, title, description);
+  Future<Story> updateStoryIndex(String childId, String storyId, String title, String description) => storiesService.updateStoryIndex(childId, storyId, title, description);
+
+  Future<StoryChapter> saveStoryChapter(String childId, String storyId, String title, String story, int index) => storiesService.saveStoryChapter(childId, storyId, title, story, index);
+  Future<StoryChapter> updateStoryChapter(
+      String childId, String storyId, String storyChapterId,
+      String title, String story, int index) => storiesService.updateStoryChapter(childId, storyId, storyChapterId, title, story, index);
 
   Future<List<StoryChapter>> getStoryChapters(String childId, String storyId) {
     if (box.hasData('$dkStories-$childId-$storyId')) {

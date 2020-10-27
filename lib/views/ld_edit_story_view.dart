@@ -27,7 +27,7 @@ class LDEditStoryView extends GetView<StoriesController> {
 
   void _editTitle() => Get.to(LDEditStoryTitleSubview(), arguments: this.story);
   void _addSection() async {
-    int index = controller.storyChaptersEdit.length;
+    int index = controller.storyChaptersEdit.length + 1;
     StoryChapter storyChapter = StoryChapter(
         endpoint: "",
         recordId: "",
@@ -45,7 +45,37 @@ class LDEditStoryView extends GetView<StoriesController> {
     Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
   }
 
-  void _updateStory() => Get.snackbar('updating', 'story');
+  void _upsertStory() async {
+    // Update
+    Story _story = this.story.value;
+    String _storyId = null;
+    if (_story.recordId!='') {
+      _storyId = _story.recordId;
+      if (_story.isDirty) {
+        await controller.updateStory(this.childId, _story.recordId, _story.data.title, _story.data.description);
+      }
+    } else {
+      Story savedStory = await controller.saveStory(this.childId, _story.data.title, _story.data.description);
+      _storyId = savedStory.recordId;
+    }
+
+    controller.storyChaptersEdit.forEach((item) async {
+      StoryChapter _chapter = item as StoryChapter;
+      if (_chapter.recordId!='') {
+        if (_chapter.isDirty) {
+          await controller.updateStoryChapter(
+              this.childId, _storyId, _chapter.recordId, _chapter.data.title,
+              _chapter.data.story, _chapter.data.index);
+        }
+      } else {
+        await controller.saveStoryChapter(this.childId, _storyId, _chapter.data.title, _chapter.data.story, _chapter.data.index);
+      }
+    });
+
+    if (this.callback != null) this.callback();
+    Get.back();
+  }
+
   void _deleteStory() {
     Get.defaultDialog(
         title: 'Are you sure?',
@@ -269,7 +299,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                 ),
                 FittedBox(
                   child: GestureDetector(
-                    onTap: () => _updateStory(),
+                    onTap: () => _upsertStory(),
                     child: Container(
                       padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
                       decoration:

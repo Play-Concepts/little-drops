@@ -1,5 +1,6 @@
 import 'package:drops/entities/child.dart';
 import 'package:drops/entities/story.dart';
+import 'package:drops/entities/story_chapter.dart';
 import 'package:drops/repositories/stories_repository.dart';
 import 'package:get/get.dart';
 import 'package:get/state_manager.dart';
@@ -28,9 +29,15 @@ class StoriesController extends GetxController {
     super.onInit();
   }
 
-  void getStories(String childId, {editMode: false}) async {
-    if (editMode)
+  void getStories(String childId, {bool editMode: false, bool refreshAll: false}) async {
+    if (editMode || refreshAll) {
       storiesEdit.value = await repo.getStoriesList(childId);
+      if (refreshAll) {
+        if (box.hasData(dkLastSelectedChild) &&
+            box.read<String>(dkLastSelectedChild) == childId)
+          stories.value = await repo.getStoriesList(childId);
+      }
+    }
     else {
       box.write(dkLastSelectedChild, childId);
       stories.value = await repo.getStoriesList(childId);
@@ -52,6 +59,13 @@ class StoriesController extends GetxController {
     else
       storyChapters.value = await repo.getStoryChapters(childId, storyId);
   }
+
+  Future<Story> updateStory(String childId, String storyId, String title, String description) => repo.updateStoryIndex(childId, storyId, title, description);
+  Future<Story> saveStory(String childId, String title, String description) => repo.saveStoryIndex(childId, title, description);
+
+  Future<StoryChapter> updateStoryChapter(String childId, String storyId, String storyChapterId,
+      String title, String story, int index) => repo.updateStoryChapter(childId, storyId, storyChapterId, title, story, index);
+  Future<StoryChapter> saveStoryChapter(String childId, String storyId, String title, String story, int index) => repo.saveStoryChapter(childId, storyId, title, story, index);
 
   void deleteStory(String childId, String storyId) async {
     await repo.deleteStory(childId, storyId);

@@ -82,7 +82,7 @@ class StoriesService {
     }
   }
 
-  Future<Story> updateStoryIndex(String recordId, String childId,
+  Future<Story> updateStoryIndex(String childId, String storyId,
       String title, String description) async {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
@@ -92,13 +92,13 @@ class StoriesService {
 
     dynamic data = [
       {
-        'recordId': recordId,
+        'recordId': storyId,
         'endpoint': '$storiesEndpoint/$childId',
         'data': {'title': title, 'description': description}
       }
     ];
 
-    final response = await client.post(
+    final response = await client.put(
         'https://$pda/$dataEndpointUrl',
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
@@ -109,7 +109,63 @@ class StoriesService {
       if (body.length==0) throw Exception("Story Index Not Saved.");
       return Story.fromJson(body.first);
     } else {
-      throw Exception("Failed to get Stories.");
+      throw Exception("Failed to update Story.");
+    }
+  }
+
+  Future<StoryChapter> saveStoryChapter(
+      String childId, String storyId, String title, String story, int index) async {
+    if (!box.hasData(dkToken)) {
+      throw Exception("Token not found");
+    }
+    String pda = box.read<String>(dkPda);
+    String token = box.read<String>(dkToken);
+
+    dynamic data = {'title': title, 'story': story, 'index': index};
+
+    final response = await client.post(
+        'https://$pda/$storiesEndpointUrl/$childId/$storyId',
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+    if (response.statusCode == 201) {
+      box.write(dkToken, response.headers['x-auth-token']);
+      box.remove('$dkStories-$childId-$storyId');
+      dynamic body = json.decode(response.body);
+      return StoryChapter.fromJson(body);
+    } else {
+      throw Exception("Failed to save Story Chapter.");
+    }
+  }
+
+  Future<StoryChapter> updateStoryChapter(
+      String childId, String storyId, String storyChapterId,
+      String title, String story, int index) async {
+    if (!box.hasData(dkToken)) {
+      throw Exception("Token not found");
+    }
+    String pda = box.read<String>(dkPda);
+    String token = box.read<String>(dkToken);
+
+    dynamic data = [
+      {
+        'recordId': storyChapterId,
+        'endpoint': '$storiesEndpoint/$childId/$storyId',
+        'data': {'title': title, 'story': story, 'index': index}
+      }
+    ];
+
+    final response = await client.put(
+        'https://$pda/$dataEndpointUrl',
+        body: jsonEncode(data),
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+    if (response.statusCode == 201) {
+      box.write(dkToken, response.headers['x-auth-token']);
+      box.remove('$dkStories-$childId-$storyId');
+      Iterable body = json.decode(response.body);
+      if (body.length==0) throw Exception("Story Chapter Not Saved.");
+      return StoryChapter.fromJson(body.first);
+    } else {
+      throw Exception("Failed to update Story Chapter.");
     }
   }
 }

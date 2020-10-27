@@ -14,7 +14,7 @@ class StoryChapter extends PdaRecord {
   }
 
   @override
-  String toString() => '${this.recordId}: ${this.data.title}';
+  String toString() => '${this.recordId} (${this.isDirty}): ${this.data.index} ${this.data.title} ${this.data.story}';
 }
 
 class StoryChapterData {
