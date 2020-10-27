@@ -33,4 +33,12 @@ class StoryChapterData {
     this.story = jsonObject['story'];
     this.index = jsonObject['index'];
   }
+
+  StoryChapterData clone() {
+    return StoryChapterData(
+      title: this.title,
+      story: this.story,
+      index: this.index
+    );
+  }
 }

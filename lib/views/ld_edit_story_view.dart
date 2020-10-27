@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/entities/story.dart';
+import 'package:drops/entities/story_chapter.dart';
+import 'package:drops/views/ld_edit_story_chapter_subview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
@@ -24,8 +26,25 @@ class LDEditStoryView extends GetView<StoriesController> {
   }
 
   void _editTitle() => Get.to(LDEditStoryTitleSubview(), arguments: this.story);
-  void _addSection() => Get.snackbar('adding', 'section');
-  void _editSection() => Get.snackbar('editing', 'section');
+  void _addSection() async {
+    int index = controller.storyChaptersEdit.length;
+    StoryChapter storyChapter = StoryChapter(
+        endpoint: "",
+        recordId: "",
+        data: StoryChapterData(title: "", story: "", index: index));
+    storyChapter.originalData = storyChapter.data.clone();
+
+    final result = await Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
+    if (result!=null)
+      controller.storyChaptersEdit.add((result as Rx<StoryChapter>).value);
+  }
+
+  void _editSection(StoryChapter storyChapter) {
+    StoryChapterData originalData = storyChapter.data as StoryChapterData;
+    storyChapter.originalData = originalData.clone();
+    Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
+  }
+
   void _updateStory() => Get.snackbar('updating', 'story');
   void _deleteStory() {
     Get.defaultDialog(
@@ -49,7 +68,7 @@ class LDEditStoryView extends GetView<StoriesController> {
 
   void _cancel() {
     this.story.value.data = this.story.value.originalData;
-    if (this.callback!=null) this.callback();
+    if (this.callback != null) this.callback();
     Get.back();
   }
 
@@ -169,7 +188,10 @@ class LDEditStoryView extends GetView<StoriesController> {
                                                 style: boldTextStyle(size: 24),
                                               ),
                                               GestureDetector(
-                                                onTap: () => _editSection(),
+                                                onTap: () => _editSection(
+                                                    controller
+                                                            .storyChaptersEdit[
+                                                        index]),
                                                 child: Icon(
                                                   Icons.edit,
                                                   color: ldSecondaryColor,
