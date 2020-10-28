@@ -295,7 +295,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                 ),
                 GestureDetector(
                   onTap: () => _deleteStory(),
-                  child: Text('Delete Story', style: warningTextStyle()),
+                  child: Obx(() => this.story.value.recordId=='' ? SizedBox() : Text('Delete Story', style: warningTextStyle())),
                 ),
                 FittedBox(
                   child: GestureDetector(

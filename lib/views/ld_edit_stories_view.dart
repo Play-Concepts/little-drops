@@ -34,17 +34,29 @@ ImageProvider _storiesImageAsset(String location) {
   ).image;
 }
 
-void _getStoriesList(String childId, String childName, {bool refreshAll: false }) {
+void _getStoriesList(String childId, String childName,
+    {bool refreshAll: false}) {
   storiesController.getStories(childId, editMode: true, refreshAll: refreshAll);
   storiesController.selectChildIdEdit.value = childId;
   storiesController.selectChildNameEdit.value = childName;
 }
 
-void _newStory() => Get.snackbar('title', 'message');
+void _newStory() {
+  storiesController.storyChaptersEdit.value = [];
+
+  Story newStory = Story(endpoint: "", recordId: "", data: StoryData(title: "", description: ""));
+  Get.to(
+    LDEditStoryView(
+        childId: storiesController.selectChildIdEdit.value,
+        story: newStory.obs,
+        callback: _onEditComplete),
+  );
+}
 
 void _onEditComplete() {
   _getStoriesList(storiesController.selectChildIdEdit.value,
-      storiesController.selectChildNameEdit.value, refreshAll: true);
+      storiesController.selectChildNameEdit.value,
+      refreshAll: true);
 }
 
 Widget LDEditStoriesView(BuildContext context) {
@@ -193,10 +205,13 @@ Widget LDEditStoriesView(BuildContext context) {
                 ),
                 GestureDetector(
                   onTap: () => _newStory(),
-                  child: Icon(
-                    Icons.add_circle,
-                    color: Colors.white,
-                  ),
+                  child: Obx(
+                      () => storiesController.selectChildNameEdit.value == ''
+                          ? SizedBox()
+                          : Icon(
+                              Icons.add_circle,
+                              color: Colors.white,
+                            )),
                 ),
               ],
             ),
