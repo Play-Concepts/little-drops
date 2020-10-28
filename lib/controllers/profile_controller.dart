@@ -32,8 +32,9 @@ class ProfileController extends GetxController {
     });
   }
 
-  void updateProfile(String recordId, String name, {Function onSuccess}) async {
-    await repo.updateProfile(recordId, name).then((updatedProfile) {
+  void upsertProfile(String recordId, String name, {Function onSuccess}) async {
+    Future<Profile> profileFuture = (recordId==null || recordId=='') ? repo.saveProfile(name) : repo.updateProfile(recordId, name);
+    await profileFuture.then((updatedProfile) {
       profile.value = updatedProfile;
       if (onSuccess != null) onSuccess.call();
     }).catchError((error) {

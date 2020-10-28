@@ -13,7 +13,7 @@ class LDEditProfileView extends GetView<ProfileController> {
 
   void _updateProfile() {
     if (updatedProfileName.value == '') return Get.back();
-    controller.updateProfile(
+    controller.upsertProfile(
         controller.profile.value.recordId, updatedProfileName.value,
         onSuccess: () => displaySuccessMessage('Profile Updated.'));
   }
@@ -46,19 +46,6 @@ class LDEditProfileView extends GetView<ProfileController> {
                   radius: 45,
                   backgroundImage: NetworkImage(
                       'https://i.insider.com/5de6dd81fd9db241b00c04d3?width=1100&format=jpeg&auto=webp')),
-              FittedBox(
-                child: Container(
-                  margin: EdgeInsets.only(top: 20),
-                  padding: EdgeInsets.fromLTRB(10, 4, 10, 4),
-                  decoration:
-                      boxDecorations(radius: 4, bgColor: ldPrimaryColor),
-                  child: Center(
-                    child: Text('Change Profile Photo',
-                        style:
-                            boldTextStyle(size: 12, textColor: Colors.white)),
-                  ),
-                ),
-              ),
               SizedBox(height: 20),
               Container(
                 decoration: boxDecorations(showShadow: true),

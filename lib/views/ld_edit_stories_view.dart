@@ -44,7 +44,8 @@ void _getStoriesList(String childId, String childName,
 void _newStory() {
   storiesController.storyChaptersEdit.value = [];
 
-  Story newStory = Story(endpoint: "", recordId: "", data: StoryData(title: "", description: ""));
+  Story newStory = Story(
+      endpoint: "", recordId: "", data: StoryData(title: "", description: ""));
   Get.to(
     LDEditStoryView(
         childId: storiesController.selectChildIdEdit.value,
@@ -178,15 +179,21 @@ Widget LDEditStoriesView(BuildContext context) {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Obx(() => Text(
-                          storiesController.selectChildNameEdit.value == ''
-                              ? 'Select a Child.'
-                              : 'Write for ${storiesController.selectChildNameEdit}',
-                          style: boldTextStyle(
-                              size: 16,
-                              textColor: Colors.white,
-                              letterSpacing: 0.5),
-                        )),
+                    Obx(() => profileController.profile.value.recordId == null
+                        ? Text('Please update your Profile to begin.',
+                            style: boldTextStyle(
+                                size: 20,
+                                textColor: Colors.white,
+                                letterSpacing: 0.5))
+                        : Text(
+                            storiesController.selectChildNameEdit.value == ''
+                                ? 'Select a Child.'
+                                : 'Write for ${storiesController.selectChildNameEdit}',
+                            style: boldTextStyle(
+                                size: 16,
+                                textColor: Colors.white,
+                                letterSpacing: 0.5),
+                          )),
                     Container(
                       margin: EdgeInsets.only(top: 5),
                       child: Obx(() => Text(
