@@ -74,6 +74,8 @@ class StoriesController extends GetxController {
       stories.value = await repo.getStoriesList(childId);
   }
 
+  void deleteStoryChapters(String childId, String storyId, List<String> recordIds) async => await repo.deleteStoryChapters(childId, storyId, recordIds);
+
   void reset() {
     stories.value = [];
     storyChapters.value = [];

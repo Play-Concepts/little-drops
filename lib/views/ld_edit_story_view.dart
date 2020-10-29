@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/entities/story.dart';
 import 'package:drops/entities/story_chapter.dart';
+import 'package:drops/views/ld_edit_stories_view.dart';
 import 'package:drops/views/ld_edit_story_chapter_subview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,11 +17,15 @@ class LDEditStoryView extends GetView<StoriesController> {
   String childId;
   Rx<Story> story = (new Story()).obs;
   Function callback;
+  List<StoryChapter> toDelete;
 
   LDEditStoryView({String childId, Rx<Story> story, Function callback}) {
     this.childId = childId;
     this.story = story;
     this.callback = callback;
+
+    this.toDelete = new List<StoryChapter>();
+
     StoryData originalData = this.story.value.data as StoryData;
     this.story.value.originalData = originalData.clone();
   }
@@ -34,8 +39,9 @@ class LDEditStoryView extends GetView<StoriesController> {
         data: StoryChapterData(title: "", story: "", index: index));
     storyChapter.originalData = storyChapter.data.clone();
 
-    final result = await Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
-    if (result!=null)
+    final result =
+        await Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
+    if (result != null)
       controller.storyChaptersEdit.add((result as Rx<StoryChapter>).value);
   }
 
@@ -45,30 +51,73 @@ class LDEditStoryView extends GetView<StoriesController> {
     Get.to(LDEditStoryChapterSubview(), arguments: storyChapter.obs);
   }
 
+  void _moveSectionUpward(int index) {
+    StoryChapter storyChapter = storiesController.storyChaptersEdit.removeAt(index);
+    storyChapter.data.index -= 1;
+    storyChapter.isDirty = true;
+
+    storiesController.storyChaptersEdit.insert(index - 1, storyChapter);
+    StoryChapter secondStoryChapter = storiesController.storyChaptersEdit.elementAt(index) as StoryChapter;
+    secondStoryChapter.data.index += 1;
+    secondStoryChapter.isDirty = true;
+  }
+
+  void _moveSectionDownward(int index) {
+    StoryChapter storyChapter = storiesController.storyChaptersEdit.removeAt(index);
+    storyChapter.data.index += 1;
+
+    storiesController.storyChaptersEdit.insert(index + 1, storyChapter);
+    StoryChapter secondStoryChapter = storiesController.storyChaptersEdit.elementAt(index) as StoryChapter;
+    secondStoryChapter.data.index -= 1;
+    secondStoryChapter.isDirty = true;
+  }
+
+  void _deleteSection(int index) {
+    StoryChapter storyChapter = storiesController.storyChaptersEdit.removeAt(index);
+    this.toDelete.add(storyChapter);
+
+    for (int i = index; i < storiesController.storyChaptersEdit.length; i++) {
+      StoryChapter secondStoryChapter = storiesController.storyChaptersEdit.elementAt(index) as StoryChapter;
+      secondStoryChapter.data.index = i + 1;
+      secondStoryChapter.isDirty = true;
+    }
+  }
+
   void _upsertStory() async {
     // Update
     Story _story = this.story.value;
     String _storyId = null;
-    if (_story.recordId!='') {
+    if (_story.recordId != '') {
       _storyId = _story.recordId;
       if (_story.isDirty) {
-        await controller.updateStory(this.childId, _story.recordId, _story.data.title, _story.data.description);
+        await controller.updateStory(this.childId, _story.recordId,
+            _story.data.title, _story.data.description);
       }
     } else {
-      Story savedStory = await controller.saveStory(this.childId, _story.data.title, _story.data.description);
+      Story savedStory = await controller.saveStory(
+          this.childId, _story.data.title, _story.data.description);
       _storyId = savedStory.recordId;
     }
 
+    // Trash it
+    List<String> toDeleteIds = this.toDelete.map((e) => e.recordId).toList();
+    controller.deleteStoryChapters(this.childId, _storyId, toDeleteIds);
+
     controller.storyChaptersEdit.forEach((item) async {
       StoryChapter _chapter = item as StoryChapter;
-      if (_chapter.recordId!='') {
+      if (_chapter.recordId != '') {
         if (_chapter.isDirty) {
           await controller.updateStoryChapter(
-              this.childId, _storyId, _chapter.recordId, _chapter.data.title,
-              _chapter.data.story, _chapter.data.index);
+              this.childId,
+              _storyId,
+              _chapter.recordId,
+              _chapter.data.title,
+              _chapter.data.story,
+              _chapter.data.index);
         }
       } else {
-        await controller.saveStoryChapter(this.childId, _storyId, _chapter.data.title, _chapter.data.story, _chapter.data.index);
+        await controller.saveStoryChapter(this.childId, _storyId,
+            _chapter.data.title, _chapter.data.story, _chapter.data.index);
       }
     });
 
@@ -195,8 +244,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                               child: Container(
                                 margin: EdgeInsets.only(top: 10, bottom: 10),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Expanded(
@@ -208,26 +256,60 @@ class LDEditStoryView extends GetView<StoriesController> {
                                         children: <Widget>[
                                           Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
+                                                MainAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(
-                                                controller
-                                                    .storyChaptersEdit[index]
-                                                    .data
-                                                    .title,
-                                                style: boldTextStyle(size: 24),
+                                              GestureDetector(
+                                                onTap: () => _moveSectionUpward(index),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Icon(
+                                                    Icons.arrow_upward,
+                                                    color: ldSecondaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                onTap: () => _moveSectionDownward(index),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Icon(
+                                                    Icons.arrow_downward,
+                                                    color: ldSecondaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 20,),
+                                              GestureDetector(
+                                                onTap: () => _deleteSection(index),
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Icon(
+                                                    Icons.delete_forever,
+                                                    color: ldSecondaryColorRed,
+                                                  ),
+                                                ),
                                               ),
                                               GestureDetector(
                                                 onTap: () => _editSection(
                                                     controller
                                                             .storyChaptersEdit[
                                                         index]),
-                                                child: Icon(
-                                                  Icons.edit,
-                                                  color: ldSecondaryColor,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(5),
+                                                  child: Icon(
+                                                    Icons.edit,
+                                                    color: ldSecondaryColor,
+                                                  ),
                                                 ),
                                               ),
                                             ],
+                                          ),
+                                          Text(
+                                            controller
+                                                .storyChaptersEdit[index]
+                                                .data
+                                                .title,
+                                            style: boldTextStyle(size: 24),
                                           ),
                                           Container(
                                             margin: EdgeInsets.only(
@@ -295,7 +377,9 @@ class LDEditStoryView extends GetView<StoriesController> {
                 ),
                 GestureDetector(
                   onTap: () => _deleteStory(),
-                  child: Obx(() => this.story.value.recordId=='' ? SizedBox() : Text('Delete Story', style: warningTextStyle())),
+                  child: Obx(() => this.story.value.recordId == ''
+                      ? SizedBox()
+                      : Text('Delete Story', style: warningTextStyle())),
                 ),
                 FittedBox(
                   child: GestureDetector(

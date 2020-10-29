@@ -17,11 +17,9 @@ class DeleteService {
     String token = box.read<String>(dkToken);
 
     String queryParams = recordIds.map((recordId) => 'records=$recordId').join('&');
-
     final response = await client.delete(
         'https://$pda/$dataEndpointUrl?$queryParams',
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
-
     if (response.statusCode == 200) {
       box.write(dkToken, response.headers['x-auth-token']);
       return Future.value(true);

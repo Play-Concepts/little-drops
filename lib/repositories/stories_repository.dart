@@ -49,4 +49,9 @@ class StoriesRepository {
       await box.remove('$dkStories-$childId');
     });
   }
+
+  Future<bool> deleteStoryChapters(String childId, String storyId, List<String> recordIds) async {
+    await box.remove('$dkStories-$childId-$storyId');
+    deleteService.deleteAll(recordIds);
+  }
 }
