@@ -23,9 +23,10 @@ class StoriesService {
         'https://$pda/$storiesEndpointUrl/$childId',
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 200) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
-      box.write('$dkStories-$childId', response.body);
-      Iterable jsonStories = json.decode(response.body);
+      box.write('$dkStories-$childId', responseData);
+      Iterable jsonStories = json.decode(responseData);
       List<Story> result =
           jsonStories.map((jsonObject) => Story.fromJson(jsonObject)).toList();
 
@@ -46,9 +47,10 @@ class StoriesService {
         'https://$pda/$storiesEndpointUrl/$childId/$storyId?orderBy=index',
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 200) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
-      box.write('$dkStories-$childId-$storyId', response.body);
-      Iterable jsonStories = json.decode(response.body);
+      box.write('$dkStories-$childId-$storyId', responseData);
+      Iterable jsonStories = json.decode(responseData);
       List<StoryChapter> result =
       jsonStories.map((jsonObject) => StoryChapter.fromJson(jsonObject)).toList();
 
@@ -73,9 +75,10 @@ class StoriesService {
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
       box.remove('$dkStories-$childId');
-      dynamic body = json.decode(response.body);
+      dynamic body = json.decode(responseData);
       return Story.fromJson(body);
     } else {
       throw Exception("Failed to get Stories.");
@@ -103,9 +106,10 @@ class StoriesService {
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
       box.remove('$dkStories-$childId');
-      Iterable body = json.decode(response.body);
+      Iterable body = json.decode(responseData);
       if (body.length==0) throw Exception("Story Index Not Saved.");
       return Story.fromJson(body.first);
     } else {
@@ -128,9 +132,10 @@ class StoriesService {
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
       box.remove('$dkStories-$childId-$storyId');
-      dynamic body = json.decode(response.body);
+      dynamic body = json.decode(responseData);
       return StoryChapter.fromJson(body);
     } else {
       throw Exception("Failed to save Story Chapter.");
@@ -159,9 +164,10 @@ class StoriesService {
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
+      String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
       box.remove('$dkStories-$childId-$storyId');
-      Iterable body = json.decode(response.body);
+      Iterable body = json.decode(responseData);
       if (body.length==0) throw Exception("Story Chapter Not Saved.");
       return StoryChapter.fromJson(body.first);
     } else {
