@@ -1,0 +1,36 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+Person(user, "Little Drops User")
+
+System_Boundary(android, "Little Drops Android Application") {
+    Container(ui, "User Interface", "React Native or Android Native")
+    Container(controllers, "Logic Controllers", "Javascript/Typescript or Java/Koitlin")
+    Container(hat_service, "HAT Service", "Javascript/Typescript or Java/Koitlin")
+    Container(backend_service, "Backend Service", "Javascript/Typescript or Java/Koitlin")
+}
+
+Rel(user, ui, "interacts", "native")
+Rel(ui, controllers, "calls", "internal")
+Rel(controllers, hat_service, "uses", "internal")
+Rel(controllers, backend_service, "uses", "internal")
+
+System_Boundary(baas, "External Service APIs") {
+    Container(hat, "HAT Microservers", "API")
+    Container(hatdex_api, "HATDex Platform APIs", "API")
+    Container(thinkspace, "Thinkspace Server", "API")
+}
+
+Rel(hat_service, hat, "Stores reading activity; Stores Stories created by the User", "HTTPS")
+Rel(backend_service, hatdex_api, "Provisions HATs; Sets up Write Permissions on the HATs", "HTTPS")
+Rel(backend_service, thinkspace, "Stores stories published by Users or Publishers", "HTTPS")
+
+Rel(hat, thinkspace, "Stores reading activity; Stores Stories created by the User", "HTTPS")
+
+System_Ext(publisher, "Story / Book publisher")
+
+Rel(hat, thinkspace, "Shares reading activity", "HTTPS")
+Rel(publisher, thinkspace, "Publishes Stories and/or Templates", "HTTPS")
+Rel(thinkspace, publisher, "Analyse reading activity", "HTTPS")
+
+@enduml
