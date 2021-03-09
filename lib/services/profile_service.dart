@@ -1,4 +1,4 @@
-import 'package:http/http.dart' show Client, Response;
+import 'package:http/http.dart' show Client;
 import 'dart:convert';
 import 'dart:async';
 import 'package:get/get.dart';
@@ -19,7 +19,8 @@ class ProfileService {
     String pda = box.read<String>(dkPda);
     String token = box.read<String>(dkToken);
 
-    final Response response = await client.get('https://$pda/$profileEndpointUrl', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.get(Uri.parse('https://$pda/$profileEndpointUrl'),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -42,7 +43,10 @@ class ProfileService {
     dynamic data ={
       'name': name
     };
-    Response response = await client.post('https://$pda/$profileEndpointUrl', body: jsonEncode(data), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.post(
+        Uri.parse('https://$pda/$profileEndpointUrl'),
+        body: jsonEncode(data),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -69,7 +73,10 @@ class ProfileService {
       }
     }];
 
-    Response response = await client.put('https://$pda/$dataEndpointUrl', body: jsonEncode(data), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.put(
+        Uri.parse('https://$pda/$dataEndpointUrl'),
+        body: jsonEncode(data),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -88,7 +95,9 @@ class ProfileService {
     String pda = box.read<String>(dkPda);
     String token = box.read<String>(dkToken);
 
-    final Response response = await client.get('https://$pda/$childrenEndpointUrl', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.get(
+        Uri.parse('https://$pda/$childrenEndpointUrl'),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -114,7 +123,10 @@ class ProfileService {
       'gender': gender,
       'ageGroup': ageGroup
     };
-    Response response = await client.post('https://$pda/$childrenEndpointUrl', body: jsonEncode(data), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.post(
+        Uri.parse('https://$pda/$childrenEndpointUrl'),
+        body: jsonEncode(data),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -143,7 +155,10 @@ class ProfileService {
         'ageGroup': ageGroup
       }
     }];
-    Response response = await client.put('https://$pda/$dataEndpointUrl', body: jsonEncode(data), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    final response = await client.put(
+        Uri.parse('https://$pda/$dataEndpointUrl'),
+        body: jsonEncode(data),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);

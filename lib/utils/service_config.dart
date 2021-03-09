@@ -3,4 +3,4 @@ const callbackUrl = 'drops://dropshost/auth/callback';
 const fallbackUrl = 'drops://dropshost/loginfailed';
 
 const hattersUrl = 'https://hatters.dataswift.io/api/hat/lookup?sandbox=true&';
-const daasUrl = 'https://hatters.dataswift.io/services/daas/signup';
+const signupUrl = 'https://auth.dataswift.io/services/signup';

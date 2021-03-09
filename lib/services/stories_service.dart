@@ -20,7 +20,7 @@ class StoriesService {
     String token = box.read<String>(dkToken);
 
     final response = await client.get(
-        'https://$pda/$storiesEndpointUrl/$childId',
+        Uri.parse('https://$pda/$storiesEndpointUrl/$childId'),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
@@ -44,7 +44,7 @@ class StoriesService {
     String token = box.read<String>(dkToken);
 
     final response = await client.get(
-        'https://$pda/$storiesEndpointUrl/$childId/$storyId?orderBy=index',
+        Uri.parse('https://$pda/$storiesEndpointUrl/$childId/$storyId?orderBy=index'),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
@@ -71,7 +71,7 @@ class StoriesService {
     dynamic data = {'title': title, 'description': description};
 
     final response = await client.post(
-        'https://$pda/$storiesEndpointUrl/$childId',
+        Uri.parse('https://$pda/$storiesEndpointUrl/$childId'),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
@@ -102,7 +102,7 @@ class StoriesService {
     ];
 
     final response = await client.put(
-        'https://$pda/$dataEndpointUrl',
+        Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
@@ -128,7 +128,7 @@ class StoriesService {
     dynamic data = {'title': title, 'story': story, 'index': index};
 
     final response = await client.post(
-        'https://$pda/$storiesEndpointUrl/$childId/$storyId',
+        Uri.parse('https://$pda/$storiesEndpointUrl/$childId/$storyId'),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
@@ -160,7 +160,7 @@ class StoriesService {
     ];
 
     final response = await client.put(
-        'https://$pda/$dataEndpointUrl',
+        Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
         headers: {'Content-Type': 'application/json', 'x-auth-token': token});
     if (response.statusCode == 201) {
