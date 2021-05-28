@@ -1,7 +1,7 @@
 import 'package:drops/entities/pda_record.dart';
 
 class Profile extends PdaRecord {
-  Profile({ String endpoint, String recordId, dynamic data}) {
+  Profile({ String? endpoint, String? recordId, dynamic data}) {
     super.endpoint = endpoint;
     super.recordId = recordId;
     super.data = data;
@@ -21,8 +21,8 @@ class Profile extends PdaRecord {
 }
 
 class ProfileData {
-  String image;
-  String name;
+  String? image;
+  String? name;
 
   ProfileData({
     this.image,

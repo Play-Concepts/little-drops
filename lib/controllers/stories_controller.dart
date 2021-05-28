@@ -44,10 +44,10 @@ class StoriesController extends GetxController {
     }
   }
 
-  Future<void> getTotalStoriesCount(List<Child> children) async {
+  Future<void> getTotalStoriesCount(List<Child>? children) async {
     int total = 0;
-    await children.forEach((child) async {
-      List<Story> stories = await repo.getStoriesList(child.recordId);
+    children!.forEach((child) async {
+      List<Story> stories = await repo.getStoriesList(child.recordId!);
       total += stories.length;
     });
     totalStoriesCount.value = total;

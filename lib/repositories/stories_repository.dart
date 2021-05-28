@@ -14,7 +14,7 @@ class StoriesRepository {
 
   Future<List<Story>> getStoriesList(String childId) {
     if (box.hasData('$dkStories-$childId')) {
-      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId'));
+      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId')!);
       List<Story> storiesList = jsonStories.map((jsonObject) => Story.fromJson(jsonObject)).toList();
       return Future.value(storiesList);
     }
@@ -31,7 +31,7 @@ class StoriesRepository {
 
   Future<List<StoryChapter>> getStoryChapters(String childId, String storyId) {
     if (box.hasData('$dkStories-$childId-$storyId')) {
-      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId-$storyId'));
+      Iterable jsonStories = json.decode(box.read<String>('$dkStories-$childId-$storyId')!);
       List<StoryChapter> storyChapters = jsonStories.map((jsonObject) => StoryChapter.fromJson(jsonObject)).toList();
       return Future.value(storyChapters);
     }
@@ -40,7 +40,7 @@ class StoriesRepository {
 
   Future<void> deleteStory(String childId, String storyId) async {
     List<StoryChapter> chapters = await getStoryChapters(childId, storyId);
-    List<String> recordIds = chapters.map((e) => e.recordId).toList();
+    List<String> recordIds = chapters.map((e) => e.recordId!).toList();
 
     recordIds.add(storyId);
 
@@ -52,6 +52,6 @@ class StoriesRepository {
 
   Future<bool> deleteStoryChapters(String childId, String storyId, List<String> recordIds) async {
     await box.remove('$dkStories-$childId-$storyId');
-    deleteService.deleteAll(recordIds);
+    return deleteService.deleteAll(recordIds);
   }
 }

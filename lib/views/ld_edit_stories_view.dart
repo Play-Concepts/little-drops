@@ -101,12 +101,12 @@ Widget LDEditStoriesView(BuildContext context) {
                   scrollDirection: Axis.horizontal,
                   itemCount: profileController.children == null
                       ? 0
-                      : profileController.children.length,
+                      : profileController.children!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () => _getStoriesList(
-                          profileController.children[index].recordId,
-                          profileController.children[index].data.name),
+                          profileController.children![index].recordId,
+                          profileController.children![index].data.name),
                       child: Container(
                         width: 170.0,
                         margin: EdgeInsets.only(
@@ -118,7 +118,7 @@ Widget LDEditStoriesView(BuildContext context) {
                           spreadRadius: 1,
                           blurRadius: 4,
                           gradient: LinearGradient(
-                            colors: [card.startColor, card.endColor],
+                            colors: [card.startColor!, card.endColor!],
                           ),
                         ),
                         child: Column(
@@ -138,9 +138,9 @@ Widget LDEditStoriesView(BuildContext context) {
                               height: 15,
                             ),
                             Text(
-                              profileController.children[index].data == null
+                              profileController.children![index].data == null
                                   ? ''
-                                  : profileController.children[index].data.name,
+                                  : profileController.children![index].data.name,
                               style: secondaryTextStyle(
                                   textColor: Colors.white, size: 20),
                             ),
@@ -151,10 +151,10 @@ Widget LDEditStoriesView(BuildContext context) {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  profileController.children[index].data == null
+                                  profileController.children![index].data == null
                                       ? ''
                                       : profileController
-                                          .children[index].data.relationship,
+                                          .children![index].data.relationship,
                                   style: secondaryTextStyle(
                                       textColor: Colors.white54, size: 18),
                                 ),

@@ -10,7 +10,7 @@ class LDWalkThroughView extends StatefulWidget {
 }
 
 class _LDWalkThroughViewState extends State<LDWalkThroughView> {
-  bool isActive;
+  bool? isActive;
   PageController pageController = PageController(initialPage: 0);
   int pageChanged = 0;
 
@@ -25,7 +25,7 @@ class _LDWalkThroughViewState extends State<LDWalkThroughView> {
     return list;
   }
 
-  Widget sDDotIndicator({bool isActive}) {
+  Widget sDDotIndicator({bool isActive = false}) {
     return AnimatedContainer(
       duration: Duration(milliseconds: 150),
       margin: EdgeInsets.symmetric(horizontal: 4.0),

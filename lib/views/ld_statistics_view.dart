@@ -9,12 +9,12 @@ import 'ld_statistics_details_view.dart';
 
 final ProfileController profileController = Get.find<ProfileController>();
 
-Widget LDStatisticsView([BuildContext context, Size size]) {
+Widget LDStatisticsView([BuildContext? context, Size? size]) {
   return Column(
     children: <Widget>[
       Container(
           padding: EdgeInsets.only(top: 25, left: 16, bottom: 16),
-          width: size.width,
+          width: size!.width,
           color: ldPrimaryColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
         child: Obx(() => ListView.builder(
               padding: EdgeInsets.only(bottom: 16),
               scrollDirection: Axis.vertical,
-              itemCount: profileController.children == null ? 0 : profileController.children.length,
+              itemCount: profileController.children == null ? 0 : profileController.children!.length,
               shrinkWrap: true,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
@@ -77,7 +77,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                                 'images/loading.png',
                               ),
                               image: Image.network(
-                                profileController.children[index].data==null ? '' : profileController.children[index].data.image,
+                                profileController.children![index].data==null ? '' : profileController.children![index].data.image,
                                 height: 35,
                                 width: 10,
                               ).image,
@@ -93,13 +93,13 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
-                                profileController.children[index].data==null ? '' : profileController.children[index].data.name,
+                                profileController.children![index].data==null ? '' : profileController.children![index].data.name,
                                 style: boldTextStyle(size: 16),
                               ),
                               Container(
                                 margin: EdgeInsets.only(top: 5),
                                 child: Text(
-                                  profileController.children[index].data==null ? '' : profileController.children[index].data.message,
+                                  profileController.children![index].data==null ? '' : profileController.children![index].data.message,
                                   style: secondaryTextStyle(size: 12),
                                 ),
                               ),
@@ -107,7 +107,7 @@ Widget LDStatisticsView([BuildContext context, Size size]) {
                           ),
                         ),
                         Text(
-                          profileController.children[index].data==null ? '0' : profileController.children[index].data.score.toString(),
+                          profileController.children![index].data==null ? '0' : profileController.children![index].data.score.toString(),
                           style: boldTextStyle(),
                         )
                       ],

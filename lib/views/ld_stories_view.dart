@@ -25,7 +25,7 @@ SDExamCardModel card = SDExamCardModel(
 final StoriesController storiesController = Get.find<StoriesController>();
 final ProfileController profileController = Get.find<ProfileController>();
 
-ImageProvider _storiesImageAsset(String location) {
+ImageProvider _storiesImageAsset(String? location) {
   if (location == null) location = randomImage();
   return Image.asset(
     location,
@@ -40,7 +40,7 @@ void getStoriesList(String childId, String childName) {
   storiesController.selectChildName.value = childName;
 }
 
-String profileName(Profile profile) {
+String profileName(Profile? profile) {
   if (profile == null || profile.data == null) return '';
   return profile.data.name;
 }
@@ -69,12 +69,12 @@ Widget LDStoriesView(BuildContext context) {
                   scrollDirection: Axis.horizontal,
                   itemCount: profileController.children == null
                       ? 0
-                      : profileController.children.length,
+                      : profileController.children!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
                       onTap: () => getStoriesList(
-                          profileController.children[index].recordId,
-                          profileController.children[index].data.name),
+                          profileController.children![index].recordId,
+                          profileController.children![index].data.name),
                       child: Container(
                         width: 170.0,
                         margin: EdgeInsets.only(
@@ -86,7 +86,7 @@ Widget LDStoriesView(BuildContext context) {
                           spreadRadius: 1,
                           blurRadius: 4,
                           gradient: LinearGradient(
-                            colors: [card.startColor, card.endColor],
+                            colors: [card.startColor!, card.endColor!],
                           ),
                         ),
                         child: Column(
@@ -106,9 +106,9 @@ Widget LDStoriesView(BuildContext context) {
                               height: 15,
                             ),
                             Text(
-                              profileController.children[index].data == null
+                              profileController.children![index].data == null
                                   ? ''
-                                  : profileController.children[index].data.name,
+                                  : profileController.children![index].data.name,
                               style: secondaryTextStyle(
                                   textColor: Colors.white, size: 20),
                             ),
@@ -119,10 +119,10 @@ Widget LDStoriesView(BuildContext context) {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  profileController.children[index].data == null
+                                  profileController.children![index].data == null
                                       ? ''
                                       : profileController
-                                          .children[index].data.relationship,
+                                          .children![index].data.relationship,
                                   style: secondaryTextStyle(
                                       textColor: Colors.white54, size: 18),
                                 ),

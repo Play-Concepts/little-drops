@@ -14,20 +14,20 @@ import 'package:get/get.dart';
 import 'ld_edit_story_title_subview.dart';
 
 class LDEditStoryView extends GetView<StoriesController> {
-  String childId;
-  Rx<Story> story = (new Story()).obs;
-  Function callback;
-  List<StoryChapter> toDelete;
+  String? childId;
+  Rx<Story>? story = (new Story()).obs;
+  Function? callback;
+  List<StoryChapter>? toDelete;
 
-  LDEditStoryView({String childId, Rx<Story> story, Function callback}) {
-    this.childId = childId;
-    this.story = story;
+  LDEditStoryView({String? childId, Rx<Story>? story, Function? callback}) {
+    this.childId = childId!;
+    this.story = story!;
     this.callback = callback;
 
-    this.toDelete = new List<StoryChapter>();
+    this.toDelete = new List<StoryChapter>.empty(growable: true);
 
-    StoryData originalData = this.story.value.data as StoryData;
-    this.story.value.originalData = originalData.clone();
+    StoryData originalData = this.story!.value.data as StoryData;
+    this.story!.value.originalData = originalData.clone();
   }
 
   void _editTitle() => Get.to(LDEditStoryTitleSubview(), arguments: this.story);
@@ -74,7 +74,7 @@ class LDEditStoryView extends GetView<StoriesController> {
 
   void _deleteSection(int index) {
     StoryChapter storyChapter = storiesController.storyChaptersEdit.removeAt(index);
-    this.toDelete.add(storyChapter);
+    this.toDelete!.add(storyChapter);
 
     for (int i = index; i < storiesController.storyChaptersEdit.length; i++) {
       StoryChapter secondStoryChapter = storiesController.storyChaptersEdit.elementAt(index) as StoryChapter;
@@ -85,43 +85,43 @@ class LDEditStoryView extends GetView<StoriesController> {
 
   void _upsertStory() async {
     // Update
-    Story _story = this.story.value;
-    String _storyId = null;
+    Story _story = this.story!.value;
+    String? _storyId;
     if (_story.recordId != '') {
-      _storyId = _story.recordId;
+      _storyId = _story.recordId!;
       if (_story.isDirty) {
-        await controller.updateStory(this.childId, _story.recordId,
+        await controller.updateStory(this.childId!, _story.recordId!,
             _story.data.title, _story.data.description);
       }
     } else {
       Story savedStory = await controller.saveStory(
-          this.childId, _story.data.title, _story.data.description);
-      _storyId = savedStory.recordId;
+          this.childId!, _story.data.title, _story.data.description);
+      _storyId = savedStory.recordId!;
     }
 
     // Trash it
-    List<String> toDeleteIds = this.toDelete.map((e) => e.recordId).toList();
-    controller.deleteStoryChapters(this.childId, _storyId, toDeleteIds);
+    List<String> toDeleteIds = this.toDelete!.map((e) => e.recordId!).toList();
+    controller.deleteStoryChapters(this.childId!, _storyId, toDeleteIds);
 
     controller.storyChaptersEdit.forEach((item) async {
       StoryChapter _chapter = item as StoryChapter;
       if (_chapter.recordId != '') {
         if (_chapter.isDirty) {
           await controller.updateStoryChapter(
-              this.childId,
-              _storyId,
-              _chapter.recordId,
+              this.childId!,
+              _storyId!,
+              _chapter.recordId!,
               _chapter.data.title,
               _chapter.data.story,
               _chapter.data.index);
         }
       } else {
-        await controller.saveStoryChapter(this.childId, _storyId,
+        await controller.saveStoryChapter(this.childId!, _storyId!,
             _chapter.data.title, _chapter.data.story, _chapter.data.index);
       }
     });
 
-    if (this.callback != null) this.callback();
+    if (this.callback != null) this.callback!();
     Get.back();
   }
 
@@ -139,15 +139,15 @@ class LDEditStoryView extends GetView<StoriesController> {
   }
 
   void _doDeleteStory() {
-    controller.deleteStory(this.childId, this.story.value.recordId);
+    controller.deleteStory(this.childId!, this.story!.value.recordId!);
     Get.back(closeOverlays: true);
     Get.snackbar('Success!', 'Story Deleted.',
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
   }
 
   void _cancel() {
-    this.story.value.data = this.story.value.originalData;
-    if (this.callback != null) this.callback();
+    this.story!.value.data = this.story!.value.originalData;
+    if (this.callback != null) this.callback!();
     Get.back();
   }
 
@@ -160,17 +160,17 @@ class LDEditStoryView extends GetView<StoriesController> {
           child: Column(
             children: <Widget>[
               Stack(
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: <Widget>[
                   Container(
                     height: 270,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: this.story.value.data.backgroundImages == null
+                          image: this.story!.value.data.backgroundImages == null
                               ? NetworkImage(
                                   "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
                               : NetworkImage(
-                                  this.story.value.data.backgroundImages),
+                                  this.story!.value.data.backgroundImages),
                           fit: BoxFit.cover),
                     ),
                     child: ClipRRect(
@@ -190,7 +190,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                                   Container(
                                     margin: EdgeInsets.only(top: 100),
                                     child: Text(
-                                      this.story.value.data.title ?? '',
+                                      this.story!.value.data.title ?? '',
                                       style: boldTextStyle(
                                           textColor: Colors.white),
                                     ),
@@ -198,7 +198,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                                   Container(
                                     margin: EdgeInsets.only(top: 5),
                                     child: Text(
-                                      this.story.value.data.description ?? '',
+                                      this.story!.value.data.description ?? '',
                                       style: secondaryTextStyle(
                                           textColor:
                                               Colors.white.withOpacity(0.8)),
@@ -377,7 +377,7 @@ class LDEditStoryView extends GetView<StoriesController> {
                 ),
                 GestureDetector(
                   onTap: () => _deleteStory(),
-                  child: Obx(() => this.story.value.recordId == ''
+                  child: Obx(() => this.story!.value.recordId == ''
                       ? SizedBox()
                       : Text('Delete Story', style: warningTextStyle())),
                 ),

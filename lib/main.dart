@@ -60,7 +60,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  StreamSubscription _sub;
+  StreamSubscription? _sub;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
         builder: (context, child) {
           return ScrollConfiguration(
             behavior: SBehavior(),
-            child: child,
+            child: child!,
           );
         });
   }
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
   @override
   initState() {
     super.initState();
-    _sub = getLinksStream().listen((String link) {
+    _sub = getLinksStream().listen((String? link) {
       if (!mounted) return;
       setState(() {
         try {
@@ -97,12 +97,12 @@ class _MyAppState extends State<MyApp> {
             Uri _latestUri = Uri.parse(link);
             if (_latestUri.queryParameters.containsKey('token')) {
               final token = _latestUri.queryParameters['token'];
-              final pda = Get.find<HattersService>().extractPda(token);
+              final pda = Get.find<HattersService>().extractPda(token!);
               GetStorage(dkStore).write(dkToken, token);
               GetStorage(dkStore).write(dkPda, pda);
               Get.off(LDHomePageView());
             } else if (_latestUri.queryParameters.containsKey('error')) {
-              Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason'],
+              Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason']!,
                   backgroundColor: ldSecondaryColorRed,
                   colorText: ldTextTertiaryColor);
             }
@@ -117,7 +117,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   dispose() {
-    if (_sub != null) _sub.cancel();
+    if (_sub != null) _sub!.cancel();
     super.dispose();
   }
 }

@@ -20,10 +20,10 @@ void downTest(int index) {
   print(list);
   var itemToMove = list.removeAt(index);
   print(list);
-  itemToMove['index'] += 1;
-  list.insert(index + 1, itemToMove);
+  //itemToMove['index'] += 1;
+  //list.insert(index + 1, itemToMove);
   print(list);
-  list[index]['index'] -= 1;
+  //list[index]['index'] -= 1;
   print(list);
 }
 

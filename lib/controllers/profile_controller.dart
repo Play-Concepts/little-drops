@@ -8,7 +8,7 @@ import 'package:get/state_manager.dart';
 class ProfileController extends GetxController {
   final ProfileRepository repo = Get.find<ProfileRepository>();
   final StoriesRepository storiesRepository = Get.find<StoriesRepository>();
-  RxList<dynamic> children = [].obs;
+  RxList<dynamic>? children = [].obs;
   Rx<Profile> profile = Profile().obs;
 
   @override
@@ -22,21 +22,21 @@ class ProfileController extends GetxController {
     profile.value = await repo.getProfile();
   }
 
-  void saveProfile(String name, {Function onSuccess}) async {
+  void saveProfile(String name, {Function? onSuccess}) async {
     await repo.saveProfile(name).then((savedProfile) {
       profile.value = savedProfile;
-      onSuccess.call();
+      onSuccess!.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
           backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
     });
   }
 
-  void upsertProfile(String recordId, String name, {Function onSuccess}) async {
+  void upsertProfile(String? recordId, String name, {Function? onSuccess}) async {
     Future<Profile> profileFuture = (recordId==null || recordId=='') ? repo.saveProfile(name) : repo.updateProfile(recordId, name);
     await profileFuture.then((updatedProfile) {
       profile.value = updatedProfile;
-      if (onSuccess != null) onSuccess.call();
+      onSuccess!.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
           backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
@@ -44,16 +44,16 @@ class ProfileController extends GetxController {
   }
 
   void getChildren() async {
-    children.value = await repo.getChildren();
+    children!.value = await repo.getChildren();
   }
 
   void saveChild(String name,
-      {String relationship, Function onSuccess}) async {
+      {String? relationship, Function? onSuccess}) async {
     await repo
-        .saveChild(name, relationship: relationship)
+        .saveChild(name, relationship: relationship!)
         .then((savedChild) {
       getChildren();
-      if (onSuccess != null) onSuccess.call();
+      onSuccess!.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
           backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
@@ -61,12 +61,12 @@ class ProfileController extends GetxController {
   }
 
   void updateChild(String recordId, String name,
-      {String relationship, Function onSuccess}) async {
+      {String? relationship, Function? onSuccess}) async {
     await repo
-        .updateChild(recordId, name, relationship: relationship)
+        .updateChild(recordId, name, relationship: relationship!)
         .then((updatedChild) {
       getChildren();
-      if (onSuccess != null) onSuccess.call();
+      onSuccess!.call();
     }).catchError((error) {
       Get.snackbar('Error', error.toString(),
           backgroundColor: ldSecondaryColorRed, colorText: ldTextTertiaryColor);
@@ -76,7 +76,7 @@ class ProfileController extends GetxController {
   void deleteChild(String recordId) async {
     storiesRepository.getStoriesList(recordId).then((stories) {
       stories.forEach((story) {
-        storiesRepository.deleteStory(recordId, story.recordId);
+        storiesRepository.deleteStory(recordId, story.recordId!);
       });
     });
     await repo.deleteChild(recordId);

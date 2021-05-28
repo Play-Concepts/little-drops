@@ -75,22 +75,22 @@ class _LDStatisticsDetailsViewState extends State<LDStatisticsDetailsView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  mScoreboardModel.title,
+                  mScoreboardModel.title!,
                   style: boldTextStyle(size: 16),
                 ),
                 Text(
-                  mScoreboardModel.subtitle,
+                  mScoreboardModel.subtitle!,
                   style: secondaryTextStyle(size: 10),
                 ),
               ],
             ),
             CircleAvatar(
               radius: 15,
-              backgroundColor: (mScoreboardModel.status > 70)
+              backgroundColor: (mScoreboardModel.status! > 70)
                   ? ldSecondaryColorGreen.withOpacity(0.7)
                   : ldSecondaryColorYellow.withOpacity(0.7),
               child: Text(
-                mScoreboardModel.status.toInt().toString(),
+                mScoreboardModel.status!.toInt().toString(),
                 style: boldTextStyle(textColor: Colors.white, size: 16),
               ),
             )

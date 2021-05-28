@@ -1,7 +1,7 @@
 import 'package:drops/entities/pda_record.dart';
 
 class Story extends PdaRecord {
-  Story({ String endpoint, String recordId, dynamic data}) {
+  Story({ String? endpoint, String? recordId, dynamic data}) {
     super.endpoint = endpoint;
     super.recordId = recordId;
     super.data = data;
@@ -18,10 +18,10 @@ class Story extends PdaRecord {
 }
 
 class StoryData {
-  String image;
-  String title;
-  String backgroundImages;
-  String description;
+  String? image;
+  String? title;
+  String? backgroundImages;
+  String? description;
 
   StoryData({
     this.image,

@@ -3,7 +3,7 @@ import 'package:drops/entities/pda_record.dart';
 import 'package:drops/utils/random_data.dart';
 
 class Child extends PdaRecord {
-  Child({ String endpoint, String recordId, dynamic data}) {
+  Child({ String? endpoint, String? recordId, dynamic data}) {
     super.endpoint = endpoint;
     super.recordId = recordId;
     super.data = data;
@@ -23,12 +23,12 @@ class Child extends PdaRecord {
 }
 
 class ChildData {
-  String image;
-  String name;
-  String relationship;
-  String ageGroup;
-  int score;
-  String message;
+  String? image;
+  String? name;
+  String? relationship;
+  String? ageGroup;
+  int? score;
+  String? message;
 
   ChildData({
     this.image,
