@@ -17,7 +17,9 @@ void main(List<String> args) {
       'name': input,
       'relationship': 'child'
     };
-    response = await client.post('https://$pda/$childrenEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.post(Uri.parse('https://$pda/$childrenEndpointUrl'),
+        body: jsonEncode(body),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 201) {

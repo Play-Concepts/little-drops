@@ -94,7 +94,7 @@ class LDLoginView extends GetView<HattersController> {
   void loginOrSignup(String email) {
     controller.isRegistered('email', email).then((value) async {
       final hatName = '${value.hatName}.${value.hatCluster}';
-      final loginUrl = controller.loginUrl(hatName);
+      final loginUrl = controller.loginUrl(hatName, email);
       if (await canLaunch(loginUrl)) {
         launch(loginUrl);
       } else {

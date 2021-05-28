@@ -10,7 +10,8 @@ void main() {
   final pda = 'terryleehcfdev.hubat.net';
   Response response;
   new File('token.txt').readAsString().then((token) async {
-    response = await client.get('https://$pda/$childrenEndpointUrl', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.get(Uri.parse('https://$pda/$childrenEndpointUrl'),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 200) {
       print(response.body);
       Iterable body = json.decode(response.body);

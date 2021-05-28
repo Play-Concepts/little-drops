@@ -22,7 +22,9 @@ void main(List<String> args) {
         'name': input
       }
     }];
-    response = await client.put('https://$pda/$dataEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.put(Uri.parse('https://$pda/$dataEndpointUrl'),
+        body: jsonEncode(body),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 201) {
       Iterable body = json.decode(response.body);
       if (body.length==0) throw Exception("Profile Not Saved.");

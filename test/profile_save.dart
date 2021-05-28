@@ -16,7 +16,9 @@ void main(List<String> args) {
     dynamic body ={
       'name': input
     };
-    response = await client.post('https://$pda/$profileEndpointUrl', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.post(Uri.parse('https://$pda/$profileEndpointUrl'),
+        body: jsonEncode(body),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 201) {

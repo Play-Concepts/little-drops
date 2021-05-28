@@ -14,7 +14,9 @@ void main(List<String> args) {
   String recordId = args[0];
 
   new File('token.txt').readAsString().then((token) async {
-    response = await client.delete('https://$pda/$dataEndpointUrl?records=$recordId', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.delete(
+        Uri.parse('https://$pda/$dataEndpointUrl?records=$recordId'),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200) {

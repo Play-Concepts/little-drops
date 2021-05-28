@@ -14,7 +14,8 @@ void main(List<String> args) {
   String recordId = args[0];
 
   new File('token.txt').readAsString().then((token) async {
-    response = await client.get('https://$pda/$storiesEndpointUrl/$recordId', headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.get(Uri.parse('https://$pda/$storiesEndpointUrl/$recordId'),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     if (response.statusCode == 200) {
       Iterable body = json.decode(response.body);
       if (body.length==0) throw Exception("Stories Not Found");

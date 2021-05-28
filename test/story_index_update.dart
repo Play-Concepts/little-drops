@@ -26,7 +26,8 @@ void main(List<String> args) {
         'data': {'title': title, 'description': description}
       }
     ];
-    response = await client.put('https://$pda/$dataEndpointUrl',
+    response = await client.put(
+        Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(body),
         headers: {'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);

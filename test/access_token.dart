@@ -8,7 +8,8 @@ void main() async {
   String username = 'terryleehcfdev';
   String password = 'roger-weary-edges';
 
-  final response = await client.get('https://$pda/users/access_token', headers: { 'Content-Type': 'application/json', 'username': username, 'password': password});
+  final response = await client.get(Uri.parse('https://$pda/users/access_token'),
+      headers: { 'Content-Type': 'application/json', 'username': username, 'password': password});
   if (response.statusCode == 200) {
     new File('token.txt').writeAsStringSync(json.decode(response.body)['accessToken']);
   } else {

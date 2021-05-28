@@ -20,7 +20,10 @@ void main(List<String> args) {
       'title': title,
       'description': description
     };
-    response = await client.post('https://$pda/$storiesEndpointUrl/$recordId', body: jsonEncode(body), headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+    response = await client.post(
+        Uri.parse('https://$pda/$storiesEndpointUrl/$recordId'),
+        body: jsonEncode(body),
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 201) {
