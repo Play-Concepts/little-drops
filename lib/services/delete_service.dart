@@ -13,13 +13,13 @@ class DeleteService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     String queryParams = recordIds.map((recordId) => 'records=$recordId').join('&');
     final response = await client.delete(
         Uri.parse('https://$pda/$dataEndpointUrl?$queryParams'),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 200) {
       box.write(dkToken, response.headers['x-auth-token']);
       return Future.value(true);

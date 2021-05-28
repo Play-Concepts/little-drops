@@ -16,11 +16,11 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     final response = await client.get(Uri.parse('https://$pda/$profileEndpointUrl'),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -37,8 +37,8 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data ={
       'name': name
@@ -46,7 +46,7 @@ class ProfileService {
     final response = await client.post(
         Uri.parse('https://$pda/$profileEndpointUrl'),
         body: jsonEncode(data),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -62,8 +62,8 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data =[{
       'recordId': recordId,
@@ -76,7 +76,7 @@ class ProfileService {
     final response = await client.put(
         Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -92,12 +92,12 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     final response = await client.get(
         Uri.parse('https://$pda/$childrenEndpointUrl'),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -114,8 +114,8 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data = {
       'name': name,
@@ -126,7 +126,7 @@ class ProfileService {
     final response = await client.post(
         Uri.parse('https://$pda/$childrenEndpointUrl'),
         body: jsonEncode(data),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -142,8 +142,8 @@ class ProfileService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data =[{
       'recordId': recordId,
@@ -158,7 +158,7 @@ class ProfileService {
     final response = await client.put(
         Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
-        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token});
+        headers: { 'Content-Type': 'application/json', 'X-Auth-Token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);

@@ -8,10 +8,10 @@ import 'package:get/get.dart';
 
 class LDEditChildView extends GetView<ProfileController> {
   Rx<Child> updatedChild = (new Child()).obs;
-  String _childName(Child child) =>
+  String _childName(Child? child) =>
       (child == null || child.data == null) ? '' : child.data.name;
 
-  String _childRelationship(Child child) =>
+  String _childRelationship(Child? child) =>
       (child == null || child.data == null) ? '' : child.data.relationship;
 
   void _updateChild() {
@@ -23,7 +23,7 @@ class LDEditChildView extends GetView<ProfileController> {
             onSuccess: () => displaySuccessMessage('Child Added.')
         );
       } else {
-        controller.updateChild(child.recordId,
+        controller.updateChild(child.recordId!,
             child.data.name,
             relationship: child.data.relationship,
             onSuccess: () => displaySuccessMessage('Child Updated.')
@@ -43,7 +43,7 @@ class LDEditChildView extends GetView<ProfileController> {
     Get.defaultDialog(
         title: 'Are you sure?',
         middleText: 'This child and its associated stories will be deleted permanently.',
-        onConfirm: () => _doDeleteChild(child.recordId),
+        onConfirm: () => _doDeleteChild(child.recordId!),
         textConfirm: 'Yes',
         confirmTextColor: ldTextTertiaryColor,
         onCancel: () => Get.back(),
@@ -64,7 +64,7 @@ class LDEditChildView extends GetView<ProfileController> {
         backgroundColor: ldSecondaryColorGreen, colorText: ldTextTertiaryColor);
   }
 
-  Widget EditField(Child child, String placeholder, Function initialValueFunction, Function valueChangeFunction) {
+  Widget EditField(Child child, String placeholder, Function initialValueFunction, Function(String) valueChangeFunction) {
     return TextFormField(
       initialValue: initialValueFunction(child),
       onChanged: valueChangeFunction,

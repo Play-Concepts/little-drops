@@ -32,8 +32,8 @@ TextStyle boldTextStyle(
     {int size = 18,
       Color textColor = ldTextPrimaryColor,
       FontWeight textWeight = FontWeight.bold,
-      double letterSpacing,
-      double wordSpacing}) {
+      double? letterSpacing,
+      double? wordSpacing}) {
   return TextStyle(
       fontSize: size.toDouble(),
       color: textColor,
@@ -63,7 +63,7 @@ BoxDecoration boxDecoration(
       double blurRadius = 8.0,
       double spreadRadius = 8.0,
       Color radiusColor = Colors.black12,
-      Gradient gradient}) {
+      Gradient? gradient}) {
   return BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
       boxShadow: [
@@ -80,13 +80,13 @@ BoxDecoration boxDecoration(
 class SDButton extends StatefulWidget {
   static String tag = '/T4Button';
   var textContent;
-  VoidCallback onPressed;
+  VoidCallback? onPressed;
   var isStroked = false;
   var height = 40.0;
 
   SDButton(
-      {@required this.textContent,
-        @required this.onPressed,
+      {required this.textContent,
+        required this.onPressed,
         this.isStroked = false,
         this.height = 45.0});
 

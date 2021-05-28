@@ -14,7 +14,7 @@ class ProfileRepository {
 
   Future<Profile> getProfile() {
     if (box.hasData(dkProfile)) {
-      Iterable body = json.decode(box.read<String>(dkProfile));
+      Iterable body = json.decode(box.read<String>(dkProfile)!);
       return Future.value(Profile.fromJson(body.first));
     }
     return profileService.getProfile();
@@ -25,7 +25,7 @@ class ProfileRepository {
 
   Future<List<Child>> getChildren() {
     if (box.hasData(dkChildren)) {
-      Iterable jsonChildren = json.decode(box.read<String>(dkChildren));
+      Iterable jsonChildren = json.decode(box.read<String>(dkChildren)!);
       List<Child> children = jsonChildren.map((jsonObject) => Child.fromJson(jsonObject)).toList();
       return Future.value(children);
     }

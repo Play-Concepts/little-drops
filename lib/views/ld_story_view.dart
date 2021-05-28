@@ -7,9 +7,9 @@ import 'package:drops/utils/ld_style.dart';
 import 'package:get/get.dart';
 
 class LDStoryView extends GetView<StoriesController> {
-  String name;
-  String description;
-  String backgroundImages;
+  String? name;
+  String? description;
+  String? backgroundImages;
 
   LDStoryView({this.name, this.description, this.backgroundImages});
 
@@ -22,7 +22,7 @@ class LDStoryView extends GetView<StoriesController> {
           child: Column(
             children: <Widget>[
               Stack(
-                overflow: Overflow.visible,
+                clipBehavior: Clip.none,
                 children: <Widget>[
                   Container(
                     height: 270,
@@ -31,7 +31,7 @@ class LDStoryView extends GetView<StoriesController> {
                           image: this.backgroundImages == null
                               ? NetworkImage(
                                   "https://d2rdhxfof4qmbb.cloudfront.net/wp-content/uploads/20190816134243/Desert-sand-sunset.jpg")
-                              : NetworkImage(this.backgroundImages),
+                              : NetworkImage(this.backgroundImages!),
                           fit: BoxFit.cover),
                     ),
                     child: ClipRRect(

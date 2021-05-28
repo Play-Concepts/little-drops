@@ -16,12 +16,12 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     final response = await client.get(
         Uri.parse('https://$pda/$storiesEndpointUrl/$childId'),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -40,12 +40,12 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     final response = await client.get(
         Uri.parse('https://$pda/$storiesEndpointUrl/$childId/$storyId?orderBy=index'),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 200) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -65,15 +65,15 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data = {'title': title, 'description': description};
 
     final response = await client.post(
         Uri.parse('https://$pda/$storiesEndpointUrl/$childId'),
         body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -90,8 +90,8 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data = [
       {
@@ -104,7 +104,7 @@ class StoriesService {
     final response = await client.put(
         Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -122,15 +122,15 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data = {'title': title, 'story': story, 'index': index};
 
     final response = await client.post(
         Uri.parse('https://$pda/$storiesEndpointUrl/$childId/$storyId'),
         body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
@@ -148,8 +148,8 @@ class StoriesService {
     if (!box.hasData(dkToken)) {
       throw Exception("Token not found");
     }
-    String pda = box.read<String>(dkPda);
-    String token = box.read<String>(dkToken);
+    String? pda = box.read<String>(dkPda);
+    String? token = box.read<String>(dkToken);
 
     dynamic data = [
       {
@@ -162,7 +162,7 @@ class StoriesService {
     final response = await client.put(
         Uri.parse('https://$pda/$dataEndpointUrl'),
         body: jsonEncode(data),
-        headers: {'Content-Type': 'application/json', 'x-auth-token': token});
+        headers: {'Content-Type': 'application/json', 'x-auth-token': token!});
     if (response.statusCode == 201) {
       String responseData = utf8.decode(response.bodyBytes);
       box.write(dkToken, response.headers['x-auth-token']);
