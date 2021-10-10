@@ -25,7 +25,7 @@ SDExamCardModel card = SDExamCardModel(
 final StoriesController storiesController = Get.find<StoriesController>();
 final ProfileController profileController = Get.find<ProfileController>();
 
-ImageProvider _storiesImageAsset(String location) {
+ImageProvider _storiesImageAsset(String? location) {
   if (location == null) location = randomImage();
   return Image.asset(
     location,
@@ -140,7 +140,8 @@ Widget LDEditStoriesView(BuildContext context) {
                             Text(
                               profileController.children![index].data == null
                                   ? ''
-                                  : profileController.children![index].data.name,
+                                  : profileController
+                                      .children![index].data.name,
                               style: secondaryTextStyle(
                                   textColor: Colors.white, size: 20),
                             ),
@@ -151,7 +152,8 @@ Widget LDEditStoriesView(BuildContext context) {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  profileController.children![index].data == null
+                                  profileController.children![index].data ==
+                                          null
                                       ? ''
                                       : profileController
                                           .children![index].data.relationship,
