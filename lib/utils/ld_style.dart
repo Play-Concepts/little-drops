@@ -1,7 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:drops/utils/ld_colors.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nb_utils/src/extensions/color_extensions.dart';
+import 'package:nb_utils/nb_utils.dart';
+
+TextStyle titleStyle({int size = 36}) {
+  return GoogleFonts.fredokaOne(
+    textStyle: TextStyle(
+      color: ldTextTitleColor,
+      fontSize: size.toDouble(),
+    ),
+  );
+}
 
 TextStyle primaryTextStyle(
     {int size = 16, Color textColor = ldTextPrimaryColor}) {
@@ -30,10 +42,10 @@ TextStyle warningTextStyle(
 
 TextStyle boldTextStyle(
     {int size = 18,
-      Color textColor = ldTextPrimaryColor,
-      FontWeight textWeight = FontWeight.bold,
-      double? letterSpacing,
-      double? wordSpacing}) {
+    Color textColor = ldTextPrimaryColor,
+    FontWeight textWeight = FontWeight.bold,
+    double? letterSpacing,
+    double? wordSpacing}) {
   return TextStyle(
       fontSize: size.toDouble(),
       color: textColor,
@@ -44,9 +56,9 @@ TextStyle boldTextStyle(
 
 BoxDecoration boxDecorations(
     {double radius = 8,
-      Color color = Colors.transparent,
-      Color bgColor = Colors.white,
-      var showShadow = false}) {
+    Color color = Colors.transparent,
+    Color bgColor = Colors.white,
+    var showShadow = false}) {
   return BoxDecoration(
       color: bgColor,
       //gradient: LinearGradient(colors: [bgColor, whiteColor]),
@@ -59,11 +71,11 @@ BoxDecoration boxDecorations(
 
 BoxDecoration boxDecoration(
     {double radius = 80.0,
-      Color backGroundColor = ldPrimaryColor,
-      double blurRadius = 8.0,
-      double spreadRadius = 8.0,
-      Color radiusColor = Colors.black12,
-      Gradient? gradient}) {
+    Color backGroundColor = ldPrimaryColor,
+    double blurRadius = 8.0,
+    double spreadRadius = 8.0,
+    Color radiusColor = Colors.black12,
+    Gradient? gradient}) {
   return BoxDecoration(
       borderRadius: BorderRadius.circular(radius),
       boxShadow: [
@@ -86,9 +98,9 @@ class SDButton extends StatefulWidget {
 
   SDButton(
       {required this.textContent,
-        required this.onPressed,
-        this.isStroked = false,
-        this.height = 45.0});
+      required this.onPressed,
+      this.isStroked = false,
+      this.height = 45.0});
 
   @override
   SDButtonState createState() => SDButtonState();
@@ -117,12 +129,27 @@ class SDButtonState extends State<SDButton> {
   }
 }
 
-changeStatusColor(Color color) async {
-  try {
-    await FlutterStatusbarcolor.setStatusBarColor(color, animate: true);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(
-        useWhiteForeground(color));
-  } on Exception catch (e) {
-    print(e);
-  }
+void changeStatusColor(Color color) async {
+  setStatusBarColor(color);
+}
+
+/// Change status bar Color and Brightness
+Future<void> setStatusBarColor(
+  Color statusBarColor, {
+  Color? systemNavigationBarColor,
+  Brightness? statusBarBrightness,
+  Brightness? statusBarIconBrightness,
+  int delayInMilliSeconds = 200,
+}) async {
+  await Future.delayed(Duration(milliseconds: delayInMilliSeconds));
+
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: statusBarColor,
+      systemNavigationBarColor: systemNavigationBarColor,
+      statusBarBrightness: statusBarBrightness,
+      statusBarIconBrightness: statusBarIconBrightness ??
+          (statusBarColor.isDark() ? Brightness.light : Brightness.dark),
+    ),
+  );
 }

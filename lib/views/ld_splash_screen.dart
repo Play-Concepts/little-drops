@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/views/ld_login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_style.dart';
@@ -54,7 +55,7 @@ class _LDSplashScreenState extends State<LDSplashScreen>
   Widget build(BuildContext context) {
     //final double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color(0xFF076ACF),
+      backgroundColor: ldPrimaryColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

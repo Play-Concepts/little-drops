@@ -7,8 +7,8 @@ class HattersController extends GetxController {
   final HattersService hattersService = Get.find<HattersService>();
 
   Future<Pda> isRegistered(String type, String typeValue) => hattersService.isRegistered(type, typeValue);
-  String loginUrl(String hatName, String email) => hattersService.loginUrl(hatName, email);
-  String signupUrl(String email) => hattersService.signupUrl(email);
+  String loginUrl() => hattersService.getLoginUrl();
+  String signupUrl() => hattersService.getSignupUrl();
 
   bool isEmailValid(String value) => GetUtils.isEmail(value);
 }

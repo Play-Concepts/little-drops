@@ -22,8 +22,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'controllers/hatters_controller.dart';
 import 'package:uni_links/uni_links.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await initialize();
   //FlutterError.onError = Crashlytics.instance.recordFlutterError;
   await GetStorage.init(dkStore);
   retrievePreferences();
@@ -48,11 +52,11 @@ void retrievePreferences() async {
   final SharedPreferences preferences = await SharedPreferences.getInstance();
   GetStorage box = GetStorage(dkStore);
   box.erase();
-  if (preferences.getString(dkPda) != null) box.write(dkPda, preferences.getString(dkPda));
-  if (preferences.getString(dkToken) != null) box.write(dkToken, preferences.getString(dkToken));
+  if (preferences.getString(dkPda) != null)
+    box.write(dkPda, preferences.getString(dkPda));
+  if (preferences.getString(dkToken) != null)
+    box.write(dkToken, preferences.getString(dkToken));
 }
-
-
 
 class MyApp extends StatefulWidget {
   @override
@@ -66,6 +70,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate
@@ -102,7 +107,8 @@ class _MyAppState extends State<MyApp> {
               GetStorage(dkStore).write(dkPda, pda);
               Get.off(LDHomePageView());
             } else if (_latestUri.queryParameters.containsKey('error')) {
-              Get.snackbar('Unable to create new PDA', _latestUri.queryParameters['error_reason']!,
+              Get.snackbar('Unable to create new PDA',
+                  _latestUri.queryParameters['error_reason']!,
                   backgroundColor: ldSecondaryColorRed,
                   colorText: ldTextTertiaryColor);
             }
@@ -113,7 +119,6 @@ class _MyAppState extends State<MyApp> {
       print(err.toString());
     });
   }
-
 
   @override
   dispose() {
