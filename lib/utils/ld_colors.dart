@@ -16,3 +16,6 @@ const ldIconColor = Color(0xFFA6A7AA);
 const ldShadowColor = Color(0x95E9EBF0);
 final Color ldAppBackground = Colors.indigo.shade50;
 const ldViewColor = Color(0xFFDADADA);
+
+final Color startColorBlue = Colors.blue.shade500;
+final Color endColorBlue = Colors.blue.shade800;

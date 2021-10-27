@@ -5,7 +5,7 @@ const dkStories = 'STORIES';
 const dkStory = 'STORY';
 const dkChildren = 'CHILDREN';
 const dkProfile = 'PROFILE';
-
+const dkSignInAction = 'SIGN_IN_ACTION';
 
 const dkSplash = 'splashed';
 

@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:drops/controllers/stories_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
@@ -48,24 +46,40 @@ class LDHomePageView extends StatelessWidget {
                 items: [
                   BottomNavigationBarItem(
                     icon:
-                        Icon(Icons.library_books, size: 28, color: ldIconColor),
-                    activeIcon: Icon(Icons.library_books,
+                        Icon(Icons.home_outlined, size: 28, color: ldIconColor),
+                    activeIcon: Icon(Icons.home_outlined,
                         size: 28, color: ldPrimaryColor),
-                    title: Text('a'),
+                    label: 'Home',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.edit, size: 28, color: ldIconColor),
-                    activeIcon:
-                        Icon(Icons.edit, size: 28, color: ldPrimaryColor),
-                    title: Text('a'),
+                    icon:
+                        Icon(Icons.edit_outlined, size: 28, color: ldIconColor),
+                    activeIcon: Icon(Icons.edit_outlined,
+                        size: 28, color: ldPrimaryColor),
+                    label: 'Your Stories',
                   ),
                   BottomNavigationBarItem(
-                    icon: Icon(Icons.pie_chart, size: 28, color: ldIconColor),
-                    activeIcon:
-                        Icon(Icons.pie_chart, size: 28, color: ldPrimaryColor),
-                    title: Text('a'),
+                    icon: Icon(Icons.library_books_outlined,
+                        size: 28, color: ldIconColor),
+                    activeIcon: Icon(Icons.library_books_outlined,
+                        size: 28, color: ldPrimaryColor),
+                    label: 'Library',
                   ),
                   BottomNavigationBarItem(
+                    icon: Icon(Icons.pie_chart_outlined,
+                        size: 28, color: ldIconColor),
+                    activeIcon: Icon(Icons.pie_chart_outlined,
+                        size: 28, color: ldPrimaryColor),
+                    label: 'Statistics',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.face,
+                        size: 28, color: ldIconColor),
+                    activeIcon: Icon(Icons.face,
+                        size: 28, color: ldPrimaryColor),
+                    label: 'Statistics',
+                  ),
+                  /* BottomNavigationBarItem(
                     icon: Container(
                       decoration: BoxDecoration(shape: BoxShape.circle),
                       height: 30,
@@ -98,7 +112,7 @@ class LDHomePageView extends StatelessWidget {
                       ),
                     ),
                     title: Text('a'),
-                  ),
+                  ), */
                 ],
                 onTap: (index) => _currentIndex.value = index,
               ),

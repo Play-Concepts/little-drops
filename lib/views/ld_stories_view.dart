@@ -3,24 +3,12 @@ import 'package:drops/controllers/stories_controller.dart';
 import 'package:drops/entities/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:drops/entities/SDExamCardModel.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/random_data.dart';
 import 'package:drops/views/ld_story_view.dart';
 import 'package:get/get.dart';
 
-SDExamCardModel card = SDExamCardModel(
-  image: randomImage(),
-  examName: 'Uriel Lee',
-  time: 'Elder daughter',
-  icon: Icon(
-    Icons.notifications_active,
-    color: Colors.white54,
-  ),
-  startColor: Color(0xFF2889EB),
-  endColor: Color(0xFF0B56CB),
-);
 
 final StoriesController storiesController = Get.find<StoriesController>();
 final ProfileController profileController = Get.find<ProfileController>();
@@ -86,7 +74,7 @@ Widget LDStoriesView(BuildContext context) {
                           spreadRadius: 1,
                           blurRadius: 4,
                           gradient: LinearGradient(
-                            colors: [card.startColor!, card.endColor!],
+                            colors: [startColorBlue, endColorBlue],
                           ),
                         ),
                         child: Column(

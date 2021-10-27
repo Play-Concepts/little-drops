@@ -1,9 +1,11 @@
+import 'package:drops/utils/data_keys.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:drops/utils/ld_colors.dart';
 import 'package:drops/utils/ld_style.dart';
 import 'package:get/get.dart';
 import 'package:drops/controllers/hatters_controller.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -111,6 +113,7 @@ class LDLoginView extends GetView<HattersController> {
   void dispose() {}
 
   void loginOrSignup(String action) async {
+    GetStorage(dkStore).write(dkSignInAction, action);
     final actionUrl =
         action == 'login' ? controller.loginUrl() : controller.signupUrl();
     if (await canLaunch(actionUrl)) {

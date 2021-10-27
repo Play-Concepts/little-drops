@@ -106,11 +106,24 @@ class _MyAppState extends State<MyApp> {
               GetStorage(dkStore).write(dkToken, token);
               GetStorage(dkStore).write(dkPda, pda);
               Get.off(LDHomePageView());
+              final signInAction = GetStorage(dkStore).read(dkSignInAction);
+              if (signInAction == 'login') {
+                GetStorage(dkStore).remove(dkSignInAction);
+                Get.snackbar(
+                  'Congratulations!',
+                  'A Personal Data Account has been created for you.',
+                  backgroundColor: ldSecondaryColorGreen,
+                  colorText: ldTextTertiaryColor,
+                  duration: Duration(seconds: 3),
+                );
+              }
             } else if (_latestUri.queryParameters.containsKey('error')) {
-              Get.snackbar('Unable to create new PDA',
-                  _latestUri.queryParameters['error_reason']!,
-                  backgroundColor: ldSecondaryColorRed,
-                  colorText: ldTextTertiaryColor);
+              Get.snackbar(
+                'Unable to create new PDA',
+                _latestUri.queryParameters['error_reason']!,
+                backgroundColor: ldSecondaryColorRed,
+                colorText: ldTextTertiaryColor,
+              );
             }
           }
         } on FormatException {}
