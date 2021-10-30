@@ -96,30 +96,29 @@ class _MyAppState extends State<MyApp> {
   @override
   initState() {
     super.initState();
-    _sub = getLinksStream().listen((String? link) {
+    _sub = getLinksStream().listen((String? link) async {
       if (!mounted) return;
-      setState(() {
-        try {
-          if (link != null) {
-            Uri _latestUri = Uri.parse(link);
-            if (_latestUri.queryParameters.containsKey('token')) {
-              final token = _latestUri.queryParameters['token'];
-              final pda = Get.find<HattersService>().extractPda(token!);
-              GetStorage(dkStore).write(dkToken, token);
-              GetStorage(dkStore).write(dkPda, pda);
+      try {
+        if (link != null) {
+          Uri _latestUri = Uri.parse(link);
+          if (_latestUri.queryParameters.containsKey('token')) {
+            final token = _latestUri.queryParameters['token'];
+            final pda = Get.find<HattersService>().extractPda(token!);
+            GetStorage(dkStore).write(dkToken, token);
+            GetStorage(dkStore).write(dkPda, pda);
 
-              final profileRepository = Get.find<ProfileRepository>();
-              profileRepository.getChildren().then((List<Child> children) {
-                final childrenCount = children.length;
-                if (childrenCount == 0) {
-                  Get.off(LDHomePageView());
-                } else {
-                  Get.off(LDFirstChildView());
-                }
-              }, onError: (e) {
+            final profileRepository = Get.find<ProfileRepository>();
+            profileRepository.getChildren().then((List<Child> children) {
+              final childrenCount = children.length;
+              if (childrenCount == 0) {
+                Get.off(LDHomePageView());
+              } else {
                 Get.off(LDFirstChildView());
-              });
-
+              }
+            }, onError: (e) {
+              Get.off(LDFirstChildView());
+            });
+            await Future.delayed(const Duration(seconds: 1), () {
               final signInAction = GetStorage(dkStore).read(dkSignInAction);
               if (signInAction == 'login') {
                 GetStorage(dkStore).remove(dkSignInAction);
@@ -131,17 +130,17 @@ class _MyAppState extends State<MyApp> {
                   duration: Duration(seconds: 5),
                 );
               }
-            } else if (_latestUri.queryParameters.containsKey('error')) {
-              Get.snackbar(
-                'Unable to create new PDA',
-                _latestUri.queryParameters['error_reason']!,
-                backgroundColor: ldSecondaryColorRed,
-                colorText: ldTextTertiaryColor,
-              );
-            }
+            });
+          } else if (_latestUri.queryParameters.containsKey('error')) {
+            Get.snackbar(
+              'Unable to create new PDA',
+              _latestUri.queryParameters['error_reason']!,
+              backgroundColor: ldSecondaryColorRed,
+              colorText: ldTextTertiaryColor,
+            );
           }
-        } on FormatException {}
-      });
+        }
+      } on FormatException {}
     }, onError: (Object err) {
       print(err.toString());
     });
