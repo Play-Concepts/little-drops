@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:drops/controllers/profile_controller.dart';
 import 'package:drops/controllers/stories_controller.dart';
+import 'package:drops/entities/child.dart';
 import 'package:drops/repositories/profile_repository.dart';
 import 'package:drops/repositories/stories_repository.dart';
 import 'package:drops/services/delete_service.dart';
 import 'package:drops/services/profile_service.dart';
 import 'package:drops/services/stories_service.dart';
+import 'package:drops/views/ld_first_child_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:drops/views/ld_splash_screen.dart';
@@ -105,7 +107,19 @@ class _MyAppState extends State<MyApp> {
               final pda = Get.find<HattersService>().extractPda(token!);
               GetStorage(dkStore).write(dkToken, token);
               GetStorage(dkStore).write(dkPda, pda);
-              Get.off(LDHomePageView());
+
+              final profileRepository = Get.find<ProfileRepository>();
+              profileRepository.getChildren().then((List<Child> children) {
+                final childrenCount = children.length;
+                if (childrenCount == 0) {
+                  Get.off(LDHomePageView());
+                } else {
+                  Get.off(LDFirstChildView());
+                }
+              }, onError: (e) {
+                Get.off(LDFirstChildView());
+              });
+
               final signInAction = GetStorage(dkStore).read(dkSignInAction);
               if (signInAction == 'login') {
                 GetStorage(dkStore).remove(dkSignInAction);
@@ -114,7 +128,7 @@ class _MyAppState extends State<MyApp> {
                   'A Personal Data Account has been created for you.',
                   backgroundColor: ldSecondaryColorGreen,
                   colorText: ldTextTertiaryColor,
-                  duration: Duration(seconds: 3),
+                  duration: Duration(seconds: 5),
                 );
               }
             } else if (_latestUri.queryParameters.containsKey('error')) {

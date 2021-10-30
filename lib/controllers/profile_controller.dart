@@ -1,3 +1,4 @@
+import 'package:drops/entities/child.dart';
 import 'package:drops/entities/profile.dart';
 import 'package:drops/repositories/profile_repository.dart';
 import 'package:drops/repositories/stories_repository.dart';
@@ -32,8 +33,11 @@ class ProfileController extends GetxController {
     });
   }
 
-  void upsertProfile(String? recordId, String name, {Function? onSuccess}) async {
-    Future<Profile> profileFuture = (recordId==null || recordId=='') ? repo.saveProfile(name) : repo.updateProfile(recordId, name);
+  void upsertProfile(String? recordId, String name,
+      {Function? onSuccess}) async {
+    Future<Profile> profileFuture = (recordId == null || recordId == '')
+        ? repo.saveProfile(name)
+        : repo.updateProfile(recordId, name);
     await profileFuture.then((updatedProfile) {
       profile.value = updatedProfile;
       onSuccess!.call();
@@ -49,9 +53,7 @@ class ProfileController extends GetxController {
 
   void saveChild(String name,
       {String? relationship, Function? onSuccess}) async {
-    await repo
-        .saveChild(name, relationship: relationship!)
-        .then((savedChild) {
+    await repo.saveChild(name, relationship: relationship!).then((savedChild) {
       getChildren();
       onSuccess!.call();
     }).catchError((error) {

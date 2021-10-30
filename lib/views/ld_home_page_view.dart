@@ -8,9 +8,9 @@ import 'package:drops/views/ld_statistics_view.dart';
 import 'package:drops/views/ld_profile_view.dart';
 import 'package:get/get.dart';
 
-class LDHomePageView extends StatelessWidget {
-  RxInt _currentIndex = 0.obs;
+RxInt _currentIndex = 0.obs;
 
+class LDHomePageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -19,7 +19,7 @@ class LDHomePageView extends StatelessWidget {
       LDStoriesView(context),
       LDEditStoriesView(context),
       LDStatisticsView(context, size),
-      LDProfileView(),
+      LDProfileView(context),
     ];
 
     return SafeArea(
